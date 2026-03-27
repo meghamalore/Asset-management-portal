@@ -1,9 +1,10 @@
  <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @yield('section-js')
-    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js')}}"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js')}}"></script>
     <script src="{{ asset('assets/vendor/js/bootstrap.js')}}"></script>
     <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
@@ -22,5 +23,91 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+        $(document).ready(function() {
+        
+            $('#defaultToggle').addClass('collapsed');
+            $('#additionalToggle').addClass('collapsed');
+            $('#purchaseToggle').addClass('collapsed');
+        
+            var table = $('#assetTable').DataTable({
+                orderCellsTop: true,
+                autoWidth: false,   // ✅ important
+                scrollX: true       // ✅ optional but recommended
+            });
+        
+            $('#selectAll').click(function() {
+                $('tbody input[type="checkbox"]').prop('checked', this.checked);
+            });
+        
+            // ✅ ONLY THIS (no extra logic)
+            let defaultCols = table.columns('.default-extra').indexes().toArray();
+            let additionalCols = table.columns('.additional-extra').indexes().toArray();
+            let purchaseCols = table.columns('.purchase-extra').indexes().toArray();
+        
+            // 👉 default closed (optional)
+            // table.columns(defaultCols).visible(false);
+            // table.columns(additionalCols).visible(false);
+            // table.columns(purchaseCols).visible(false);
+        
+            // ✅ ADD THIS BLOCK
+            // table.columns(defaultCols).visible(false);
+            // table.columns(additionalCols).visible(false);
+            // table.columns(purchaseCols).visible(false);
+        
+            let defaultOpen = false;
+            let additionalOpen = false;
+            let purchaseOpen = false;
+        
+            // DEFAULT
+            $('#defaultToggle').on('click', function() {
+        
+                let isVisible = table.column(defaultCols[0]).visible(); // 🔥 check current state
+        
+                table.columns(defaultCols).visible(!isVisible, false);
+        
+                table.columns.adjust().draw(false);
+        
+                $(this).toggleClass('collapsed', isVisible);
+        
+                $('.toggle-icon')
+                    .toggleClass('bx-chevron-right', !isVisible)
+                    .toggleClass('bx-chevron-left', isVisible);
+            });
+        
+            // ADDITIONAL
+            $('#additionalToggle').on('click', function() {
+        
+                let isVisible = table.column(additionalCols[0]).visible();
+        
+                table.columns(additionalCols).visible(!isVisible, false);
+        
+                table.columns.adjust().draw(false);
+        
+                $(this).toggleClass('collapsed', isVisible);
+        
+                $('.toggle-icon-add')
+                    .toggleClass('bx-chevron-right', !isVisible)
+                    .toggleClass('bx-chevron-left', isVisible);
+            });
+        
+            $('#purchaseToggle').on('click', function() {
+        
+                let isVisible = table.column(purchaseCols[0]).visible();
+        
+                table.columns(purchaseCols).visible(!isVisible, false);
+        
+                table.columns.adjust().draw(false);
+        
+                $(this).toggleClass('collapsed', isVisible);
+        
+                $('.toggle-icon-purchase')
+                    .toggleClass('bx-chevron-right', !isVisible)
+                    .toggleClass('bx-chevron-left', isVisible);
+            });
+        
+        });
+    </script>
   </body>
 </html>

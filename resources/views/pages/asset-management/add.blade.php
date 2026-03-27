@@ -27,13 +27,20 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-company">Asset
-                                            Code</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-company">Asset Code</label>
                                         <div class="col-sm-4">
-                                            <div class="form-text">Leave blank to auto-generate. System generated code
-                                                formats can be setup from Advanced settings</div>
                                             <input type="text" class="form-control" id="basic-default-company"
                                                 placeholder="ACME Inc." />
+                                                <div class="form-text">
+                                                    Leave blank to auto-generate. System generated code
+                                                    formats can be setup from Advanced settings
+                                                </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#smallModals">
+                                                <i class="bx bx-barcode"></i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -167,9 +174,12 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Upload Files</label>
+                                    <label class="col-sm-2 col-form-label">Upload Files</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="file" id="asset_image" />
+                                        <label class="btn btn-sm btn-primary mb-0">
+                                            <i class="bx bx-upload me-1"></i> Upload File
+                                            <input type="file" hidden>
+                                        </label>
                                     </div>
                                 </div>
                             </div>
@@ -505,8 +515,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#exLargeModalCategory">
+                                                <button type="button" class="btn btn-primary">
                                                     &#10006;
                                                 </button>
                                             </div>
@@ -517,8 +526,7 @@
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
                                                         id="flexSwitchCheckDefault" />
-                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
-                                                        checkbox input</label>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
                                             <label class="col-sm-2 col-form-label" for="asset_name">Category Name</label>
@@ -533,8 +541,7 @@
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
                                                         id="flexSwitchCheckDefault" />
-                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
-                                                        checkbox input</label>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
                                             <label class="col-sm-2 col-form-label" for="asset_name">Category Code</label>
@@ -555,8 +562,7 @@
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
                                                         id="flexSwitchCheckDefault" />
-                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
-                                                        checkbox input</label>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -1144,6 +1150,38 @@
             </div>
         </div>
     </div>
+
+    <!-- Small Modal -->
+    <div class="modal fade" id="smallModals" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Scan a barcode or a QR code</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nameSmall" class="form-label">Name</label>
+                        <div class="col-sm-4 mx-auto">
+                            <div class="form-check form-switch">
+                                Continues Scan<input class="form-check-input" type="checkbox"
+                                    id="flexSwitchCheckDefault" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @section('section-js')
 <script>
