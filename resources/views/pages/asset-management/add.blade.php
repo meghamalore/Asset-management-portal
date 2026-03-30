@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4">Asset List</h4>
+        <h4 class="fw-bold py-3 mb-4">Add Asset</h4>
         <div class="row">
             <div class="col-md mb-4 mb-md-0">
                 <div class="accordion mt-3" id="accordionExample">
@@ -46,7 +46,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Category</label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="select2 form-select">
+                                            <select class="form-control select2"  name="location_id">
                                                 <option value="">Select</option>
                                                 <option value="Australia">Australia</option>
                                                 <option value="Bangladesh">Bangladesh</option>
@@ -1153,39 +1153,45 @@
 
     <!-- Small Modal -->
     <div class="modal fade" id="smallModals" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Scan a barcode or a QR code</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="nameSmall" class="form-label">Name</label>
-                        <div class="col-sm-4 mx-auto">
-                            <div class="form-check form-switch">
-                                Continues Scan<input class="form-check-input" type="checkbox"
-                                    id="flexSwitchCheckDefault" />
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Scan a barcode or a QR code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameSmall" class="form-label">Name</label>
+                            <div class="col-sm-4 mx-auto">
+                                <div class="form-check form-switch">
+                                    Continues Scan<input class="form-check-input" type="checkbox"
+                                        id="flexSwitchCheckDefault" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 @endsection
 @section('section-js')
 <script>
     $(document).ready(function () {
+
+         $('.select2').select2({
+            placeholder: "Select an option",
+            allowClear: true,
+            width: '100%'
+        });
 
         $('#addBtns').click(function () {
             let newSection = $('.addition:first').clone();

@@ -1,7 +1,28 @@
 @extends('layouts.master')
+@section('section-css')
+    <style>
+        .app-brand-logo {
+            background-color: #000;
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        
+        .sorting {
+            width: 13px !important;
+        }
+    
+        th.collapsed {
+            background: #dfe6ee;
+            color: #555;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Assets List</h4>
+        <h4 class="fw-bold py-3 mb-4">Asset List</h4>
         <!-- Basic Bootstrap Table -->
         <!-- Bordered Table -->
         <div class="card">
@@ -18,183 +39,191 @@
                     </select>
                 </div>
                 <div class="col-sm-3 my-auto">
-                    <button type="button" class="btn btn-icon btn-warning" data-bs-toggle="modal" data-bs-target="#exLargeModaldefaultview">
+                    <button type="button" class="btn btn-icon btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#exLargeModaldefaultview">
                         <span class="tf-icons bx bx-plus"></span>
                     </button>
                 </div>
                 <div class="col-sm-3">
                     <div class="demo-inline-spacing">
-                            <button type="button" class="btn btn-icon btn-dark" data-bs-toggle="modal" data-bs-target="#exLargeModalAddWidget">
-                              <span class="tf-icons bx bx-bar-chart-alt-2"></span>
-                            </button>
-                            <button type="button" class="btn btn-icon btn-warning">
-                              <span class="tf-icons bx bx-export"></span>
-                            </button>
-                            <button type="button" class="btn btn-icon btn-danger">
-                              <span class="tf-icons bx bx-refresh"></span>
-                            </button>
-                            <button type="button" class="btn btn-icon btn-primary">
-                              <span class="tf-icons bx bx-grid-alt"></span>
-                            </button>
+                        <button type="button" class="btn btn-icon btn-dark" data-bs-toggle="modal"
+                            data-bs-target="#exLargeModalAddWidget">
+                            <span class="tf-icons bx bx-bar-chart-alt-2"></span>
+                        </button>
+                        <button type="button" class="btn btn-icon btn-warning">
+                            <span class="tf-icons bx bx-export"></span>
+                        </button>
+                        <button type="button" class="btn btn-icon btn-danger">
+                            <span class="tf-icons bx bx-refresh"></span>
+                        </button>
+                        <button type="button" class="btn btn-icon btn-primary">
+                            <span class="tf-icons bx bx-grid-alt"></span>
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="row mb-3 mx-auto">
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModalAddGenerateSticker">
-                            <span class="tf-icons bx bx-barcode"></span>&nbsp; Generated Stickers
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#exLargeModalAddGenerateSticker">
+                        <span class="tf-icons bx bx-barcode"></span>&nbsp; Generated Stickers
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModalAssetTraf">
-                            <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#exLargeModalAssetTraf">
+                        <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModalAssetDisposal">
-                            <span class="tf-icons bx bx-trash"></span>&nbsp; Discard or Sell
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#exLargeModalAssetDisposal">
+                        <span class="tf-icons bx bx-trash"></span>&nbsp; Discard or Sell
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModalUpdateAsset">
-                            <span class="tf-icons bx bx-edit"></span>&nbsp; Update Asset
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#exLargeModalUpdateAsset">
+                        <span class="tf-icons bx bx-edit"></span>&nbsp; Update Asset
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exLargeModalScheduleActivity">
-                            <span class="tf-icons bx bx-calendar"></span>&nbsp; Schedule Activity
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#exLargeModalScheduleActivity">
+                        <span class="tf-icons bx bx-calendar"></span>&nbsp; Schedule Activity
                     </button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-      <table id="assetTable" class="table table-bordered">
- 
-          <thead>
-              <!-- GROUP HEADER -->
-              <tr>
-                  <th rowspan="3"><input type="checkbox" id="selectAll"></th>
-                  <th rowspan="3">Actions</th>
- 
-                  <th colspan="14" id="defaultToggle">
-                      Default Section
-                      <i class='bx bx-chevron-right toggle-icon'></i>
-                  </th>
- 
-                  <th colspan="6" id="additionalToggle">
-                      Additional Section
-                      <i class='bx bx-chevron-right toggle-icon-add'></i>
-                  </th>
- 
-                  <th colspan="8" id="purchaseToggle">
-                      Purchase Section
-                      <i class='bx bx-chevron-right toggle-icon-purchase'></i>
-                  </th>
-              </tr>
- 
-              <!-- COLUMN HEADER -->
-              <tr>
-                  <th>Asset Name</th>
- 
-                  <th class="default-extra">Image</th>
-                  <th class="default-extra">Code</th>
-                  <th class="default-extra">Category</th>
-                  <th class="default-extra">Created</th>
-                  <th class="default-extra">Location</th>
-                  <th class="default-extra">Created By</th>
-                  <th class="default-extra">Status</th>
-                  <th class="default-extra">Scan Date</th>
-                  <th class="default-extra">Scan By</th>
-                  <th class="default-extra">Modified</th>
-                  <th class="default-extra">Modified By</th>
-                  <th class="default-extra">Parent</th>
- 
-                  <th class="additional-extra">Brand</th>
-                  <th class="additional-extra">Model</th>
-                  <th class="additional-extra">Linked Asset</th>
-                  <th class="additional-extra">Description</th>
-                  <th class="additional-extra">Serial No</th>
-                  <th class="additional-extra">Upload Files</th>
- 
-                  <th class="purchase-extra">Vendor Name</th>
- 
-                  <th class="purchase-extra">PO Number</th>
-                  <th class="purchase-extra">Invoice Date</th>
-                  <th class="purchase-extra">Invoice No</th>
-                  <th class="purchase-extra">Purchase Date</th>
-                  <th class="purchase-extra">Purchase Price</th>
-                  <th class="purchase-extra">Self Owned / Partner</th>
-                  <th class="purchase-extra">Partner</th>
- 
-                  <th>Condition</th>
-                <th>Model</th>
-              </tr>
- 
-              <!-- FILTER -->
-              <tr>
-                  @for ($i = 0; $i < 29; $i++)
-                  <th>
-                      <div class="filter-box">
-                          <input type="text">
-                          <i class='bx bx-filter filter-icon'></i>
-                      </div>
-                  </th>
-                  @endfor
-              </tr>
-          </thead>
- 
-          <tbody>
-              @for($i=1; $i<=3; $i++)
-              <tr>
-                  <td><input type="checkbox"></td>
-                  <td>👁️ ✏️ ⋮</td>
- 
-                  <td>Asset {{$i}}</td>
- 
-                  <td class="default-extra"><img src="https://dummyimage.com/40x40/000/fff"></td>
-                  <td class="default-extra">AST00{{$i}}</td>
-                  <td class="default-extra">Plant</td>
-                  <td class="default-extra">2025-01-01</td>
-                  <td class="default-extra">HO</td>
-                  <td class="default-extra">Admin</td>
-                  <td class="default-extra">Active</td>
-                  <td class="default-extra">2025-01-02</td>
-                  <td class="default-extra">User</td>
-                  <td class="default-extra">2025-01-03</td>
-                  <td class="default-extra">User</td>
-                  <td class="default-extra">Parent</td>
- 
-                  <td class="additional-extra">Apple</td>
-                  <td class="additional-extra">Macbook Air M3</td>
-                  <td class="additional-extra">Linked Asset</td>
-                  <td class="additional-extra">Description</td>
-                  <td class="additional-extra">Serial No</td>
-                  <td class="additional-extra">Upload Files</td>
- 
-                  <td class="purchase-extra">-</td>
- 
-                  <td class="purchase-extra">PO Number</td>
-                  <td class="purchase-extra">Invoice Date</td>
-                  <td class="purchase-extra">Invoice No</td>
-                  <td class="purchase-extra">Purchase Date</td>
-                  <td class="purchase-extra">Purchase Price</td>
-                  <td class="purchase-extra"><select><option>None</option><option>Yes</option><option>No</option></select></td>
-                  <td class="purchase-extra">Partner</td>
- 
-                  <td>Good</td>
-                  <td>Dell</td>
-              </tr>
-              @endfor
-          </tbody>
- 
-      </table>
-  </div>
+                    <table id="assetTable" class="table table-bordered">
+
+                        <thead>
+                            <!-- GROUP HEADER -->
+                            <tr>
+                                <th rowspan="3"><input type="checkbox" id="selectAll"></th>
+                                <th rowspan="3">Actions</th>
+
+                                <th colspan="14" id="defaultToggle">
+                                    Default Section
+                                    <i class='bx bx-chevron-right toggle-icon'></i>
+                                </th>
+
+                                <th colspan="6" id="additionalToggle">
+                                    Additional Section
+                                    <i class='bx bx-chevron-right toggle-icon-add'></i>
+                                </th>
+
+                                <th colspan="8" id="purchaseToggle">
+                                    Purchase Section
+                                    <i class='bx bx-chevron-right toggle-icon-purchase'></i>
+                                </th>
+                            </tr>
+
+                            <!-- COLUMN HEADER -->
+                            <tr>
+                                <th>Asset Name</th>
+
+                                <th class="default-extra">Image</th>
+                                <th class="default-extra">Code</th>
+                                <th class="default-extra">Category</th>
+                                <th class="default-extra">Created</th>
+                                <th class="default-extra">Location</th>
+                                <th class="default-extra">Created By</th>
+                                <th class="default-extra">Status</th>
+                                <th class="default-extra">Scan Date</th>
+                                <th class="default-extra">Scan By</th>
+                                <th class="default-extra">Modified</th>
+                                <th class="default-extra">Modified By</th>
+                                <th class="default-extra">Parent</th>
+
+                                <th class="additional-extra">Brand</th>
+                                <th class="additional-extra">Model</th>
+                                <th class="additional-extra">Linked Asset</th>
+                                <th class="additional-extra">Description</th>
+                                <th class="additional-extra">Serial No</th>
+                                <th class="additional-extra">Upload Files</th>
+
+                                <th class="purchase-extra">Vendor Name</th>
+
+                                <th class="purchase-extra">PO Number</th>
+                                <th class="purchase-extra">Invoice Date</th>
+                                <th class="purchase-extra">Invoice No</th>
+                                <th class="purchase-extra">Purchase Date</th>
+                                <th class="purchase-extra">Purchase Price</th>
+                                <th class="purchase-extra">Self Owned / Partner</th>
+                                <th class="purchase-extra">Partner</th>
+
+                                <th>Condition</th>
+                                <th>Model</th>
+                            </tr>
+
+                            <!-- FILTER -->
+                            <tr>
+                                @for ($i = 0; $i < 29; $i++) <th>
+                                    <div class="filter-box">
+                                        <input type="text">
+                                        <i class='bx bx-filter filter-icon'></i>
+                                    </div>
+                                    </th>
+                                    @endfor
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for($i=1; $i<=3; $i++) <tr>
+                                <td><input type="checkbox"></td>
+                                <td>👁️ ✏️ ⋮</td>
+
+                                <td>Asset {{$i}}</td>
+
+                                <td class="default-extra"><img src="https://dummyimage.com/40x40/000/fff"></td>
+                                <td class="default-extra">AST00{{$i}}</td>
+                                <td class="default-extra">Plant</td>
+                                <td class="default-extra">2025-01-01</td>
+                                <td class="default-extra">HO</td>
+                                <td class="default-extra">Admin</td>
+                                <td class="default-extra">Active</td>
+                                <td class="default-extra">2025-01-02</td>
+                                <td class="default-extra">User</td>
+                                <td class="default-extra">2025-01-03</td>
+                                <td class="default-extra">User</td>
+                                <td class="default-extra">Parent</td>
+
+                                <td class="additional-extra">Apple</td>
+                                <td class="additional-extra">Macbook Air M3</td>
+                                <td class="additional-extra">Linked Asset</td>
+                                <td class="additional-extra">Description</td>
+                                <td class="additional-extra">Serial No</td>
+                                <td class="additional-extra">Upload Files</td>
+
+                                <td class="purchase-extra">-</td>
+
+                                <td class="purchase-extra">PO Number</td>
+                                <td class="purchase-extra">Invoice Date</td>
+                                <td class="purchase-extra">Invoice No</td>
+                                <td class="purchase-extra">Purchase Date</td>
+                                <td class="purchase-extra">Purchase Price</td>
+                                <td class="purchase-extra"><select>
+                                        <option>None</option>
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                    </select></td>
+                                <td class="purchase-extra">Partner</td>
+
+                                <td>Good</td>
+                                <td>Dell</td>
+                                </tr>
+                                @endfor
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
         <!--/ Bordered Table -->
         <!--/ Basic Bootstrap Table -->
     </div>
-
 
     <!-- Extra Large Defult view Modal -->
     <div class="modal fade" id="exLargeModaldefaultview" tabindex="-1" aria-hidden="true">
@@ -265,6 +294,7 @@
             </div>
         </div>
     </div>
+
     <!-- Extra Large Widget Modal -->
     <div class="modal fade" id="exLargeModalAddWidget" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
