@@ -1,4 +1,31 @@
 @extends('layouts.master')
+@section('section-css')
+<style>
+.select2-container--default .select2-selection--single {
+    height: 38px;
+    padding: 6px 12px;
+    border: 1px solid #d9dee3;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+}
+
+.select2-container--default .select2-selection__rendered {
+    color: #697a8d;
+    line-height: normal;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+    right: 10px;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #696cff;
+    box-shadow: 0 0 0 0.15rem rgba(105, 108, 255, 0.25);
+}
+</style>
+@endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">Add Asset</h4>
@@ -16,14 +43,14 @@
                             <div class="accordion-body">
                                 <form>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
+                                        <label class="col-sm-2 col-form-label" >Asset Name</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Enter Asset Name" />
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_image">Asset Image</label>
+                                        <label class="col-sm-2 col-form-label" >Asset Image</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="file" id="asset_image" />
+                                            <input class="form-control" type="file"  />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -44,9 +71,9 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Category</label>
+                                        <label class="col-sm-2 col-form-label">Category</label>
                                         <div class="col-sm-4">
-                                            <select class="form-control select2"  name="location_id">
+                                            <select class="form-select select2"  name="location_id">
                                                 <option value="">Select</option>
                                                 <option value="Australia">Australia</option>
                                                 <option value="Bangladesh">Bangladesh</option>
@@ -100,16 +127,16 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
+                                        <label class="col-sm-2 col-form-label" >Asset Name</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Enter Asset Name" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">CWIP Invoice Id</label>
+                                        <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Enter Asset Name" />
                                         </div>
                                     </div>
@@ -141,15 +168,15 @@
                                             <option value="Canada">Canada</option>
                                         </select>
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Brand</label>
+                                    <label class="col-sm-2 col-form-label" >Brand</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Model</label>
+                                    <label class="col-sm-2 col-form-label" >Model</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
                                     <div class="col-sm-4">
@@ -164,13 +191,13 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Description</label>
+                                    <label class="col-sm-2 col-form-label" >Description</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Serial No</label>
+                                    <label class="col-sm-2 col-form-label" >Serial No</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -198,9 +225,9 @@
                         <div id="accordionThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Vendor Name</label>
+                                    <label class="col-sm-2 col-form-label" >Vendor Name</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
                                     <div class="col-sm-4">
@@ -215,21 +242,21 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Invoice Date</label>
+                                    <label class="col-sm-2 col-form-label" >Invoice Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Invoice No</label>
+                                    <label class="col-sm-2 col-form-label" >Invoice No</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Purchase Date</label>
+                                    <label class="col-sm-2 col-form-label" >Purchase Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Purchase Price</label>
+                                    <label class="col-sm-2 col-form-label" >Purchase Price</label>
                                     <div class="col-sm-4">
                                         <div class="input-group">
                                             <span class="input-group-text" id="full_name_icon">
@@ -248,7 +275,7 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Self Owned / Partner</label>
+                                    <label class="col-sm-2 col-form-label" >Self Owned / Partner</label>
                                     <div class="col-sm-4">
                                         <div class="form-check form-switch mb-2">
                                             <input class="form-check-input" type="checkbox"
@@ -274,7 +301,7 @@
                         <div id="accordionFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Capitalization Price</label>
+                                    <label class="col-sm-2 col-form-label" >Capitalization Price</label>
                                     <div class="col-sm-4">
                                         <div class="input-group">
                                             <span class="input-group-text" id="full_name_icon">
@@ -293,21 +320,21 @@
                                     </div> 
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Capitalization Date</label>
+                                    <label class="col-sm-2 col-form-label" >Capitalization Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Depreciation%</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Accumulated
+                                    <label class="col-sm-2 col-form-label" >Accumulated
                                         Depreciation</label>
                                     <div class="col-sm-4">
                                         <div class="input-group">
@@ -327,14 +354,14 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_image">Scrap Value</label>
+                                    <label class="col-sm-2 col-form-label" >Scrap Value</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Income Tax
                                         Depreciation%</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                             </div>
@@ -378,11 +405,11 @@
                                 <div class="row mb-3">
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Allotted Upto</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Remarks</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                             </div>
@@ -427,46 +454,46 @@
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Start
                                         Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
                                         Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="text" id="asset_image" />
+                                        <input class="form-control" type="text"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Start
                                         Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty End
                                         Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
                                         Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                     <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
                                         Date</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control" type="date" id="asset_image" />
+                                        <input class="form-control" type="date"  />
                                     </div>
                                 </div>
                             </div>
@@ -491,6 +518,8 @@
                     <h5 class="modal-title" id="exampleModalLabel4">Add Category</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="categoryForm">
+                @csrf
                 <div class="modal-body">
                     <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
@@ -500,19 +529,14 @@
                                     Category Details
                                 </button>
                             </h2>
-                            <div id="accordionSeven" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    <form>
+                            <div id="accordionSeven" class="accordion-collapse collapse show"
+                                data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Parent Category</label>
+                                            <label class="col-sm-2 col-form-label" >Parent Category</label>
                                             <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                </select>
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Enter Parent Category Name" name="parent_category_name"/>
                                             </div>
                                             <div class="col-sm-4">
                                                 <button type="button" class="btn btn-primary">
@@ -521,64 +545,74 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="asset_image">Show Category in Inventory Module</label>
+                                            <label class="col-sm-2 col-form-label" >Show Category in
+                                                Inventory Module</label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckDefault" />
+                                                        id="flexSwitchCheckDefault" name="is_inventory" value="1"/>
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
-                                            <label class="col-sm-2 col-form-label" for="asset_name">Category Name</label>
+                                            <label class="col-sm-2 col-form-label">Category Name</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="asset_name"
-                                                    placeholder="Enter Asset Name" />
+                                                <input type="text" class="form-control" id="category_name"
+                                                    placeholder="Enter Category Name" name="local_category_name"/>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="asset_image">Show this category assets in Linked Assets</label>
+                                            <label class="col-sm-2 col-form-label" >Show this category
+                                                assets in Linked Assets</label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckDefault" />
+                                                        id="flexSwitchCheckDefault" name="is_link_asset" value="1"/>
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
-                                            <label class="col-sm-2 col-form-label" for="asset_name">Category Code</label>
+                                            <label class="col-sm-2 col-form-label" >Category Code</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="asset_name"
-                                                    placeholder="Enter Asset Name" />
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="asset_image">Default Transfer Duration</label>
-                                            <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="asset_name"
-                                                    placeholder="Enter Asset Name" />
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="asset_name">Category Code</label>
-                                            <div class="col-sm-4">
-                                                <div class="form-check form-switch mb-2">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckDefault" />
-                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
-                                                </div>
+                                                <input type="text" class="form-control" id="category_code" name="category_code" 
+                                                    placeholder="Enter Category Code" />
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="asset_image">Allow Auto Extend</label>
+                                            <label class="col-sm-2 col-form-label" >Default Transfer
+                                                Duration</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="Enter Asset Name" name="trafs_duration"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select id="country" class="form-select" name="trafs_duration_type">
+                                                    <option value="">Select</option>
+                                                    <option value="day">Day(s)</option>
+                                                    <option value="month">Month(s)</option>
+                                                    <option value="year">Year(s)</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" >Cascade</label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckDefault" />
+                                                        id="flexSwitchCheckDefault" name="cascade" value="1" />
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
-                                            
                                         </div>
-                                    </form>
-                                </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Allow Auto
+                                                Extend</label>
+                                            <div class="col-sm-4">
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault" name="allow_auto" value="1" />
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -594,43 +628,40 @@
                             <div id="accordionEight" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Condition</label>
+                                        <label class="col-sm-2 col-form-label">End of Life</label>
                                         <div class="col-sm-2">
-                                            <input class="form-control" type="text" id="asset_image" />
+                                            <input class="form-control force-validate" type="text" id="end_of_life" name="end_of_life"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <select id="country" class="select2 form-select">
+                                            <select class="form-select force-validate" id="end_of_life_type" name="end_of_life_type">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                <option value="day">Day(s)</option>
+                                                <option value="month">Month(s)</option>
+                                                <option value="year">Year(s)</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_image">Depreciation %</label>
+                                        <label class="col-sm-2 col-form-label" >Depreciation %</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" id="asset_image" />
+                                            <input class="form-control force-validate" type="text"  id="depreciation" name="depreciation"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Scrap Value</label>
+                                        <label class="col-sm-2 col-form-label">Scrap Value</label>
                                         <div class="col-sm-2">
-                                            <input class="form-control" type="text" id="asset_image" />
+                                            <input class="form-control force-validate" type="text" id="scrap_value" name="scrap_value"/>
                                         </div>
                                         <div class="col-sm-2">
-                                            <select id="country" class="select2 form-select">
-                                                <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
-                                            </select>
+                                        <select id="scrap_value_type" class="form-select force-validate" name="scrap_value_type">
+                                            <option value="">Select</option>
+                                            <option value="Percentage">Percentage</option>
+                                            <option value="Amount">Amount</option>
+                                        </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_image">Income Tax Depreciation%</label>
+
+                                        <label class="col-sm-2 col-form-label" >Income Tax
+                                            Depreciation%</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" id="asset_image" />
+                                            <input class="form-control force-validate" type="text"  id="income_tax_depreciation" name="income_tax_depreciation"/>
                                         </div>
                                     </div>
                                 </div>
@@ -649,121 +680,125 @@
                             <div id="accordionnine" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div id="addition-container">
-                                    <div class="addition">
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="asset_image">Details</label>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee Based On</label>
-                                            <div class="col-sm-4">
-                                                <div class="form-check mt-3">
-                                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                                    <label class="form-check-label" for="defaultCheck1"> Users Involved </label>
+                                        <div class="addition">
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" >Details</label>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee
+                                                    Based On</label>
+                                                <div class="col-sm-4">
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input" name="assign_based" type="radio" value="1"
+                                                            id="assign_based" />
+                                                        <label class="form-check-label"> Users Involved
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input" type="radio" name="assign_based" value="2"
+                                                            id="assign_based" />
+                                                        <label class="form-check-label"> User Role
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input" type="radio" name="assign_based" value="3"
+                                                            id="assign_based" />
+                                                        <label class="form-check-label" for="defaultCheck1"> User group
+                                                        </label>
+                                                    </div>
                                                 </div>
-                                                <div class="form-check mt-3">
-                                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                                    <label class="form-check-label" for="defaultCheck1"> User Role </label>
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">User
+                                                    Type</label>
+                                                <div class="col-sm-4">
+                                                    <select id="user_type" name="user_type" class="form-select">
+                                                        <option value="">Select</option>
+                                                        <option value="Created by">Created by</option>
+                                                        <option value="Asset Transferred From User">Asset Transferred From User</option>
+                                                        <option value="Location Head-Primary Location">Location Head-Primary Location</option>
+                                                        <option value="Alternate Category Head 1">Alternate Category Head 1</option>
+                                                        <option value="Category Head">Category Head</option>
+                                                        <option value="Alternate Location Head 1">Alternate Location Head 1</option>
+                                                        <option value="Department Head">Department Head</option>
+                                                    </select>
                                                 </div>
-                                                <div class="form-check mt-3">
-                                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" />
-                                                    <label class="form-check-label" for="defaultCheck1"> User group </label>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee
+                                                    Role</label>
+                                                <div class="col-sm-4">
+                                                    <select id="assign_role" class="form-select" name="assign_role">
+                                                        <option value="">Select</option>
+                                                        <option value="Owner">Owner</option>
+                                                        <option value="Employee">Employee</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-phone">Assignee</label>
+                                                <div class="col-sm-4">
+                                                    <select id="assignee" name="assignee" class="form-select">
+                                                        <option value="">Select</option>
+                                                        <option value="Australia">test</option>
+                                                        <option value="Bangladesh">Admin</option>
+                                                        <option value="Belarus">James Smith</option>
+                                                    </select>
                                                 </div>
                                             </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">User Type</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity
+                                                    Type</label>
+                                                <div class="col-sm-4">
+                                                    <select id="activity_type" name="activity_type[]" class="form-select">
+                                                        <option value="">Select</option>
+                                                        <option value="Calibration">Calibration</option>
+                                                        <option value="Inspection">Inspection</option>
+                                                        <option value="Warranty Expiry">Warranty Expiry</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label"
+                                                    for="basic-default-phone">Occurs</label>
+                                                <div class="col-sm-4">
+                                                    <select id="occurs" name="occurs[]" class="form-select">
+                                                        <option value="">Select</option>
+                                                        <option value="daily">Daily</option>
+                                                        <option value="weekly">Weekly</option>
+                                                        <option value="monthly">Monthly</option>
+                                                        <option value="yearly">Yearly</option>
+                                                        <option value="one_time">One Time</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Start
+                                                    Schedule After (Days)</label>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control" type="text" name="start_schedule_after[]"  />
+                                                </div>
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity
+                                                    Reminders</label>
+                                                <div class="col-sm-4">
+                                                    <select id="activity_reminder" name="activity_reminder[]" class="form-select">
+                                                        <option value="">Select</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Schedule
+                                                    Based On</label>
+                                                <div class="col-sm-4">
+                                                    <select id="schedule_based_on" class="form-select" name="schedule_based_on[]">
+                                                        <option value="">Select</option>
+                                                        <option value="created_date">Created Date</option>
+                                                        <option value="capitalization_date">Capitalization Date</option>
+                                                        <option value="Purchase_date">Purchase Date</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label">Custom
+                                                    Days</label>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control" type="text" id="custom_days"  name="custom_days[]" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee Role</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity Type</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Occurs</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Start Schedule After (Days)</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control" type="text" id="asset_image" />
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity Reminders</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Schedule Based On</label>
-                                            <div class="col-sm-4">
-                                                <select id="country" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
-                                                </select>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Custom Days</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control" type="text" id="asset_image" />
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-sm-4">
@@ -787,45 +822,44 @@
                             </h2>
                             <div id="accordionten" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                        <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label" for="asset_image">Category Name Localization</label>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label" >Category Name
+                                            Localization</label>
+                                    </div>
+                                    <div class="row mb-3">
+                                        {{-- <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
+                                        <div class="col-sm-4">
+                                        </div> --}}
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
+                                        <div class="col-sm-4">
                                         </div>
-                                        <div class="row mb-3">
-                                                {{-- <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
-                                                <div class="col-sm-4">
-                                                </div> --}}
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
-                                            <div class="col-sm-4">
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Category Name</label>
-                                            <div class="col-sm-4">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Category
+                                            Name</label>
+                                        <div class="col-sm-4">
                                             <label class=" col-form-label" for="basic-default-phone">Language</label>
+                                        </div>
+                                    </div>
+                                    <div id="addition-container-two">
+                                        <div class="addition-two">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-4">
+                                                    <button type="button" id="addBtnLocal" class="btn btn-primary">
+                                                        &#43;
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control" type="text" name="category_name[]" />
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <select id="language" class="form-select" name="language[]">
+                                                        <option value="">Select</option>
+                                                        <option value="marathi">Marathi</option>
+                                                        <option value="hindi">Hindi</option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="addition-container-two">
-                                                <div class="addition-two">
-                                                    <div class="row mb-3">
-                                                        <div class="col-sm-4">
-                                                        <button type="button" id="addBtnLocal" class="btn btn-primary">
-                                                            &#43;
-                                                        </button>
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                        <input class="form-control" type="text" id="asset_image" />
-                                                        </div>
-                                                        <div class="col-sm-4">
-                                                            <select id="country" class="select2 form-select">
-                                                                <option value="">Select</option>
-                                                                <option value="Australia">Australia</option>
-                                                                <option value="Bangladesh">Bangladesh</option>
-                                                                <option value="Belarus">Belarus</option>
-                                                                <option value="Brazil">Brazil</option>
-                                                                <option value="Canada">Canada</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -836,8 +870,9 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -863,26 +898,26 @@
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Parent Location Name</label>
+                                        <label class="col-sm-2 col-form-label" >Parent Location Name</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Enter Asset Name" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Location</label>
+                                        <label class="col-sm-2 col-form-label" >Location</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Enter Asset Name" />
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Location Code</label>
+                                        <label class="col-sm-2 col-form-label" >Location Code</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Enter Asset Name" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Location Code</label>
+                                        <label class="col-sm-2 col-form-label" >Location Code</label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input" type="checkbox"
@@ -890,22 +925,22 @@
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                             </div>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Default Coordinates</label>
+                                        <label class="col-sm-2 col-form-label" >Default Coordinates</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control mb-1" id="asset_name"
+                                            <input type="text" class="form-control mb-1" 
                                                 placeholder="Latitude" />
-                                            <input type="text" class="form-control" id="asset_name"
+                                            <input type="text" class="form-control" 
                                                 placeholder="Longitude" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Description</label>
+                                        <label class="col-sm-2 col-form-label" >Description</label>
                                         <div class="col-sm-4">
                                             <input class="form-control" type="text" id="flexSwitchCheckDefault" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label" for="asset_image">Additional Info</label>
+                                        <label class="col-sm-4 col-form-label" >Additional Info</label>
                                     </div>
                                     <div class="row mb-3">
                                         {{-- <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
@@ -965,7 +1000,7 @@
                             <div id="accordiontwell" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                         <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label" for="asset_image">Location Name Localization</label>
+                                            <label class="col-sm-4 col-form-label" >Location Name Localization</label>
                                         </div>
                                         <div class="row mb-3">
                                                 {{-- <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
@@ -988,7 +1023,7 @@
                                                         </button>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                        <input class="form-control" type="text" id="asset_image" />
+                                                        <input class="form-control" type="text"  />
                                                         </div>
                                                         <div class="col-sm-4">
                                                             <select id="country" class="select2 form-select">
@@ -1040,7 +1075,7 @@
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Status Type</label>
+                                        <label class="col-sm-2 col-form-label" >Status Type</label>
                                         <div class="col-sm-4">
                                             <select id="country" class="select2 form-select">
                                                 <option value="">Select</option>
@@ -1051,13 +1086,13 @@
                                                 <option value="Canada">Canada</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Status Name</label>
+                                        <label class="col-sm-2 col-form-label" >Status Name</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" id="asset_image" />
+                                            <input class="form-control" type="text"  />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Next Status</label>
+                                        <label class="col-sm-2 col-form-label" >Next Status</label>
                                         <div class="col-sm-4">
                                             <select id="country" class="select2 form-select">
                                                 <option value="">Select</option>
@@ -1068,13 +1103,13 @@
                                                 <option value="Canada">Canada</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="asset_name">Only visible for categories</label>
+                                        <label class="col-sm-2 col-form-label" >Only visible for categories</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" id="asset_image" />
+                                            <input class="form-control" type="text"  />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="asset_name">Hold/Pause Activity</label>
+                                    <label class="col-sm-2 col-form-label" >Hold/Pause Activity</label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input" type="checkbox"
@@ -1098,7 +1133,7 @@
                             <div id="accordiontForteen" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                         <div class="row mb-3">
-                                            <label class="col-sm-4 col-form-label" for="asset_image">Status Name Localization</label>
+                                            <label class="col-sm-4 col-form-label" >Status Name Localization</label>
                                         </div>
                                         <div class="row mb-3">
                                                 {{-- <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
@@ -1121,16 +1156,15 @@
                                                         </button>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                        <input class="form-control" type="text" id="asset_image" />
+                                                        <input class="form-control" type="text"  />
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <select id="country" class="select2 form-select">
-                                                                <option value="">Select</option>
+                                                            <select class="form-select select2" name="location_id" data-placeholder="Select Location">
+                                                                <option></option>
                                                                 <option value="Australia">Australia</option>
                                                                 <option value="Bangladesh">Bangladesh</option>
                                                                 <option value="Belarus">Belarus</option>
                                                                 <option value="Brazil">Brazil</option>
-                                                                <option value="Canada">Canada</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1188,10 +1222,13 @@
     $(document).ready(function () {
 
          $('.select2').select2({
-            placeholder: "Select an option",
-            allowClear: true,
-            width: '100%'
-        });
+                placeholder: function () {
+                    return $(this).data('placeholder');
+                },
+                allowClear: true,
+                width: '100%',
+                dropdownAutoWidth: true
+            });
 
         $('#addBtns').click(function () {
             let newSection = $('.addition:first').clone();
@@ -1239,6 +1276,248 @@
         $(document).on('click', '.removeBtnTwo', function () {
             $(this).closest('.addition-two').remove();
         });
+
+        $('#categoryForm').validate({
+
+            ignore: ":hidden:not(.force-validate)",
+            rules: {
+                parent_category_name: {
+                    required: true
+                },
+                is_inventory: {
+                    required: true
+                },
+                is_link_asset: {
+                    required: true
+                },
+                cascade: {
+                    required: true
+                },
+                local_category_name: {
+                    required: true
+                },
+                category_code: {
+                    required: true
+                },
+                trafs_duration: {
+                    required: true,
+                    number: true
+                },
+                trafs_duration_type: {
+                    required: true
+                },
+                end_of_life: {
+                    required: true,
+                    number: true
+                },
+                end_of_life_type: {
+                    required: true
+                },
+                depreciation: {
+                    required: true,
+                    number: true
+                },
+                scrap_value: {
+                    required: true,
+                    number: true
+                },
+                scrap_value_type: {
+                    required: true,
+                },
+                income_tax_depreciation: {
+                    required: true,
+                    number: true
+                },
+                allow_auto: {
+                    required: true,
+                    number: true
+                },
+
+                // Activity Schedule
+                assign_based: {
+                    required: true
+                },
+                user_type: {
+                    required: true
+                },
+                assign_role: {
+                    required: true
+                },
+                assignee: {
+                    required: true
+                },
+
+                'activity_type[]': {
+                    required: true
+                },
+                'occurs[]': {
+                    required: true
+                },
+                'start_schedule_after[]': {
+                    required: true,
+                    number: true
+                },
+                'activity_reminder[]': {
+                    required: true
+                },
+                'schedule_based_on[]': {
+                    required: true
+                },
+                'custom_days[]': {
+                    number: true
+                },
+
+                // Localization
+                'category_name[]': {
+                    required: true
+                },
+                'language[]': {
+                    required: true
+                }
+            },
+
+            messages: {
+                parent_category_name: {
+                    required: "Please enter parent category name"
+                },
+                local_category_name: {
+                    required: "Please enter category name"
+                },
+                is_inventory: {
+                    required: "Please slect inventory"
+                },
+                is_link_asset: {
+                    required: "Please link asset"
+                },
+                cascade: {
+                    required: "Please select cascade"
+                },
+                category_code: {
+                    required: "Please enter category code"
+                },
+                trafs_duration: {
+                    number: "Transfer duration must be a number"
+                },
+                trafs_duration_type: {
+                    required: "Please select duration type"
+                },
+                end_of_life: {
+                    required: "Please enter end of life",
+                    number: "End of life must be a number"
+                },
+                end_of_life_type: {
+                    required: "Please select end of life type"
+                },
+                depreciation: {
+                    required: "Please enter depreciation",
+                    number: "Depreciation must be a number"
+                },
+                scrap_value: {
+                    required: "Please enter Scrap value",
+                    number: "Scrap value must be a number"
+                },
+                scrap_value_type: {
+                    required: "Please enter Scrap value"
+                },
+                income_tax_depreciation: {
+                    required: "Please enter income tax depreciation",
+                    number: "Income tax depreciation must be a number"
+                },
+                allow_auto: {
+                    number: "Income tax depreciation must be a number"
+                },
+
+                // Activity Schedule
+                assign_based: {
+                    required: "Please select user type"
+                },
+                user_type: {
+                    required: "Please select user type"
+                },
+                assign_role: {
+                    required: "Please select assign role"
+                },
+                assignee: {
+                    required: "Please select assignee"
+                },
+
+                'activity_type[]': {
+                    required: "Please select activity type"
+                },
+                'occurs[]': {
+                    required: "Please select occurs"
+                },
+                'start_schedule_after[]': {
+                    required: "Please enter start schedule days",
+                    number: "Must be a number"
+                },
+                'activity_reminder[]': {
+                    required: "Please select activity reminder"
+                },
+                'schedule_based_on[]': {
+                    required: "Please select schedule based on"
+                },
+                'custom_days[]': {
+                    number: "Must be a number"
+                },
+
+                // Localization
+                'category_name[]': {
+                    required: "Please enter localized category name"
+                },
+                'language[]': {
+                    required: "Please select language"
+                }
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: "{{ route('categories.store') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        if (response.status) {
+                            toastr.success(response.message);
+
+                            $('#categoryForm')[0].reset();
+                            $('.select2').val(null).trigger('change');
+
+                        } else {
+                            toastr.error(response.message);
+                        }
+                        
+                    },
+
+                    error: function (xhr) {
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+
+                            $.each(errors, function (field, messages) {
+                                toastr.error(messages[0]);
+                            });
+
+                        } else {
+                            toastr.error(xhr.responseJSON.message || 'Something went wrong!');
+                        }
+                    }
+                });
+            }
+        });
+
     });
 </script>
 @endsection
