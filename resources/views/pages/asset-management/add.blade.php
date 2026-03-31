@@ -73,12 +73,11 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Category</label>
                                         <div class="col-sm-4">
-                                            <select class="form-select select2"  name="location_id">
+                                            <select class="form-select select2" id="category_id" name="categ_id">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
+                                                @foreach ($categories as $categ)
+                                                <option value="{{ $categ->id }}">{{ $categ->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
@@ -89,15 +88,21 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Sub Category</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-select select2"  name="sub_category_id" id="sub_category_id">
+                                                <option value="">Select</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Location</label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="select2 form-select">
+                                            <select id="location_id" class="form-select">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                @foreach ($locations as $location)
+                                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                         <div class="col-sm-4">
@@ -105,6 +110,14 @@
                                                 data-bs-target="#exLargeModalLocation">
                                                 &#43;
                                             </button>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Sub Location</label>
+                                        <div class="col-sm-4">
+                                            <select class="form-select"  name="sub_location_id" id="sub_location_id">
+                                                <option value="">Select</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -384,8 +397,8 @@
                                     <div class="col-sm-4">
                                         <select id="country" class="select2 form-select">
                                             <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
+                                            <option value="Australia">HR</option>
+                                            <option value="Bangladesh">Accounting</option>
                                             <option value="Belarus">Belarus</option>
                                             <option value="Brazil">Brazil</option>
                                         </select>
@@ -778,6 +791,7 @@
                                                 <div class="col-sm-4">
                                                     <select id="activity_reminder" name="activity_reminder[]" class="form-select">
                                                         <option value="">Select</option>
+                                                        <option value="1">One</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -885,6 +899,8 @@
                     <h5 class="modal-title" id="exampleModalLabel4">Locations</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="locationForm">
+                @csrf
                 <div class="modal-body">
                     <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
@@ -901,51 +917,48 @@
                                         <label class="col-sm-2 col-form-label" >Parent Location Name</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" />
+                                                placeholder="Enter Asset Name" id="parent_location_name" name="parent_location_name"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Location</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" />
+                                                placeholder="Enter Asset Name" id="local_location_name" name="local_location_name"/>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Location Code</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" />
+                                                placeholder="Enter Asset Name" id="location_code" name="location_code" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Location Code</label>
+                                        <label class="col-sm-2 col-form-label" >Inventory Location</label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input" type="checkbox"
-                                                    id="flexSwitchCheckDefault" />
+                                                    id="flexSwitchCheckDefault" name="is_inventory"/>
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                             </div>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Default Coordinates</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control mb-1" 
-                                                placeholder="Latitude" />
+                                                placeholder="Latitude" id="latitude" name="latitude"/>
                                             <input type="text" class="form-control" 
-                                                placeholder="Longitude" />
+                                                placeholder="Longitude" id="longitude" name="longitude"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Description</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" id="flexSwitchCheckDefault" />
+                                            <input class="form-control" type="text" name="description" id="description" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-4 col-form-label" >Additional Info</label>
                                     </div>
                                     <div class="row mb-3">
-                                        {{-- <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
-                                        <div class="col-sm-4">
-                                        </div> --}}
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
                                         <div class="col-sm-4">
                                         </div>
@@ -954,32 +967,26 @@
                                             <label class=" col-form-label" for="basic-default-phone">Users</label>
                                         </div>
                                     </div>
-                                    <div id="addition-container-two">
-                                        <div class="addition-two">
+                                    <div id="addition-container-location">
+                                        <div class="addition-location">
                                             <div class="row mb-3">
                                                 <div class="col-sm-4">
-                                                    <button type="button" id="addBtnLocal" class="btn btn-primary">
+                                                    <button type="button" id="addBtnadditional" class="btn btn-primary">
                                                         &#43;
                                                     </button>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="department" name="department[]" class="form-select">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
-                                                        <option value="Canada">Canada</option>
+                                                        <option value="Accounting">Accounting</option>
+                                                        <option value="human_resource">Human Resources</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="users" name="users[]" name class="form-select">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
-                                                        <option value="Canada">Canada</option>
+                                                        <option value="admin">Admin</option>
+                                                        <option value="test">Test</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1014,25 +1021,22 @@
                                             <label class=" col-form-label" for="basic-default-phone">Language</label>
                                             </div>
                                         </div>
-                                        <div id="addition-container-two">
-                                                <div class="addition-two">
+                                        <div id="addition-container-localization">
+                                                <div class="addition-location-localization">
                                                     <div class="row mb-3">
                                                         <div class="col-sm-4">
-                                                        <button type="button" id="addBtnLocal" class="btn btn-primary">
+                                                        <button type="button" id="addBtnadditionalLocalization" class="btn btn-primary">
                                                             &#43;
                                                         </button>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                        <input class="form-control" type="text"  />
+                                                        <input class="form-control" type="text" id="location_name" name="location_name[]"/>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <select id="country" class="select2 form-select">
+                                                            <select id="language" name="language[]" class="form-select">
                                                                 <option value="">Select</option>
-                                                                <option value="Australia">Australia</option>
-                                                                <option value="Bangladesh">Bangladesh</option>
-                                                                <option value="Belarus">Belarus</option>
-                                                                <option value="Brazil">Brazil</option>
-                                                                <option value="Canada">Canada</option>
+                                                                <option value="marathi">Marathi</option>
+                                                                <option value="english">English</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1047,8 +1051,9 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -1061,6 +1066,7 @@
                     <h5 class="modal-title" id="exampleModalLabel4">Add Status</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="statusForm">
                 <div class="modal-body">
                     <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
@@ -1077,13 +1083,11 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Status Type</label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="select2 form-select">
+                                            <select id="country" class=" form-select">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                <option value="allotted_status">Allotted Assets</option>
+                                                <option value="unalloted_status">Unallotted Assets</option>
+                                                <option value="discarded_assets">Discarded Assets</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Status Name</label>
@@ -1094,18 +1098,35 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Next Status</label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="select2 form-select">
+                                            <select id="country" class="form-select">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                <option value="in_use">In Use</option>
+                                                <option value="lost">Lost</option>
+                                                <option value="out_for_repair">Out for Repair</option>
+                                                <option value="stolen">Stolen</option>
+                                                <option value="write_off">Write-off</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Only visible for categories</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text"  />
+                                            <select class="selectstatus2" name="categ_id[]" multiple>
+
+                                                @foreach($categories as $category)
+                                                    <!-- Category selectable -->
+                                                    <option value="cat_{{ $category->id }}">
+                                                        {{ $category->name }}
+                                                    </option>
+
+                                                    <!-- Subcategories -->
+                                                    @foreach($category->subCategories as $sub)
+                                                        <option value="sub_{{ $sub->id }}">
+                                                            — {{ $sub->name }}
+                                                        </option>
+                                                    @endforeach
+
+                                                @endforeach
+
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -1147,11 +1168,11 @@
                                             <label class=" col-form-label" for="basic-default-phone">Language</label>
                                             </div>
                                         </div>
-                                        <div id="addition-container-two">
-                                                <div class="addition-two">
+                                        <div id="addition-container-status">
+                                                <div class="addition-status-localization">
                                                     <div class="row mb-3">
                                                         <div class="col-sm-4">
-                                                        <button type="button" id="addBtnLocal" class="btn btn-primary">
+                                                        <button type="button" id="addBtnadditionalStatusLocalization" class="btn btn-primary">
                                                             &#43;
                                                         </button>
                                                         </div>
@@ -1159,11 +1180,11 @@
                                                         <input class="form-control" type="text"  />
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <select class="form-select select2" name="location_id" data-placeholder="Select Location">
+                                                            <select class="form-select" name="" data-placeholder="Select Location">
                                                                 <option></option>
-                                                                <option value="Australia">Australia</option>
-                                                                <option value="Bangladesh">Bangladesh</option>
-                                                                <option value="Belarus">Belarus</option>
+                                                                <option value="marathi">Marathi</option>
+                                                                <option value="hindi">Hindi</option>
+                                                                <option value="english">English</option>
                                                                 <option value="Brazil">Brazil</option>
                                                             </select>
                                                         </div>
@@ -1181,6 +1202,7 @@
                     </button>
                     <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -1221,15 +1243,17 @@
 <script>
     $(document).ready(function () {
 
-         $('.select2').select2({
-                placeholder: function () {
-                    return $(this).data('placeholder');
-                },
-                allowClear: true,
-                width: '100%',
-                dropdownAutoWidth: true
-            });
+        // For Categories
 
+        $('.select2').select2({
+            placeholder: function () {
+                return $(this).data('placeholder');
+            },
+            allowClear: true,
+            width: '100%',
+            dropdownAutoWidth: true
+        });
+        
         $('#addBtns').click(function () {
             let newSection = $('.addition:first').clone();
 
@@ -1251,30 +1275,6 @@
 
         $(document).on('click', '.removeBtn', function () {
             $(this).closest('.addition').remove();
-        });
-
-
-         $('#addBtnLocal').click(function () {
-            let newSection = $('.addition-two:first').clone();
-
-            newSection.find('input').val('');
-            newSection.find('select').val('');
-
-            newSection.append(`
-                <div class="row mb-3">
-                    <div class="col-sm-4">
-                        <button type="button" class="btn btn-danger removeBtnTwo">
-                            &#10006;
-                        </button>
-                    </div>
-                </div>
-            `);
-
-            $('#addition-container-two').append(newSection);
-        });
-
-        $(document).on('click', '.removeBtnTwo', function () {
-            $(this).closest('.addition-two').remove();
         });
 
         $('#categoryForm').validate({
@@ -1517,6 +1517,313 @@
                 });
             }
         });
+
+        // add btn for localization
+        $('#addBtnLocal').click(function () {
+            let newSection = $('.addition-two:first').clone();
+
+            newSection.find('input').val('');
+            newSection.find('select').val('');
+
+            newSection.append(`
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-danger removeBtnTwo">
+                            &#10006;
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            $('#addition-container-two').append(newSection);
+        });
+
+        $(document).on('click', '.removeBtnTwo', function () {
+            $(this).closest('.addition-two').remove();
+        });
+
+        // For Categories end
+
+        // For Location
+        //for addtion info start
+        $('#addBtnadditional').click(function () {
+            let newSection = $('.addition-location:first').clone();
+
+            newSection.find('input').val('');
+            newSection.find('select').val('');
+
+            newSection.append(`
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-danger removeBtnadditional">
+                            &#10006;
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            $('#addition-container-location').append(newSection);
+        });
+
+        $(document).on('click', '.removeBtnadditional', function () {
+            $(this).closest('.addition-location').remove();
+        });
+        //for addtion info end
+
+         //for localization start
+        $('#addBtnadditionalLocalization').click(function () {
+            let newSection = $('.addition-location-localization:first').clone();
+
+            newSection.find('input').val('');
+            newSection.find('select').val('');
+
+            newSection.append(`
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-danger removeBtnadditionalLocalization">
+                            &#10006;
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            $('#addition-container-localization').append(newSection);
+        });
+
+        $(document).on('click', '.removeBtnadditionalLocalization', function () {
+            $(this).closest('.addition-location-localization').remove();
+        });
+
+         $('#locationForm').validate({
+
+            ignore: ":hidden:not(.force-validate)",
+            rules: {
+                parent_location_name: {
+                    required: true
+                },
+                is_inventory: {
+                    required: true
+                },
+                local_location_name: {
+                    required: true
+                },
+                location_code: {
+                    required: true
+                },
+                latitude: {
+                    required: true,
+                    number: true
+                },
+                longitude: {
+                    required: true
+                },
+                description: {
+                    required: true
+                },
+                
+                // Additional Info
+                'department[]': {
+                    required: true
+                },
+                'users[]': {
+                    required: true
+                },
+
+                // Localization
+                'location_name[]': {
+                    required: true
+                },
+                'language[]': {
+                    required: true
+                }
+            },
+
+            messages: {
+                parent_location_name: {
+                    required: "Please enter parent location name"
+                },
+                is_inventory: {
+                    required: "Please select inventory option"
+                },
+                local_location_name: {
+                    required: "Please enter location name"
+                },
+                location_code: {
+                    required: "Please enter location code"
+                },
+                latitude: {
+                    required: "Please enter latitude",
+                    number: "Latitude must be a number"
+                },
+                longitude: {
+                    required: "Please enter longitude",
+                    number: "Longitude must be a number"
+                },
+                description: {
+                    required: "Please enter description"
+                },
+
+                // Additional Info
+                'department[]': {
+                    required: "Please enter department"
+                },
+                'users[]': {
+                    required: "Please select user"
+                },
+
+                // Localization
+                'location_name[]': {
+                    required: "Please enter localized location name"
+                },
+                'language[]': {
+                    required: "Please select language"
+                }
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: "{{ route('location.store') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function (response) {
+
+                        if (response.status) {
+                            toastr.success(response.message);
+
+                            $('#categoryForm')[0].reset();
+                            $('.select2').val(null).trigger('change');
+
+                        } else {
+                            toastr.error(response.message);
+                        }
+                        
+                    },
+
+                    error: function (xhr) {
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+
+                            $.each(errors, function (field, messages) {
+                                toastr.error(messages[0]);
+                            });
+
+                        } else {
+                            toastr.error(xhr.responseJSON.message || 'Something went wrong!');
+                        }
+                    }
+                });
+            }
+        });
+        //for localization end
+
+        // For Location end
+
+        // For Status start
+        $('#addBtnadditionalStatusLocalization').click(function () {
+            let newSection = $('.addition-status-localization:first').clone();
+
+            newSection.find('input').val('');
+            newSection.find('select').val('');
+
+            newSection.append(`
+                <div class="row mb-3">
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-danger removeBtnadditionalstatus">
+                            &#10006;
+                        </button>
+                    </div>
+                </div>
+            `);
+
+            $('#addition-container-status').append(newSection);
+        });
+
+        $(document).on('click', '.removeBtnadditionalstatus', function () {
+            $(this).closest('.addition-status-localization').remove();
+        });
+        
+        // For Status end
+
+
+        // for add page sub categories
+
+        $('#category_id').on('change', function () {
+
+            let categoryId = $(this).val();
+
+            if (categoryId) {
+
+                $.ajax({
+                    url: "/get-subcategories/" + categoryId, // route
+                    type: "GET",
+
+                    success: function (response) {
+
+                        let subCategory = $('#sub_category_id');
+                        subCategory.empty();
+                        subCategory.append('<option value="">Select</option>');
+
+                        $.each(response, function (key, value) {
+                            subCategory.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // refresh select2
+                        subCategory.trigger('change');
+                    }
+                });
+
+            } else {
+                $('#sub_category_id').empty().append('<option value="">Select</option>');
+            }
+        });
+
+        $('#location_id').on('change', function () {
+
+            let locationId = $(this).val();
+            if (locationId) {
+
+                $.ajax({
+                    url: "/get-sublocation/" + locationId, // route
+                    type: "GET",
+
+                    success: function (response) {
+                        console.log(response);
+                        let subLocations = $('#sub_location_id');
+                        subLocations.empty();
+                        subLocations.append('<option value="">Select</option>');
+
+                        $.each(response, function (key, value) {
+                            subLocations.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // refresh select2
+                        subLocations.trigger('change');
+                    }
+                });
+
+            } else {
+                $('#sub_location_id').empty().append('<option value="">Select</option>');
+            }
+        });
+        // for add page sub categories
+
+
+         
+
+        
 
     });
 </script>
