@@ -24,6 +24,9 @@
     border-color: #696cff;
     box-shadow: 0 0 0 0.15rem rgba(105, 108, 255, 0.25);
 }
+#toastContainer {
+    z-index: 9999 !important;
+}
 </style>
 @endsection
 @section('content')
@@ -522,7 +525,7 @@
             </div>
         </div>
     </div>
-
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
     <!-- Extra Large Category Modal -->
     <div class="modal fade" id="exLargeModalCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -1243,6 +1246,51 @@
 <script>
     $(document).ready(function () {
 
+
+        function showToast(message, type = 'success') {
+
+            let bgClass = 'bg-success';
+            let icon = 'bx-check-circle';
+
+            if (type === 'error') {
+                bgClass = 'bg-danger';
+                icon = 'bx-error-circle';
+            } else if (type === 'warning') {
+                bgClass = 'bg-warning';
+                icon = 'bx-error';
+            }
+
+            let toastHTML = `
+                <div class="bs-toast toast fade ${bgClass}" role="alert">
+                    <div class="toast-header">
+                        <i class="bx ${icon} me-2"></i>
+                        <div class="me-auto fw-semibold">Notification</div>
+                        <small>Now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                </div>
+            `;
+
+            let container = $('#toastContainer');
+            let toastElement = $(toastHTML);
+
+            container.append(toastElement);
+
+            let toast = new bootstrap.Toast(toastElement[0], {
+                delay: 3000
+            });
+
+            toast.show();
+
+            // remove after hidden
+            toastElement.on('hidden.bs.toast', function () {
+                $(this).remove();
+            });
+        }
+
         // For Categories
 
         $('.select2').select2({
@@ -1481,40 +1529,63 @@
                 });
 
                 $.ajax({
-                    url: "{{ route('categories.store') }}",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
+                url: "{{ route('categories.store') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
 
-                    success: function (response) {
+                // 🔵 BEFORE SEND
+                beforeSend: function () {
 
-                        if (response.status) {
-                            toastr.success(response.message);
+                    // Disable submit button
+                    $('#categoryForm button[type="submit"]').prop('disabled', true);
 
-                            $('#categoryForm')[0].reset();
-                            $('.select2').val(null).trigger('change');
+                    // Change button text (optional)
+                    $('#categoryForm button[type="submit"]').html(
+                        `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`
+                    );
+                },
 
-                        } else {
-                            toastr.error(response.message);
-                        }
-                        
-                    },
+                // 🟢 SUCCESS
+                success: function (response) {
 
-                    error: function (xhr) {
+                    if (response.status) {
+                        showToast(response.message, 'success');
 
-                        if (xhr.status === 422) {
-                            let errors = xhr.responseJSON.errors;
+                        $('#categoryForm')[0].reset();
+                        $('.select2').val(null).trigger('change');
 
-                            $.each(errors, function (field, messages) {
-                                toastr.error(messages[0]);
-                            });
-
-                        } else {
-                            toastr.error(xhr.responseJSON.message || 'Something went wrong!');
-                        }
+                    } else {
+                        showToast(response.message, 'error');
                     }
-                });
+                },
+
+                // 🔴 ERROR
+                error: function (xhr) {
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+
+                        $.each(errors, function (field, messages) {
+                            showToast(messages[0], 'error'); // replaced toastr ✅
+                        });
+
+                    } else {
+                        showToast(xhr.responseJSON.message || 'Something went wrong!', 'error');
+                    }
+                },
+
+                // 🟡 AFTER COMPLETE (always runs)
+                complete: function () {
+
+                    // Enable button again
+                    $('#categoryForm button[type="submit"]').prop('disabled', false);
+
+                    // Restore button text
+                    $('#categoryForm button[type="submit"]').html('Submit');
+                }
+            });
             }
         });
 
@@ -1594,10 +1665,18 @@
             $(this).closest('.addition-location-localization').remove();
         });
 
-         $('#locationForm').validate({
+        $('#locationForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
+
             rules: {
+                parent_location_name: { required: true },
+                is_inventory: { required: true },
+                local_location_name: { required: true },
+                location_code: { required: true },
+                latitude: { required: true, number: true },
+                longitude: { required: true },
+                description: { required: true },
                 parent_location_name: {
                     required: true
                 },
@@ -1620,7 +1699,7 @@
                 description: {
                     required: true
                 },
-                
+
                 // Additional Info
                 'department[]': {
                     required: true
@@ -1684,6 +1763,8 @@
 
                 let formData = new FormData(form);
 
+                let btn = $('#locationForm button[type="submit"]'); // ✅ button ref
+
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1697,32 +1778,45 @@
                     processData: false,
                     contentType: false,
 
+                    // 🔵 BEFORE SEND
+                    beforeSend: function () {
+                        btn.prop('disabled', true);
+                        btn.html(`<span class="spinner-border spinner-border-sm me-2"></span> Saving...`);
+                    },
+
+                    // 🟢 SUCCESS
                     success: function (response) {
 
                         if (response.status) {
-                            toastr.success(response.message);
+                            showToast(response.message, 'success');
 
-                            $('#categoryForm')[0].reset();
+                            $('#locationForm')[0].reset(); // ✅ fixed
                             $('.select2').val(null).trigger('change');
 
                         } else {
-                            toastr.error(response.message);
+                            showToast(response.message, 'error');
                         }
-                        
                     },
 
+                    // 🔴 ERROR
                     error: function (xhr) {
 
                         if (xhr.status === 422) {
                             let errors = xhr.responseJSON.errors;
 
                             $.each(errors, function (field, messages) {
-                                toastr.error(messages[0]);
+                                showToast(messages[0], 'error'); // ✅ replaced toastr
                             });
 
                         } else {
-                            toastr.error(xhr.responseJSON.message || 'Something went wrong!');
+                            showToast(xhr.responseJSON.message || 'Something went wrong!', 'error');
                         }
+                    },
+
+                    // 🟡 AFTER SEND (ALWAYS RUNS)
+                    complete: function () {
+                        btn.prop('disabled', false);
+                        btn.html('Submit'); // or your original button text
                     }
                 });
             }
