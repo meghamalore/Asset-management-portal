@@ -17,4 +17,9 @@ class Category extends Model
         'cascade',
         'auto_extended',
     ];
+
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
 }

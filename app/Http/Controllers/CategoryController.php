@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Location;
 use App\Models\CategoryLocalization;
 use App\Models\CategoryFinacialInformation;
 use App\Models\SubCategory;
@@ -12,8 +13,25 @@ use DB;
 
 class CategoryController extends Controller
 {
-    public function insert(){
-        return view('pages.asset-management.add');
+    // public function insert(){
+
+    //     $categories = Category::select('id','name')->get();
+    //     $ids = $categories->pluck('id');
+    //     $subCategories = SubCategory::where('category_id', $ids)->get();
+
+    //     $locations = Location::select('id','name')->get();
+    //     return view('pages.asset-management.add',compact('categories','locations'));
+
+    // }
+
+
+    public function insert()
+    {
+        $categories = Category::with('subCategories:id,category_id,name')->get();
+
+        $locations = Location::select('id','name')->get();
+
+        return view('pages.asset-management.add', compact('categories','locations'));
     }
 
     public function store(Request $request)
@@ -95,5 +113,12 @@ class CategoryController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getSubCategories($id)
+    {
+        $subCategories = SubCategory::where('category_id', $id)->get();
+
+        return response()->json($subCategories);
     }
 }
