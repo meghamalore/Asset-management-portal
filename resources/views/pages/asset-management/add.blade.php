@@ -549,16 +549,21 @@
                                 data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" >Parent Category</label>
+                                            <label class="col-sm-2 col-form-label" >Category Name</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" 
-                                                    placeholder="Enter Parent Category Name" name="parent_category_name"/>
+                                                <input type="text" class="form-control" placeholder="Enter Category Name" name="parent_category_name">
+                                                <select class="form-select" name="selective_category_id">
+                                                    <option value="">Select Categories</option>
+                                                    @foreach ($only_categories as $only_cat)
+                                                    <option value="{{ $only_cat->id }}">{{ $only_cat->name }}</option> 
+                                                    @endforeach
+                                                </select>
                                             </div>
-                                            <div class="col-sm-4">
+                                            {{-- <div class="col-sm-4">
                                                 <button type="button" class="btn btn-primary">
                                                     &#10006;
                                                 </button>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Show Category in
@@ -570,10 +575,10 @@
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
-                                            <label class="col-sm-2 col-form-label">Category Name</label>
+                                            <label class="col-sm-2 col-form-label">Sub Category</label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="category_name"
-                                                    placeholder="Enter Category Name" name="local_category_name"/>
+                                                    placeholder="Enter Category Name" name="sub_category_name"/>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -705,28 +710,28 @@
                                                     Based On</label>
                                                 <div class="col-sm-4">
                                                     <div class="form-check mt-3">
-                                                        <input class="form-check-input" name="assign_based" type="radio" value="1"
+                                                        <input class="form-check-input force-validate" name="assign_based" type="radio" value="1"
                                                             id="assign_based" />
                                                         <label class="form-check-label"> Users Involved
                                                         </label>
                                                     </div>
                                                     <div class="form-check mt-3">
-                                                        <input class="form-check-input" type="radio" name="assign_based" value="2"
+                                                        <input class="form-check-input force-validate" type="radio" name="assign_based" value="2"
                                                             id="assign_based" />
                                                         <label class="form-check-label"> User Role
                                                         </label>
                                                     </div>
                                                     <div class="form-check mt-3">
-                                                        <input class="form-check-input" type="radio" name="assign_based" value="3"
+                                                        <input class="form-check-input force-validate" type="radio" name="assign_based" value="3"
                                                             id="assign_based" />
                                                         <label class="form-check-label" for="defaultCheck1"> User group
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">User
+                                                <label class="col-sm-2 col-form-label " for="basic-default-phone">User
                                                     Type</label>
                                                 <div class="col-sm-4">
-                                                    <select id="user_type" name="user_type" class="form-select">
+                                                    <select id="user_type" name="user_type" class="form-select force-validate">
                                                         <option value="">Select</option>
                                                         <option value="Created by">Created by</option>
                                                         <option value="Asset Transferred From User">Asset Transferred From User</option>
@@ -742,7 +747,7 @@
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee
                                                     Role</label>
                                                 <div class="col-sm-4">
-                                                    <select id="assign_role" class="form-select" name="assign_role">
+                                                    <select id="assign_role" class="form-select force-validate" name="assign_role">
                                                         <option value="">Select</option>
                                                         <option value="Owner">Owner</option>
                                                         <option value="Employee">Employee</option>
@@ -751,7 +756,7 @@
                                                 <label class="col-sm-2 col-form-label"
                                                     for="basic-default-phone">Assignee</label>
                                                 <div class="col-sm-4">
-                                                    <select id="assignee" name="assignee" class="form-select">
+                                                    <select id="assignee" name="assignee" class="form-select force-validate">
                                                         <option value="">Select</option>
                                                         <option value="Australia">test</option>
                                                         <option value="Bangladesh">Admin</option>
@@ -763,7 +768,7 @@
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity
                                                     Type</label>
                                                 <div class="col-sm-4">
-                                                    <select id="activity_type" name="activity_type[]" class="form-select">
+                                                    <select id="activity_type" name="activity_type[]" class="form-select force-validate">
                                                         <option value="">Select</option>
                                                         <option value="Calibration">Calibration</option>
                                                         <option value="Inspection">Inspection</option>
@@ -773,7 +778,7 @@
                                                 <label class="col-sm-2 col-form-label"
                                                     for="basic-default-phone">Occurs</label>
                                                 <div class="col-sm-4">
-                                                    <select id="occurs" name="occurs[]" class="form-select">
+                                                    <select id="occurs" name="occurs[]" class="form-select force-validate">
                                                         <option value="">Select</option>
                                                         <option value="daily">Daily</option>
                                                         <option value="weekly">Weekly</option>
@@ -787,22 +792,21 @@
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Start
                                                     Schedule After (Days)</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" name="start_schedule_after[]"  />
+                                                    <input class="form-control force-validate" type="text" name="start_schedule_after[]"  />
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity
                                                     Reminders</label>
                                                 <div class="col-sm-4">
-                                                    <select id="activity_reminder" name="activity_reminder[]" class="form-select">
+                                                    <select id="activity_reminder" name="activity_reminder[]" class="form-select force-validate">
                                                         <option value="">Select</option>
                                                         <option value="1">One</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Schedule
-                                                    Based On</label>
+                                                <label class="col-sm-2 col-form-label">Schedule Based On</label>
                                                 <div class="col-sm-4">
-                                                    <select id="schedule_based_on" class="form-select" name="schedule_based_on[]">
+                                                    <select id="schedule_based_on" class="form-select force-validate" name="schedule_based_on[]">
                                                         <option value="">Select</option>
                                                         <option value="created_date">Created Date</option>
                                                         <option value="capitalization_date">Capitalization Date</option>
@@ -812,7 +816,7 @@
                                                 <label class="col-sm-2 col-form-label">Custom
                                                     Days</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="custom_days"  name="custom_days[]" />
+                                                    <input class="form-control force-validate" type="text" id="custom_days"  name="custom_days[]" />
                                                 </div>
                                             </div>
                                         </div>
@@ -865,10 +869,10 @@
                                                     </button>
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" name="category_name[]" />
+                                                    <input class="form-control force-validate " type="text" name="category_name[]" />
                                                 </div>
                                                 <div class="col-sm-4">
-                                                    <select id="language" class="form-select" name="language[]">
+                                                    <select id="language" class="form-select force-validate" name="language[]">
                                                         <option value="">Select</option>
                                                         <option value="marathi">Marathi</option>
                                                         <option value="hindi">Hindi</option>
@@ -919,20 +923,25 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Parent Location Name</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" id="parent_location_name" name="parent_location_name"/>
+                                            <input type="text" class="form-control" placeholder="Enter Location" id="parent_location_name" name="parent_location_name"/>
+                                            <select class="form-select" name="selective_location_id">
+                                                <option value="">Select Location</option>
+                                                @foreach ($locations as $location)
+                                                <option value="{{ $location->id }}">{{ $location->name }}</option> 
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Location</label>
+                                        <label class="col-sm-2 col-form-label" >Sub Location</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" id="local_location_name" name="local_location_name"/>
+                                                placeholder="Enter Sub Location" id="local_location_name" name="local_location_name"/>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Location Code</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" id="location_code" name="location_code" />
+                                                placeholder="Enter Location Code" id="location_code" name="location_code" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -1033,10 +1042,10 @@
                                                         </button>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                        <input class="form-control" type="text" id="location_name" name="location_name[]"/>
+                                                        <input class="form-control force-validate" type="text" id="location_name" name="location_name[]"/>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <select id="language" name="language[]" class="form-select">
+                                                            <select id="language" name="language[]" class="form-select force-validate">
                                                                 <option value="">Select</option>
                                                                 <option value="marathi">Marathi</option>
                                                                 <option value="english">English</option>
@@ -1095,7 +1104,7 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Status Name</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text"  />
+                                            <input class="form-control" type="text"  name="status_name"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -1137,7 +1146,7 @@
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input" type="checkbox"
-                                                    id="flexSwitchCheckDefault" />
+                                                    id="flexSwitchCheckDefault" name="hold_pause_activity" value="1" />
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                             </div>
                                         </div>
@@ -1180,10 +1189,10 @@
                                                         </button>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                        <input class="form-control" type="text"  />
+                                                        <input class="form-control" type="text" name="localization_name[]" />
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <select class="form-select" name="" data-placeholder="Select Location">
+                                                            <select class="form-select" name="localization_lang[]" data-placeholder="Select Location">
                                                                 <option></option>
                                                                 <option value="marathi">Marathi</option>
                                                                 <option value="hindi">Hindi</option>
@@ -1328,8 +1337,21 @@
         $('#categoryForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
+            groups: {
+                category_group: "parent_category_name selective_category_id"
+            },
             rules: {
                 parent_category_name: {
+                    required: function () {
+                        return $('[name="selective_category_id"]').val() === "";
+                    }
+                },
+                selective_category_id: {
+                    required: function () {
+                        return $('[name="parent_category_name"]').val().trim() === "";
+                    }
+                },
+                sub_category_name: {
                     required: true
                 },
                 is_inventory: {
@@ -1412,6 +1434,7 @@
                     required: true
                 },
                 'custom_days[]': {
+                    required: true,
                     number: true
                 },
 
@@ -1426,10 +1449,13 @@
 
             messages: {
                 parent_category_name: {
-                    required: "Please enter parent category name"
+                    required: "Please Enter category name or select one"
                 },
-                local_category_name: {
-                    required: "Please enter category name"
+                selective_category_id: {
+                    required: "Select category or enter new one"
+                },
+                sub_category_name: {
+                    required: "Please enter sub category name"
                 },
                 is_inventory: {
                     required: "Please slect inventory"
@@ -1506,6 +1532,7 @@
                     required: "Please select schedule based on"
                 },
                 'custom_days[]': {
+                    required: "Please enter custom days",
                     number: "Must be a number"
                 },
 
@@ -1668,17 +1695,19 @@
         $('#locationForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
-
+            groups: {
+                category_group: "parent_location_name selective_location_id"
+            },
             rules: {
-                parent_location_name: { required: true },
-                is_inventory: { required: true },
-                local_location_name: { required: true },
-                location_code: { required: true },
-                latitude: { required: true, number: true },
-                longitude: { required: true },
-                description: { required: true },
                 parent_location_name: {
-                    required: true
+                    required: function () {
+                        return $('[name="selective_location_id"]').val() === "";
+                    }
+                },
+                selective_location_id: {
+                    required: function () {
+                        return $('[name="parent_location_name"]').val().trim() === "";
+                    }
                 },
                 is_inventory: {
                     required: true
@@ -1826,6 +1855,9 @@
         // For Location end
 
         // For Status start
+
+
+        
         $('#addBtnadditionalStatusLocalization').click(function () {
             let newSection = $('.addition-status-localization:first').clone();
 
