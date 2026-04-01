@@ -33,100 +33,150 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">Add Asset</h4>
         <div class="row">
-            <div class="col-md mb-4 mb-md-0">
-                <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
-                                Asset Details
-                            </button>
-                        </h2>
-                        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <form>
+            <form id="assetForm">
+                <div class="col-md mb-4 mb-md-0">
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
+                                    Asset Details
+                                </button>
+                            </h2>
+                            <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <form>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Asset Name</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="asset_name" class="form-control" 
+                                                    placeholder="Enter Asset Name" />
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" >Asset Image</label>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" type="file"  />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-company">Asset Code</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" name="asset_code" id="basic-default-company"
+                                                    placeholder="ACME Inc." />
+                                                    <div class="form-text">
+                                                        Leave blank to auto-generate. System generated code
+                                                        formats can be setup from Advanced settings
+                                                    </div>
+                                            </div>
+                                            <!-- <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#smallModals">
+                                                    <i class="bx bx-barcode"></i>
+                                                </button>
+                                            </div> -->
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">Category</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-select select2" id="category_id" name="categ_id">
+                                                    <option value="">Select</option>
+                                                    @foreach ($categories as $categ)
+                                                    <option value="{{ $categ->id }}">{{ $categ->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#exLargeModalCategory">
+                                                    &#43;
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">Sub Category</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-select select2"  name="sub_category_id" id="sub_category_id">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Location</label>
+                                            <div class="col-sm-4">
+                                                <select id="location_id" name="location" class="form-select">
+                                                    <option value="">Select</option>
+                                                    @foreach ($locations as $location)
+                                                    <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#exLargeModalLocation">
+                                                    &#43;
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">Sub Location</label>
+                                            <div class="col-sm-4">
+                                                <select class="form-select"  name="sub_location_id" id="sub_location_id">
+                                                    <option value="">Select</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status</label>
+                                            <div class="col-sm-4">
+                                                <select id="country" name="status" class="select2 form-select">
+                                                    <option value="">Select</option>
+                                                    <option value="Australia">Australia</option>
+                                                    <option value="Bangladesh">Bangladesh</option>
+                                                    <option value="Belarus">Belarus</option>
+                                                    <option value="Brazil">Brazil</option>
+                                                    <option value="Canada">Canada</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                    data-bs-target="#exLargeModalStatus">
+                                                    &#43;
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Asset Name</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="asset_name" class="form-control" 
+                                                    placeholder="Enter Asset Name" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" name="cwip_invoice_id" class="form-control" 
+                                                    placeholder="Enter Asset Name" />
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionTwo" aria-expanded="true" aria-controls="accordionTwo">
+                                    Additional Information
+                                </button>
+                            </h2>
+                            <div id="accordionTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Asset Name</label>
+                                        <label class="col-sm-2 col-form-label">Condition</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" />
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" >Asset Image</label>
-                                        <div class="col-sm-4">
-                                            <input class="form-control" type="file"  />
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-company">Asset Code</label>
-                                        <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="basic-default-company"
-                                                placeholder="ACME Inc." />
-                                                <div class="form-text">
-                                                    Leave blank to auto-generate. System generated code
-                                                    formats can be setup from Advanced settings
-                                                </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#smallModals">
-                                                <i class="bx bx-barcode"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Category</label>
-                                        <div class="col-sm-4">
-                                            <select class="form-select select2" id="category_id" name="categ_id">
-                                                <option value="">Select</option>
-                                                @foreach ($categories as $categ)
-                                                <option value="{{ $categ->id }}">{{ $categ->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#exLargeModalCategory">
-                                                &#43;
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Sub Category</label>
-                                        <div class="col-sm-4">
-                                            <select class="form-select select2"  name="sub_category_id" id="sub_category_id">
-                                                <option value="">Select</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Location</label>
-                                        <div class="col-sm-4">
-                                            <select id="location_id" class="form-select">
-                                                <option value="">Select</option>
-                                                @foreach ($locations as $location)
-                                                <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#exLargeModalLocation">
-                                                &#43;
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Sub Location</label>
-                                        <div class="col-sm-4">
-                                            <select class="form-select"  name="sub_location_id" id="sub_location_id">
-                                                <option value="">Select</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Status</label>
-                                        <div class="col-sm-4">
-                                            <select id="country" class="select2 form-select">
+                                            <select id="country" name="condition" class=" form-select force-validate">
                                                 <option value="">Select</option>
                                                 <option value="Australia">Australia</option>
                                                 <option value="Bangladesh">Bangladesh</option>
@@ -135,394 +185,346 @@
                                                 <option value="Canada">Canada</option>
                                             </select>
                                         </div>
+                                        <label class="col-sm-2 col-form-label" >Brand</label>
                                         <div class="col-sm-4">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                data-bs-target="#exLargeModalStatus">
-                                                &#43;
-                                            </button>
+                                            <input class="form-control force-validate" type="text"  name="brand" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Asset Name</label>
+                                        <label class="col-sm-2 col-form-label" >Model</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" />
+                                            <input class="form-control force-validate" type="text" name="model" />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
+                                        <div class="col-sm-4">
+                                            <select id="link_asset" name="link_asset" class="form-select force-validate">
+                                                <option value="">Select</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Bangladesh">Bangladesh</option>
+                                                <option value="Belarus">Belarus</option>
+                                                <option value="Brazil">Brazil</option>
+                                                <option value="Canada">Canada</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
+                                        <label class="col-sm-2 col-form-label" >Description</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" 
-                                                placeholder="Enter Asset Name" />
+                                            <input class="form-control force-validate" type="text" name="description" />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Serial No</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text"  />
                                         </div>
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionTwo" aria-expanded="true" aria-controls="accordionTwo">
-                                Additional Information
-                            </button>
-                        </h2>
-                        <div id="accordionTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Condition</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                            <option value="Canada">Canada</option>
-                                        </select>
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" >Brand</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Model</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                            <option value="Canada">Canada</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Description</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" >Serial No</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label">Upload Files</label>
-                                    <div class="col-sm-4">
-                                        <label class="btn btn-sm btn-primary mb-0">
-                                            <i class="bx bx-upload me-1"></i> Upload File
-                                            <input type="file" hidden>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionThree" aria-expanded="true" aria-controls="accordionThree">
-                                Purchase Information
-                            </button>
-                        </h2>
-                        <div id="accordionThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Vendor Name</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                            <option value="Canada">Canada</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Invoice Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" >Invoice No</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Purchase Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" >Purchase Price</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="full_name_icon">
-                                                <i class="bx bx-rupee"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                name="full_name"
-                                                class="form-control"
-                                                id="full_name"
-                                                placeholder="Enter Full Name"
-                                                aria-label="Full Name"
-                                                aria-describedby="full_name_icon"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Self Owned / Partner</label>
-                                    <div class="col-sm-4">
-                                        <div class="form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox"
-                                                id="flexSwitchCheckDefault" />
-                                            <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
-                                                checkbox input</label>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Upload Files</label>
+                                        <div class="col-sm-4">
+                                            <label class="btn btn-sm btn-primary mb-0">
+                                                <i class="bx bx-upload me-1"></i> Upload File
+                                                <input type="file" name="files" hidden>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionFour" aria-expanded="true" aria-controls="accordionFour">
-                                Financial Information
-                            </button>
-                        </h2>
-                        <div id="accordionFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Capitalization Price</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="full_name_icon">
-                                                <i class="bx bx-rupee"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                name="full_name"
-                                                class="form-control"
-                                                id="full_name"
-                                                placeholder="Enter Full Name"
-                                                aria-label="Full Name"
-                                                aria-describedby="full_name_icon"
-                                            />
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionThree" aria-expanded="true" aria-controls="accordionThree">
+                                    Purchase Information
+                                </button>
+                            </h2>
+                            <div id="accordionThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Vendor Name</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text" name="vendor_name" />
                                         </div>
-                                    </div> 
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Capitalization Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Depreciation%</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Accumulated
-                                        Depreciation</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="full_name_icon">
-                                                <i class="bx bx-rupee"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                name="full_name"
-                                                class="form-control"
-                                                id="full_name"
-                                                placeholder="Enter Full Name"
-                                                aria-label="Full Name"
-                                                aria-describedby="full_name_icon"
-                                            />
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
+                                        <div class="col-sm-4">
+                                            <select name="link_asset" class="form-select">
+                                                <option value="">Select</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Bangladesh">Bangladesh</option>
+                                                <option value="Belarus">Belarus</option>
+                                                <option value="Brazil">Brazil</option>
+                                                <option value="Canada">Canada</option>
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Scrap Value</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Invoice Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date" name="invoice_date" />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Invoice No</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text" name="invoice_no"  />
+                                        </div>
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Income Tax
-                                        Depreciation%</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Purchase Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date"  name="purchase_date"/>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Purchase Price</label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="full_name_icon">
+                                                    <i class="bx bx-rupee"></i>
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    name="purchase_price"
+                                                    class="form-control force-validate"
+                                                    id="full_name"
+                                                    placeholder="Enter Full Name"
+                                                    aria-label="Full Name"
+                                                    aria-describedby="full_name_icon"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionFive" aria-expanded="true" aria-controls="accordionFive">
-                                Allotted Information
-                            </button>
-                        </h2>
-                        <div id="accordionFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Department</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">HR</option>
-                                            <option value="Bangladesh">Accounting</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                        </select>
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
-                                        To</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Allotted Upto</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Remarks</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Self Owned / Partner</label>
+                                        <div class="col-sm-4">
+                                            <div class="form-check form-switch mb-2">
+                                                <input class="form-check-input force-validate" type="checkbox"
+                                                    id="flexSwitchCheckDefault" name="self_owned"/>
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
+                                                    checkbox input</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="accordion mt-3" id="accordionExample">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionSix" aria-expanded="true" aria-controls="accordionSix">
-                                Warranty Information
-                            </button>
-                        </h2>
-                        <div id="accordionSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Vendor</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                        </select>
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionFour" aria-expanded="true" aria-controls="accordionFour">
+                                    Financial Information
+                                </button>
+                            </h2>
+                            <div id="accordionFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Capitalization Price</label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="full_name_icon">
+                                                    <i class="bx bx-rupee"></i>
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    name="capitalization_price"
+                                                    class="form-control force-validate"
+                                                    id="full_name"
+                                                    placeholder="Enter Full Name"
+                                                    aria-label="Full Name"
+                                                    aria-describedby="full_name_icon"
+                                                />
+                                            </div>
+                                        </div> 
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" name="end_of_life" type="date"  />
+                                        </div>
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty
-                                        Vendor</label>
-                                    <div class="col-sm-4">
-                                        <select id="country" class="select2 form-select">
-                                            <option value="">Select</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Bangladesh">Bangladesh</option>
-                                            <option value="Belarus">Belarus</option>
-                                            <option value="Brazil">Brazil</option>
-                                        </select>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Capitalization Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date" name="capitalization_date"  />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Depreciation%</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" name="depreciation" type="text"  />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Start
-                                        Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Accumulated
+                                            Depreciation</label>
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-text" id="full_name_icon">
+                                                    <i class="bx bx-rupee"></i>
+                                                </span>
+                                                <input
+                                                    type="text"
+                                                    name="accumulated_dep"
+                                                    class="form-control force-validate"
+                                                    id="full_name"
+                                                    placeholder="Enter Full Name"
+                                                    aria-label="Full Name"
+                                                    aria-describedby="full_name_icon"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
-                                        Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="text"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Start
-                                        Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty End
-                                        Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
-                                        Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
-                                    </div>
-                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
-                                        Date</label>
-                                    <div class="col-sm-4">
-                                        <input class="form-control" type="date"  />
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" >Scrap Value</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="date"  />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Income Tax
+                                            Depreciation%</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text" name="scrap_value" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row mt-4 justify-content-start">
-                    <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary">Send</button>
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionFive" aria-expanded="true" aria-controls="accordionFive">
+                                    Allotted Information
+                                </button>
+                            </h2>
+                            <div id="accordionFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Department</label>
+                                        <div class="col-sm-4">
+                                            <select id="country" name="department" class="form-select force-validate">
+                                                <option value="">Select</option>
+                                                <option value="Australia">HR</option>
+                                                <option value="Bangladesh">Accounting</option>
+                                                <option value="Belarus">Belarus</option>
+                                                <option value="Brazil">Brazil</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
+                                            To</label>
+                                        <div class="col-sm-4">
+                                            <select id="country" name="transf_to" class="form-select force-validate">
+                                                <option value="">Select</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Bangladesh">Bangladesh</option>
+                                                <option value="Belarus">Belarus</option>
+                                                <option value="Brazil">Brazil</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Allotted Upto</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date" name="allotted_upto" />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Remarks</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text"  name="remark"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionSix" aria-expanded="true" aria-controls="accordionSix">
+                                    Warranty Information
+                                </button>
+                            </h2>
+                            <div id="accordionSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Vendor</label>
+                                        <div class="col-sm-4">
+                                            <select id="country" name="amc_vendor" class="form-select force-validate">
+                                                <option value="">Select</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Bangladesh">Bangladesh</option>
+                                                <option value="Belarus">Belarus</option>
+                                                <option value="Brazil">Brazil</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty
+                                            Vendor</label>
+                                        <div class="col-sm-4">
+                                            <select id="country" name="Warranty_vendor" class="form-select force-validate">
+                                                <option value="">Select</option>
+                                                <option value="Australia">Australia</option>
+                                                <option value="Bangladesh">Bangladesh</option>
+                                                <option value="Belarus">Belarus</option>
+                                                <option value="Brazil">Brazil</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Start
+                                            Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date"  name="insurance_start_date"/>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
+                                            Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text" name="insurance_end_date" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Start
+                                            Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date"  name="amc_start_date"/>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty End
+                                            Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date" name="warranty_end_date" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date" name="amc_end_date" />
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
+                                            Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date"  name="warranty_staart_date"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date"  name="amc_end_date"/>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
+                                            Date</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="date" name="warranty_start_date" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4 justify-content-start">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
@@ -1079,6 +1081,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="statusForm">
+                @csrf
                 <div class="modal-body">
                     <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
@@ -1095,7 +1098,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Status Type</label>
                                         <div class="col-sm-4">
-                                            <select id="country" class=" form-select">
+                                            <select id="country" class="form-select force-validate" name="status_type">
                                                 <option value="">Select</option>
                                                 <option value="allotted_status">Allotted Assets</option>
                                                 <option value="unalloted_status">Unallotted Assets</option>
@@ -1104,13 +1107,13 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Status Name</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text"  name="status_name"/>
+                                            <input class="form-control force-validate" type="text"  name="status_name"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Next Status</label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="form-select">
+                                            <select id="country" class="form-select force-validate" name="next_status">
                                                 <option value="">Select</option>
                                                 <option value="in_use">In Use</option>
                                                 <option value="lost">Lost</option>
@@ -1121,7 +1124,7 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Only visible for categories</label>
                                         <div class="col-sm-4">
-                                            <select class="selectstatus2" name="categ_id[]" multiple>
+                                            <select class="selectstatus2 force-validate" name="categ_id[]" multiple>
 
                                                 @foreach($categories as $category)
                                                     <!-- Category selectable -->
@@ -1145,7 +1148,7 @@
                                     <label class="col-sm-2 col-form-label" >Hold/Pause Activity</label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
-                                                <input class="form-check-input" type="checkbox"
+                                                <input class="form-check-input force-validate" type="checkbox"
                                                     id="flexSwitchCheckDefault" name="hold_pause_activity" value="1" />
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                             </div>
@@ -1189,10 +1192,10 @@
                                                         </button>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                        <input class="form-control" type="text" name="localization_name[]" />
+                                                        <input class="form-control force-validate" type="text" id="localization_name" name="localization_name[]" />
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <select class="form-select" name="localization_lang[]" data-placeholder="Select Location">
+                                                            <select class="form-select force-validate" id="localization_lang" name="localization_lang[]" data-placeholder="Select Location">
                                                                 <option></option>
                                                                 <option value="marathi">Marathi</option>
                                                                 <option value="hindi">Hindi</option>
@@ -1212,7 +1215,7 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
                     </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
                 </form>
             </div>
@@ -1545,6 +1548,25 @@
                 }
             },
 
+            errorElement: 'span',
+            errorClass: 'text-danger',
+
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            },
+
+            errorPlacement: function (error, element) {
+                if (element.hasClass('select2')) {
+                    error.insertAfter(element.next('.select2-container'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
             submitHandler: function (form) {
 
                 let formData = new FormData(form);
@@ -1856,7 +1878,6 @@
 
         // For Status start
 
-
         
         $('#addBtnadditionalStatusLocalization').click(function () {
             let newSection = $('.addition-status-localization:first').clone();
@@ -1879,6 +1900,132 @@
 
         $(document).on('click', '.removeBtnadditionalstatus', function () {
             $(this).closest('.addition-status-localization').remove();
+        });
+
+        $('#statusForm').validate({
+
+            ignore: ":hidden:not(.force-validate)",
+            
+            rules: {
+                status_type: {
+                    required: true
+                },
+                status_name: {
+                    required: true
+                },
+                next_status: {
+                    required: true
+                },
+                'categ_id[]': {
+                    required: true
+                },
+                hold_pause_activity: {
+                    required: true
+                },
+                // Localization
+                'localization_name[]': {
+                    required: true
+                },
+                'localization_lang[]': {
+                    required: true
+                }
+            },
+
+            messages: {
+                status_type: {
+                    required: "Please select a status type."
+                },
+                status_name: {
+                    required: "Please enter the status name."
+                },
+                next_status: {
+                    required: "Please select the next status."
+                },
+                'categ_id[]': {
+                    required: "Please select at least one category."
+                },
+                hold_pause_activity: {
+                    required: "Please choose hold/pause activity."
+                },
+
+                // Localization
+                'localization_name[]': {
+                    required: "Please enter status name for all languages."
+                },
+                'localization_lang[]': {
+                    required: "Please select at least one language."
+                }
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                url: "{{ route('status.store') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                // 🔵 BEFORE SEND
+                beforeSend: function () {
+
+                    // Disable submit button
+                    $('#statusForm button[type="submit"]').prop('disabled', true);
+
+                    // Change button text (optional)
+                    $('#statusForm button[type="submit"]').html(
+                        `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`
+                    );
+                },
+
+                // 🟢 SUCCESS
+                success: function (response) {
+
+                    if (response.status) {
+                        showToast(response.message, 'success');
+
+                        $('#statusForm')[0].reset();
+                        $('.select2').val(null).trigger('change');
+
+                    } else {
+                        showToast(response.message, 'error');
+                    }
+                },
+
+                // 🔴 ERROR
+                error: function (xhr) {
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+
+                        $.each(errors, function (field, messages) {
+                            showToast(messages[0], 'error'); // replaced toastr ✅
+                        });
+
+                    } else {
+                        showToast(xhr.responseJSON.message || 'Something went wrong!', 'error');
+                    }
+                },
+
+                // 🟡 AFTER COMPLETE (always runs)
+                complete: function () {
+
+                    // Enable button again
+                    $('#statusForm button[type="submit"]').prop('disabled', false);
+
+                    // Restore button text
+                    $('#statusForm button[type="submit"]').html('Submit');
+                }
+            });
+            }
         });
         
         // For Status end
@@ -1944,13 +2091,251 @@
                 $('#sub_location_id').empty().append('<option value="">Select</option>');
             }
         });
+
+        $('#assetForm').validate({
+
+            ignore: ":hidden:not(.force-validate)",
+
+            rules: {
+                // Asset Details
+                asset_name: {
+                    required: true,
+                    minlength: 3
+                },
+                asset_code: {
+                    maxlength: 20
+                },
+                categ_id: {
+                    required: true
+                },
+                sub_category_id: {
+                    required: true
+                },
+                location: {
+                    required: true
+                },
+                sub_location_id: {
+                    required: true
+                },
+                status: {
+                    required: true
+                },
+                cwip_invoice_id: {
+                    required: true
+                },
+
+                // Additional Info
+                condition: {
+                    required: true
+                },
+                brand: {
+                    required: true
+                },
+                model: {
+                    required: true
+                },
+                description: {
+                    required: true
+                },
+
+                // Purchase Info
+                vendor_name: {
+                    required: true
+                },
+                invoice_date: {
+                    required: true,
+                    date: true
+                },
+                invoice_no: {
+                    required: true
+                },
+                purchase_date: {
+                    required: true,
+                    date: true
+                },
+                purchase_price: {
+                    required: true,
+                    number: true
+                },
+
+                // Financial
+                capitalization_price: {
+                    required: true,
+                    number: true
+                },
+                end_of_life: {
+                    required: true,
+                    date: true
+                },
+                capitalization_date: {
+                    required: true,
+                    date: true
+                },
+                depreciation: {
+                    required: true,
+                    number: true
+                },
+                accumulated_dep: {
+                    required: true,
+                    number: true
+                },
+                scrap_value: {
+                    required: true,
+                    number: true
+                },
+
+                // Allotted
+                department: {
+                    required: true
+                },
+                transf_to: {
+                    required: true
+                },
+                allotted_upto: {
+                    required: true,
+                    date: true
+                },
+
+                // Warranty
+                amc_vendor: {
+                    required: true
+                },
+                Warranty_vendor: {
+                    required: true
+                },
+                insurance_start_date: {
+                    required: true,
+                    date: true
+                },
+                insurance_end_date: {
+                    required: true
+                },
+                amc_start_date: {
+                    required: true,
+                    date: true
+                },
+                warranty_end_date: {
+                    required: true,
+                    date: true
+                },
+                amc_end_date: {
+                    required: true,
+                    date: true
+                },
+                warranty_start_date: {
+                    required: true,
+                    date: true
+                }
+            },
+
+            messages: {
+                asset_name: "Enter asset name (min 3 characters)",
+                asset_code: "Max 20 characters allowed",
+
+                categ_id: "Select category",
+                sub_category_id: "Select sub category",
+                location: "Select location",
+                sub_location_id: "Select sub location",
+                status: "Select status",
+                cwip_invoice_id: "Enter CWIP invoice id",
+
+                condition: "Select condition",
+                brand: "Enter brand",
+                model: "Enter model",
+                description: "Enter description",
+
+                vendor_name: "Enter vendor name",
+                invoice_date: "Select invoice date",
+                invoice_no: "Enter invoice number",
+                purchase_date: "Select purchase date",
+                purchase_price: "Enter valid price",
+
+                capitalization_price: "Enter capitalization price",
+                end_of_life: "Select end of life date",
+                capitalization_date: "Select capitalization date",
+                depreciation: "Enter depreciation %",
+                accumulated_dep: "Enter accumulated depreciation",
+                scrap_value: "Enter scrap value",
+
+                department: "Select department",
+                transf_to: "Select transfer person",
+                allotted_upto: "Select allotted date",
+
+                amc_vendor: "Select AMC vendor",
+                Warranty_vendor: "Select warranty vendor",
+                insurance_start_date: "Select insurance start date",
+                insurance_end_date: "Enter insurance end date",
+                amc_start_date: "Select AMC start date",
+                warranty_end_date: "Select warranty end date",
+                amc_end_date: "Select AMC end date",
+                warranty_start_date: "Select warranty start date"
+            },
+
+            errorElement: 'span',
+            errorClass: 'text-danger',
+
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            },
+
+            errorPlacement: function (error, element) {
+                if (element.hasClass('select2')) {
+                    error.insertAfter(element.next('.select2-container'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+
+                $.ajax({
+                    url: "{{ route('asset.store') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    beforeSend: function () {
+                        $('#assetForm button[type="submit"]').prop('disabled', true)
+                            .html('<span class="spinner-border spinner-border-sm"></span> Saving...');
+                    },
+
+                    success: function (response) {
+                        if (response.status) {
+                            showToast(response.message, 'success');
+
+                            $('#assetForm')[0].reset();
+                            $('.select2').val(null).trigger('change');
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+
+                    error: function (xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function (key, value) {
+                                showToast(value[0], 'error');
+                            });
+                        } else {
+                            showToast('Something went wrong!', 'error');
+                        }
+                    },
+
+                    complete: function () {
+                        $('#assetForm button[type="submit"]').prop('disabled', false)
+                            .html('Send');
+                    }
+                });
+            }
+        });
         // for add page sub categories
-
-
-         
-
-        
-
     });
 </script>
 @endsection

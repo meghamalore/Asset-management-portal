@@ -12,8 +12,10 @@ use App\Models\StatusCategory;
 class StatusController extends Controller
 {
     public function store(Request $request)
-    {
-        // ✅ 1. Create Status
+{
+    try {
+
+        // 1. Create Status
         $status = Status::create([
             'status_type' => $request->status_type,
             'status_name' => $request->status_name,
@@ -21,14 +23,13 @@ class StatusController extends Controller
             'hold_pause_activity' => $request->has('hold_pause_activity') ? 1 : 0,
         ]);
 
-        // ✅ 2. Prepare arrays
         $categoryData = [];
         $subCategoryData = [];
 
+        // 2. Process Categories & Subcategories
         if ($request->categ_id) {
             foreach ($request->categ_id as $item) {
 
-                // 👉 CATEGORY
                 if (str_starts_with($item, 'cat_')) {
                     $categoryData[] = [
                         'status_id' => $status->id,
@@ -36,7 +37,6 @@ class StatusController extends Controller
                     ];
                 }
 
-                // 👉 SUBCATEGORY
                 if (str_starts_with($item, 'sub_')) {
                     $subCategoryData[] = [
                         'status_id' => $status->id,
@@ -46,30 +46,46 @@ class StatusController extends Controller
             }
         }
 
-        // ✅ 3. Insert into status_category table
+        // ❌ REMOVE THIS (causes undefined in AJAX)
+        // dd($categoryData,$subCategoryData);
+
+        // 3. Insert Category
         if (!empty($categoryData)) {
             StatusCategory::insert($categoryData);
         }
 
-        // ✅ 4. Insert into status_sub_category table
+        // 4. Insert Subcategory
         if (!empty($subCategoryData)) {
             StatusSubCategory::insert($subCategoryData);
         }
 
-        // ✅ Localization Insert
-    if ($request->localization_name) {
-        foreach ($request->localization_name as $key => $name) {
+        // 5. Localization Insert
+        if ($request->localization_name) {
+            foreach ($request->localization_name as $key => $name) {
 
-            if (!empty($name)) {
-                StatusNameLocalization::create([
-                    'status_id' => $status->id,
-                    'status_name' => $name,
-                    'language' => $request->localization_lang[$key] ?? 'en',
-                ]);
+                if (!empty($name)) {
+                    StatusNameLocalization::create([
+                        'status_id' => $status->id,
+                        'status_name' => $name,
+                        'language' => $request->localization_lang[$key] ?? 'en',
+                    ]);
+                }
             }
         }
-    }
 
-        return back()->with('success', 'Status with categories saved!');
+        // ✅ IMPORTANT: Return JSON (for AJAX)
+        return response()->json([
+            'status' => true,
+            'message' => 'Status with categories saved successfully!'
+        ]);
+
+    } catch (\Exception $e) {
+
+        // 🔴 Error Handling
+        return response()->json([
+            'status' => false,
+            'message' => $e->getMessage() // you can hide this in production
+        ], 500);
     }
+}
 }
