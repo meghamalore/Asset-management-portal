@@ -20,6 +20,13 @@
     right: 10px;
 }
 
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    display: none;
+}
+
 .select2-container--default.select2-container--focus .select2-selection--single {
     border-color: #696cff;
     box-shadow: 0 0 0 0.15rem rgba(105, 108, 255, 0.25);
@@ -371,7 +378,7 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Po Number</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="text" name="invoice_date" />
+                                            <input class="form-control force-validate" type="text" name="po_number" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -1537,7 +1544,7 @@
 
     // ✔ Apply
     function applySelection(event) {
-    event.stopPropagation();
+    if (event) event.stopPropagation(); 
 
     let container = document.getElementById('hiddenCategoryInputs');
     container.innerHTML = ''; // clear old inputs
@@ -1550,11 +1557,17 @@
         input.type = 'hidden';
         input.name = 'categ_id[]';   //  THIS IS KEY
         input.value = el.value;      // cat_1 / sub_5
-
+        input.classList.add('force-validate'); // ✅ for validation
         container.appendChild(input);
     });
 
     updateCount();
+    // ✅ CLOSE DROPDOWN
+    let menu = document.getElementById('dropdownMenu');
+    let icon = document.getElementById('toggleIcon');
+
+    menu.style.display = 'none';
+    icon.innerText = '|';
 }
 
     // ❌ Clear
@@ -2291,7 +2304,6 @@
             },
 
             submitHandler: function (form) {
-
                 let formData = new FormData(form);
 
                 $.ajaxSetup({
@@ -2482,6 +2494,9 @@
                 invoice_no: {
                     required: true
                 },
+                po_number: {
+                    required: true
+                },
                 purchase_date: {
                     required: true,
                     date: true
@@ -2582,6 +2597,7 @@
                 invoice_no: "Enter invoice number",
                 purchase_date: "Select purchase date",
                 purchase_price: "Enter valid price",
+                po_number: "Enter Po Number",
 
                 capitalization_price: "Enter capitalization price",
                 end_of_life: "Select end of life date",

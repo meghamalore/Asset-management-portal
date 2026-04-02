@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('vendor_name')->nullable();
             $table->date('invoice_date')->nullable();
             $table->string('invoice_no')->nullable();
+            $table->string('asset_po_number')->nullable();
 
             $table->date('purchase_date')->nullable();
             $table->decimal('purchase_price', 12, 2)->nullable();

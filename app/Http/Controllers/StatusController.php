@@ -14,7 +14,22 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         try {
-            //  1. Create Status
+
+            // ✅ DEBUG (use once)
+            // dd($request->all());
+
+            // ✅ VALIDATION (IMPORTANT)
+            $request->validate([
+                'status_type' => 'required',
+                'status_name' => 'required',
+                'next_status' => 'required',
+                'categ_id' => 'required|array',     // ✅ FIX
+                'categ_id.*' => 'required',
+                'localization_name' => 'required|array',
+                'localization_lang' => 'required|array',
+            ]);
+
+            // 1. Create Status
             $status = Status::create([
                 'status_type' => $request->status_type,
                 'status_name' => $request->status_name,
@@ -25,55 +40,61 @@ class StatusController extends Controller
             $categoryData = [];
             $subCategoryData = [];
 
-            //  2. Process Categories
-            if ($request->categ_id) {
-                foreach ($request->categ_id as $item) {
+            // ✅ ALWAYS use input() with default
+            $categories = $request->input('categ_id', []);
 
-                    if (str_starts_with($item, 'cat_')) {
-                        $categoryData[] = [
-                            'status_id' => $status->id,
-                            'category_id' => str_replace('cat_', '', $item),
-                        ];
-                    }
+            foreach ($categories as $item) {
 
-                    if (str_starts_with($item, 'sub_')) {
-                        $subCategoryData[] = [
-                            'status_id' => $status->id,
-                            'sub_category_id' => str_replace('sub_', '', $item),
-                        ];
-                    }
+                if (str_starts_with($item, 'cat_')) {
+                    $categoryData[] = [
+                        'status_id' => $status->id,
+                        'category_id' => str_replace('cat_', '', $item),
+                    ];
+                }
+
+                if (str_starts_with($item, 'sub_')) {
+                    $subCategoryData[] = [
+                        'status_id' => $status->id,
+                        'sub_category_id' => str_replace('sub_', '', $item),
+                    ];
                 }
             }
 
-            //  3. Insert Category Data
+            // 3. Insert Category Data
             if (!empty($categoryData)) {
                 StatusCategory::insert($categoryData);
             }
 
-            //  4. Insert Subcategory Data
+            // 4. Insert Subcategory Data
             if (!empty($subCategoryData)) {
                 StatusSubCategory::insert($subCategoryData);
             }
 
-            //  5. Localization Insert
-            if ($request->localization_name) {
-                foreach ($request->localization_name as $key => $name) {
+            // 5. Localization Insert
+            $names = $request->input('localization_name', []);
+            $langs = $request->input('localization_lang', []);
 
-                    if (!empty($name)) {
-                        StatusNameLocalization::create([
-                            'status_id' => $status->id,
-                            'status_name' => $name,
-                            'language' => $request->localization_lang[$key] ?? 'en',
-                        ]);
-                    }
+            foreach ($names as $key => $name) {
+                if (!empty($name)) {
+                    StatusNameLocalization::create([
+                        'status_id' => $status->id,
+                        'status_name' => $name,
+                        'language' => $langs[$key] ?? 'en',
+                    ]);
                 }
             }
 
-
-            return back()->with('success', 'Status with categories saved!');
+            return response()->json([
+                'status' => true,
+                'message' => 'Status with categories saved successfully!'
+            ]);
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Something went wrong! Please try again.');
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage() // 👈 show real error (for debug)
+            ]);
         }
     }
 
