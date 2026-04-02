@@ -20,14 +20,7 @@ class AssetController extends Controller
 
         try {
 
-            // ✅ VALIDATION
-            $request->validate([
-                'asset_name' => 'required',
-                'categ_id' => 'required',
-                'location' => 'required',
-            ]);
-
-            // ✅ 1. MAIN ASSET
+            //  1. MAIN ASSET
             $asset = Asset::create([
                 'asset_name' => $request->asset_name,
                 'asset_code' => $request->asset_code,
@@ -39,7 +32,7 @@ class AssetController extends Controller
                 'cwip_invoice_id' => $request->cwip_invoice_id,
             ]);
 
-            // ✅ 2. IMAGE UPLOAD
+            //  2. IMAGE UPLOAD
             if ($request->hasFile('asset_image')) {
                 $file = $request->file('asset_image');
                 $path = $file->store('assets', 'public');
@@ -49,7 +42,7 @@ class AssetController extends Controller
                 ]);
             }
 
-            // ✅ 3. ADDITIONAL INFO
+            //  3. ADDITIONAL INFO
             AssetAdditionalInfos::create([
                 'asset_id' => $asset->id,
                 'condition' => $request->condition,
@@ -59,7 +52,7 @@ class AssetController extends Controller
                 'serial_no' => $request->serial_no,
             ]);
 
-            // ✅ 4. PURCHASE INFO
+            //  4. PURCHASE INFO
             AssetPurchaseInfos::create([
                 'asset_id' => $asset->id,
                 'vendor_name' => $request->vendor_name,
@@ -70,7 +63,7 @@ class AssetController extends Controller
                 'is_self_owned' => $request->has('self_owned') ? 1 : 0,
             ]);
 
-            // ✅ 5. FINANCIAL INFO
+            //  5. FINANCIAL INFO
             AssetFinacialInfos::create([
                 'asset_id' => $asset->id,
                 'capitalization_price' => $request->capitalization_price,
@@ -81,7 +74,7 @@ class AssetController extends Controller
                 'end_of_life' => $request->end_of_life,
             ]);
 
-            // ✅ 6. ALLOTTED INFO
+            //  6. ALLOTTED INFO
             AssetAllotedInfos::create([
                 'asset_id' => $asset->id,
                 'department' => $request->department,
@@ -90,7 +83,7 @@ class AssetController extends Controller
                 'remarks' => $request->remark,
             ]);
 
-            // ✅ 7. WARRANTY INFO
+            //  7. WARRANTY INFO
             AssetWarrantyInfos::create([
                 'asset_id' => $asset->id,
                 'amc_vendor' => $request->amc_vendor,
@@ -103,7 +96,7 @@ class AssetController extends Controller
                 'warranty_end_date' => $request->warranty_end_date,
             ]);
 
-            // ✅ 8. FILE UPLOAD
+            // 8. FILE UPLOAD
             if ($request->hasFile('files')) {
                 foreach ($request->file('files') as $file) {
                     $path = $file->store('asset_files', 'public');
@@ -121,7 +114,6 @@ class AssetController extends Controller
             ]);
 
         } catch (\Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage()

@@ -27,6 +27,125 @@
 #toastContainer {
     z-index: 9999 !important;
 }
+
+/* Fix input height */
+.input-group .form-control {
+    height: 38px;
+}
+
+/* Keep alignment */
+.input-group {
+    flex-wrap: nowrap;
+}
+
+/* Error spacing */
+.invalid-feedback {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* select2 css for status page  */
+
+#exLargeModalStatus .accordion-body {
+        overflow: visible;
+        position: relative;
+    }
+
+    .dropdown-container {
+        display: flex;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+        overflow: visible;
+    }
+
+    .dropdown-input {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        background: white;
+        position: relative;
+        z-index: 2;
+    }
+
+    .toggle-line {
+        font-weight: bold;
+    }
+
+    .outside-icons {
+        display: flex;
+        gap: 5px;
+        position: relative;
+        z-index: 3;
+    }
+
+    .apply-btn {
+        background: green;
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .clear-btn {
+        background: red;
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    /* Higher specificity than Bootstrap .dropdown-menu so custom panel layout applies */
+    .dropdown-container .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 100%;
+        min-width: 12rem;
+        margin: 0;
+        padding: 0.5rem 0;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 0.375rem;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 2000;
+        list-style: none;
+    }
+
+    .dropdown-container .children {
+        padding-left: 20px;
+        display: none;
+    }
+
+    .dropdown-container .dropdown-menu .parent-header {
+        padding: 0.35rem 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .dropdown-container .dropdown-menu label {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.75rem;
+        margin: 0;
+        font-weight: normal;
+        cursor: pointer;
+    }
+
+    .dropdown-container .dropdown-menu .toggle {
+        cursor: pointer;
+        user-select: none;
+        width: 1.25rem;
+        display: inline-block;
+    }
 </style>
 @endsection
 @section('content')
@@ -34,6 +153,7 @@
         <h4 class="fw-bold py-3 mb-4">Add Asset</h4>
         <div class="row">
             <form id="assetForm">
+                @csrf
                 <div class="col-md mb-4 mb-md-0">
                     <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
@@ -49,19 +169,17 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Asset Name</label>
                                             <div class="col-sm-4">
-                                                <input type="text" name="asset_name" class="form-control" 
-                                                    placeholder="Enter Asset Name" />
+                                                <input type="text" name="asset_name" class="form-control" />
                                             </div>
                                             <label class="col-sm-2 col-form-label" >Asset Image</label>
                                             <div class="col-sm-4">
-                                                <input class="form-control" type="file"  />
+                                                <input class="form-control" type="file" name="asset_image" />
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" for="basic-default-company">Asset Code</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" name="asset_code" id="basic-default-company"
-                                                    placeholder="ACME Inc." />
+                                                <input type="text" class="form-control" name="asset_code" id="basic-default-company" />
                                                     <div class="form-text">
                                                         Leave blank to auto-generate. System generated code
                                                         formats can be setup from Advanced settings
@@ -128,12 +246,10 @@
                                             <label class="col-sm-2 col-form-label" for="basic-default-phone">Status</label>
                                             <div class="col-sm-4">
                                                 <select id="country" name="status" class="select2 form-select">
-                                                    <option value="">Select</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Bangladesh">Bangladesh</option>
-                                                    <option value="Belarus">Belarus</option>
-                                                    <option value="Brazil">Brazil</option>
-                                                    <option value="Canada">Canada</option>
+                                                    <option value="">Select Status</option>
+                                                    @foreach ($status as $statuses)
+                                                    <option value="{{ $statuses->id }}">{{ $statuses->status_name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-sm-4">
@@ -144,17 +260,9 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" >Asset Name</label>
-                                            <div class="col-sm-4">
-                                                <input type="text" name="asset_name" class="form-control" 
-                                                    placeholder="Enter Asset Name" />
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
                                             <div class="col-sm-4">
-                                                <input type="text" name="cwip_invoice_id" class="form-control" 
-                                                    placeholder="Enter Asset Name" />
+                                                <input type="text" name="cwip_invoice_id" class="form-control" />
                                             </div>
                                         </div>
                                     </form>
@@ -178,11 +286,10 @@
                                         <div class="col-sm-4">
                                             <select id="country" name="condition" class=" form-select force-validate">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                <option value="damaged">Damaged</option>
+                                                <option value="good">Good</option>
+                                                <option value="poor">Poor</option>
+                                                <option value="new">New</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Brand</label>
@@ -197,13 +304,14 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
                                         <div class="col-sm-4">
-                                            <select id="link_asset" name="link_asset" class="form-select force-validate">
+                                            <select id="link" class="select2 form-select" name="link_asset[]" multiple>
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                <option value="axial_fan_unit">Axial Fan Unit</option>
+                                                <option value="electric_starter_panel">Electric Starter Panel</option>
+                                                <option value="fresh_air_fan_unit">Fresh Air Fan Unit</option>
+                                                <option value="kitchen_sump">Kitchen Sump</option>
+                                                <option value="laptop">Laptop</option>
+                                                <option value="printer">Printer</option>
                                             </select>
                                         </div>
                                     </div>
@@ -214,16 +322,28 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Serial No</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text"  />
+                                            <input class="form-control" type="text" name="serial_no" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Upload Files</label>
                                         <div class="col-sm-4">
                                             <label class="btn btn-sm btn-primary mb-0">
-                                                <i class="bx bx-upload me-1"></i> Upload File
-                                                <input type="file" name="files" hidden>
+                                                <i class="bx bx-upload me-1"></i> Upload Files
+                                                <!-- 'multiple' attribute allows selecting multiple files at once -->
+                                                <input type="file" id="fileUpload" multiple hidden>
                                             </label>
+                                            <!-- Loader shown during file processing -->
+                                            <div id="fileLoader" class="mt-2 d-none">
+                                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <span class="ms-2 text-muted small">Uploading...</span>
+                                            </div>
+                                            <!-- Container for multiple uploaded filenames -->
+                                            <div id="fileList" class="mt-2"></div>
+                                            <!-- Hidden input to store file data for form submission -->
+                                            <input type="hidden" id="uploadedFilesData" name="uploaded_files">
                                         </div>
                                     </div>
                                 </div>
@@ -244,18 +364,14 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Vendor Name</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="text" name="vendor_name" />
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
-                                        <div class="col-sm-4">
-                                            <select name="link_asset" class="form-select">
+                                            <select name="vendor_name" class="form-select">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
+                                                <option value="Australia">Acme Inc.</option>
                                             </select>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Po Number</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text" name="invoice_date" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -284,7 +400,6 @@
                                                     name="purchase_price"
                                                     class="form-control force-validate"
                                                     id="full_name"
-                                                    placeholder="Enter Full Name"
                                                     aria-label="Full Name"
                                                     aria-describedby="full_name_icon"
                                                 />
@@ -297,8 +412,7 @@
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input force-validate" type="checkbox"
                                                     id="flexSwitchCheckDefault" name="self_owned"/>
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
-                                                    checkbox input</label>
+                                                <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
                                             </div>
                                         </div>
                                     </div>
@@ -329,9 +443,7 @@
                                                     name="capitalization_price"
                                                     class="form-control force-validate"
                                                     id="full_name"
-                                                    placeholder="Enter Full Name"
                                                     aria-label="Full Name"
-                                                    aria-describedby="full_name_icon"
                                                 />
                                             </div>
                                         </div> 
@@ -363,7 +475,6 @@
                                                     name="accumulated_dep"
                                                     class="form-control force-validate"
                                                     id="full_name"
-                                                    placeholder="Enter Full Name"
                                                     aria-label="Full Name"
                                                     aria-describedby="full_name_icon"
                                                 />
@@ -373,12 +484,12 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Scrap Value</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date"  />
+                                            <input class="form-control" type="text"  name="scrap_value" />
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Income Tax
                                             Depreciation%</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="text" name="scrap_value" />
+                                            <input class="form-control force-validate" type="text" name="income_tax_dep" />
                                         </div>
                                     </div>
                                 </div>
@@ -401,10 +512,8 @@
                                         <div class="col-sm-4">
                                             <select id="country" name="department" class="form-select force-validate">
                                                 <option value="">Select</option>
-                                                <option value="Australia">HR</option>
-                                                <option value="Bangladesh">Accounting</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
+                                                <option value="hr">HR</option>
+                                                <option value="accounting">Accounting</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
@@ -412,10 +521,9 @@
                                         <div class="col-sm-4">
                                             <select id="country" name="transf_to" class="form-select force-validate">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
+                                                <option value="Australia">dust</option>
+                                                <option value="Bangladesh">James smith</option>
+                                                <option value="Belarus">Jennifer Miller</option>
                                             </select>
                                         </div>
                                     </div>
@@ -449,10 +557,7 @@
                                         <div class="col-sm-4">
                                             <select id="country" name="amc_vendor" class="form-select force-validate">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
+                                                <option value="amc_inc">Acme Inc</option>
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty
@@ -460,10 +565,7 @@
                                         <div class="col-sm-4">
                                             <select id="country" name="Warranty_vendor" class="form-select force-validate">
                                                 <option value="">Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
+                                                <option value="amc_inc">Acme Inc</option>
                                             </select>
                                         </div>
                                     </div>
@@ -476,7 +578,7 @@
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="text" name="insurance_end_date" />
+                                            <input class="form-control force-validate" type="date" name="insurance_end_date" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -518,9 +620,15 @@
                         </div>
                     </div>
 
-                    <div class="row mt-4 justify-content-start">
-                        <div class="col-sm-10">
-                            <button type="submit" class="btn btn-primary">Send</button>
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <button type="reset" class="btn btn-danger">
+                                Cancel
+                            </button>
+
+                            <button type="submit" class="btn btn-primary">
+                                Save
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1124,7 +1232,7 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Only visible for categories</label>
                                         <div class="col-sm-4">
-                                            <select class="selectstatus2 force-validate" name="categ_id[]" multiple>
+                                            {{-- <select class="selectstatus2 force-validate" name="categ_id[]" multiple>
 
                                                 @foreach($categories as $category)
                                                     <!-- Category selectable -->
@@ -1141,7 +1249,50 @@
 
                                                 @endforeach
 
-                                            </select>
+                                            </select> --}}
+                                            {{-- <div class="col-sm-4"> --}}
+                                                {{-- <input type="hidden" name="categ_id[]" id="selectedCategories"> --}}
+                                                <div id="hiddenCategoryInputs"></div>
+                                                <div class="dropdown-container">
+                                                    <!-- Input -->
+                                                    <div class="dropdown-input" onclick="toggleDropdown()">
+                                                        <span id="selectedText">Select Categories</span>
+                                                        <span id="toggleIcon" class="toggle-line">|</span>
+                                                        
+                                                    </div>
+
+                                                    <!-- Icons -->
+                                                    <div class="outside-icons">
+                                                        <span class="apply-btn" onclick="applySelection(event)">✔</span>
+                                                        <span class="clear-btn" onclick="clearSelection(event)">✖</span>
+                                                    </div>
+
+                                                    <!-- Dropdown -->
+                                                    <div class="dropdown-menu" id="dropdownMenu">
+                                                        @foreach($categories as $category)
+                                                        <div class="parent">
+                                                            <div class="parent-header">
+                                                                <span class="toggle" onclick="toggleChild(this)">▶</span>
+
+                                                                <input type="checkbox" value="cat_{{ $category->id }}" onchange="toggleParent(this)">
+
+                                                                {{ $category->name }}
+                                                            </div>
+
+
+                                                            <div class="children">
+                                                                @foreach($category->subCategories as $sub)
+                                                                <label>
+                                                                    <input type="checkbox" value="sub_{{ $sub->id }}" onchange="toggleChildCheckbox(this)">
+                                                                    {{ $sub->name }}
+                                                                </label>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            {{-- </div> --}}
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -1256,6 +1407,181 @@
 @endsection
 @section('section-js')
 <script>
+    // ================ FILE UPLOAD JS LOGIC START ====================
+
+        // Array to store uploaded file data
+        let uploadedFiles = [];
+
+        document.getElementById('fileUpload').addEventListener('change', function() {
+            var files = this.files;
+            var fileLoader = document.getElementById('fileLoader');
+            var fileList = document.getElementById('fileList');
+            var hiddenInput = document.getElementById('uploadedFilesData');
+
+            if (files.length > 0) {
+                // Show loader
+                fileLoader.classList.remove('d-none');
+
+                // Simulate upload process (2 seconds)
+                setTimeout(function() {
+                    // Hide loader
+                    fileLoader.classList.add('d-none');
+
+                    // Loop through all selected files and add to array
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        var fileId = Date.now() + '_' + i; // Unique ID for each file
+
+                        // Add to uploaded files array
+                        uploadedFiles.push({
+                            id: fileId,
+                            name: file.name,
+                            size: file.size
+                        });
+
+                        // Create file item HTML with remove button
+                        var fileItem = document.createElement('div');
+                        fileItem.className = 'd-flex align-items-center mb-1';
+                        fileItem.id = 'file_' + fileId;
+                        fileItem.innerHTML =
+                            '<i class="bx bx-file text-primary me-2"></i>' +
+                            '<span class="text-success small fw-semibold flex-grow-1">' + file.name + '</span>' +
+                            '<button type="button" class="btn btn-sm btn-link text-danger p-0 ms-2" onclick="removeFile(\'' + fileId + '\')">' +
+                            '<i class="bx bx-trash"></i>' +
+                            '</button>';
+                        fileList.appendChild(fileItem);
+                    }
+
+                    // Update hidden input with file data (for form submission)
+                    hiddenInput.value = JSON.stringify(uploadedFiles);
+
+                    // Clear input so same files can be selected again if needed
+                    document.getElementById('fileUpload').value = '';
+                }, 2000);
+            }
+        });
+
+        // Function to remove a file from the list
+        window.removeFile = function(fileId) {
+            // Remove from DOM
+            var fileElement = document.getElementById('file_' + fileId);
+            if (fileElement) {
+                fileElement.remove();
+            }
+
+            // Remove from array
+            uploadedFiles = uploadedFiles.filter(function(file) {
+                return file.id !== fileId;
+            });
+
+            // Update hidden input
+            document.getElementById('uploadedFilesData').value = JSON.stringify(uploadedFiles);
+        };
+// ==================== FILE UPLOAD JS LOGIC END ====================
+
+
+    function toggleDropdown() {
+        let menu = document.getElementById('dropdownMenu');
+        let icon = document.getElementById('toggleIcon');
+
+        if (menu.style.display === 'block') {
+            menu.style.display = 'none';
+            icon.innerText = '|';
+        } else {
+            menu.style.display = 'block';
+            icon.innerText = '▲';
+        }
+    }
+
+    function toggleChild(el) {
+        let parent = el.closest('.parent');
+        let children = parent.querySelector('.children');
+
+        if (!children) return;
+
+        children.style.display =
+            children.style.display === 'block' ? 'none' : 'block';
+
+        el.innerText = children.style.display === 'block' ? '▼' : '▶';
+    }
+
+    function toggleParent(el) {
+        let parent = el.closest('.parent');
+        let children = parent.querySelectorAll('.children input');
+
+        children.forEach(child => child.checked = el.checked);
+
+        updateCount();
+    }
+
+    function toggleChildCheckbox(el) {
+        let parent = el.closest('.parent');
+        let parentCheckbox = parent.querySelector('.parent-header input');
+
+        parentCheckbox.checked = true;
+
+        updateCount();
+    }
+
+    //  COUNT LOGIC
+    function updateCount() {
+        let checked = document.querySelectorAll('#dropdownMenu input:checked');
+        let text = "Select Categories";
+
+        if (checked.length > 0) {
+            text = checked.length + " selected";
+        }
+
+        document.getElementById('selectedText').innerText = text;
+    }
+
+    // ✔ Apply
+    function applySelection(event) {
+    event.stopPropagation();
+
+    let container = document.getElementById('hiddenCategoryInputs');
+    container.innerHTML = ''; // clear old inputs
+
+    let selected = document.querySelectorAll('#dropdownMenu input:checked');
+
+    selected.forEach(function (el) {
+
+        let input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'categ_id[]';   //  THIS IS KEY
+        input.value = el.value;      // cat_1 / sub_5
+
+        container.appendChild(input);
+    });
+
+    updateCount();
+}
+
+    // ❌ Clear
+    function clearSelection(event) {
+    event.stopPropagation();
+
+    document.querySelectorAll('#dropdownMenu input').forEach(el => {
+        el.checked = false;
+    });
+
+    document.getElementById('hiddenCategoryInputs').innerHTML = '';
+
+    updateCount();
+}
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function (event) {
+        let dropdown = document.querySelector('.dropdown-container');
+        if (dropdown && !dropdown.contains(event.target)) {
+            let menu = document.getElementById('dropdownMenu');
+            let icon = document.getElementById('toggleIcon');
+            if (menu && icon) {
+                menu.style.display = 'none';
+                icon.innerText = '|';
+            }
+        }
+    });
     $(document).ready(function () {
 
 
@@ -1617,7 +1943,7 @@
                         let errors = xhr.responseJSON.errors;
 
                         $.each(errors, function (field, messages) {
-                            showToast(messages[0], 'error'); // replaced toastr ✅
+                            showToast(messages[0], 'error'); // replaced toastr 
                         });
 
                     } else {
@@ -1750,9 +2076,12 @@
                 description: {
                     required: true
                 },
+                'department[]': {
+                    required: true
+                },
 
                 // Additional Info
-                'department[]': {
+                'file[]': {
                     required: true
                 },
                 'users[]': {
@@ -1797,6 +2126,10 @@
                 'department[]': {
                     required: "Please enter department"
                 },
+                'files[]': {
+                    required: "Please enter department"
+                },
+
                 'users[]': {
                     required: "Please select user"
                 },
@@ -1814,7 +2147,7 @@
 
                 let formData = new FormData(form);
 
-                let btn = $('#locationForm button[type="submit"]'); // ✅ button ref
+                let btn = $('#locationForm button[type="submit"]'); //  button ref
 
                 $.ajaxSetup({
                     headers: {
@@ -1841,7 +2174,7 @@
                         if (response.status) {
                             showToast(response.message, 'success');
 
-                            $('#locationForm')[0].reset(); // ✅ fixed
+                            $('#locationForm')[0].reset(); //  fixed
                             $('.select2').val(null).trigger('change');
 
                         } else {
@@ -1856,7 +2189,7 @@
                             let errors = xhr.responseJSON.errors;
 
                             $.each(errors, function (field, messages) {
-                                showToast(messages[0], 'error'); // ✅ replaced toastr
+                                showToast(messages[0], 'error'); //  replaced toastr
                             });
 
                         } else {
@@ -2007,7 +2340,7 @@
                         let errors = xhr.responseJSON.errors;
 
                         $.each(errors, function (field, messages) {
-                            showToast(messages[0], 'error'); // replaced toastr ✅
+                            showToast(messages[0], 'error'); // replaced toastr 
                         });
 
                     } else {
@@ -2114,12 +2447,12 @@
                 location: {
                     required: true
                 },
-                sub_location_id: {
-                    required: true
-                },
                 status: {
                     required: true
                 },
+                sub_location_id: {
+                    required: true
+                },   
                 cwip_invoice_id: {
                     required: true
                 },

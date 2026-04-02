@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Location;
+use App\Models\Status;
 use App\Models\CategoryLocalization;
 use App\Models\CategoryFinacialInformation;
 use App\Models\SubCategory;
@@ -32,8 +33,9 @@ class CategoryController extends Controller
         $categories = Category::with('subCategories:id,category_id,name')->get();
 
         $locations = Location::select('id','name')->get();
+        $status = Status::select('id','status_name')->get();
 
-        return view('pages.asset-management.add', compact('categories','locations','only_categories'));
+        return view('pages.asset-management.add', compact('categories','locations','only_categories','status'));
     }
 
     public function store(Request $request)
