@@ -1949,7 +1949,7 @@
                     }
                 },
 
-                // 🔴 ERROR
+                //  ERROR
                 error: function (xhr) {
 
                     if (xhr.status === 422) {
@@ -1964,7 +1964,7 @@
                     }
                 },
 
-                // 🟡 AFTER COMPLETE (always runs)
+                //  AFTER COMPLETE (always runs)
                 complete: function () {
 
                     // Enable button again
@@ -2195,7 +2195,7 @@
                         }
                     },
 
-                    // 🔴 ERROR
+                    //  ERROR
                     error: function (xhr) {
 
                         if (xhr.status === 422) {
@@ -2210,7 +2210,7 @@
                         }
                     },
 
-                    // 🟡 AFTER SEND (ALWAYS RUNS)
+                    //  AFTER SEND (ALWAYS RUNS)
                     complete: function () {
                         btn.prop('disabled', false);
                         btn.html('Submit'); // or your original button text
@@ -2345,7 +2345,7 @@
                     }
                 },
 
-                // 🔴 ERROR
+                //  ERROR
                 error: function (xhr) {
 
                     if (xhr.status === 422) {
@@ -2360,7 +2360,7 @@
                     }
                 },
 
-                // 🟡 AFTER COMPLETE (always runs)
+                //  AFTER COMPLETE (always runs)
                 complete: function () {
 
                     // Enable button again
