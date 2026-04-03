@@ -19,4 +19,29 @@ class Asset extends Model
         'status_id',
         'cwip_invoice_id',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id'); // FK in assets table
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class, 'location_id'); // FK in assets table
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id'); // FK in assets table
+    }
+
+    public function additionalInfo()
+    {
+        return $this->hasOne(AssetAdditionalInfos::class, 'asset_id');
+    }
+
+    public function purchaseInfo()
+    {
+        return $this->hasOne(AssetPurchaseInfos::class, 'asset_id');
+    }
 }

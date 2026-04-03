@@ -9,7 +9,9 @@ use App\Models\AssetPurchaseInfos;
 use App\Models\AssetFinacialInfos;
 use App\Models\AssetAllotedInfos;
 use App\Models\AssetWarrantyInfos;
+use App\Models\AssetLinks;
 use App\Models\AssetFiles;
+use App\Models\ColumnMaster;
 
 
 class AssetController extends Controller
@@ -20,10 +22,24 @@ class AssetController extends Controller
 
         try {
 
+
+            if (empty($request->asset_code)) {
+
+            $year = date('Y');
+            $random = rand(100000, 999999);
+            $assetCode = 'AST' . $year . $random;
+
+            while (\App\Models\Asset::where('asset_code', $assetCode)->exists()) {
+                $random = rand(100000, 999999);
+                $assetCode = 'AST' . $year . $random;
+            }
+            } else {
+                $assetCode = $request->asset_code;
+            }
             //  1. MAIN ASSET
             $asset = Asset::create([
                 'asset_name' => $request->asset_name,
-                'asset_code' => $request->asset_code,
+                'asset_code' => $assetCode,
                 'category_id' => $request->categ_id,
                 'sub_category_id' => $request->sub_category_id,
                 'location_id' => $request->location,
@@ -51,6 +67,20 @@ class AssetController extends Controller
                 'description' => $request->description,
                 'serial_no' => $request->serial_no,
             ]);
+
+            if ($request->link_asset) {
+                foreach ($request->link_asset as $linkedId) {
+
+                    // prevent self-link (optional)
+                    if ($linkedId != $asset->id) {
+
+                        AssetLinks::create([
+                            'asset_id' => $asset->id,
+                            'linked_asset_id' => $linkedId,
+                        ]);
+                    }
+                }
+            }
 
             //  4. PURCHASE INFO
             AssetPurchaseInfos::create([
@@ -119,5 +149,14 @@ class AssetController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function index(){
+
+        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo')->get();
+        
+        $column_master = ColumnMaster::select('id','column_name')->get();
+
+        return view('pages.asset-management.list',compact('asset_data','column_master'));
     }
 }

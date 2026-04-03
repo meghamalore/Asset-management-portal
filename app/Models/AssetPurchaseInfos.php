@@ -19,4 +19,9 @@ class AssetPurchaseInfos extends Model
         'end_of_life',
         'asset_po_number',
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
 }

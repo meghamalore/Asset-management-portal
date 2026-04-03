@@ -9,6 +9,7 @@ use App\Models\Status;
 use App\Models\CategoryLocalization;
 use App\Models\CategoryFinacialInformation;
 use App\Models\SubCategory;
+use App\Models\Asset;
 use App\Models\AssetCategoryActivitySchedule;
 use DB;
 
@@ -34,8 +35,9 @@ class CategoryController extends Controller
 
         $locations = Location::select('id','name')->get();
         $status = Status::select('id','status_name')->get();
+        $asset_list = Asset::select('id','asset_name','asset_code')->get();
 
-        return view('pages.asset-management.add', compact('categories','locations','only_categories','status'));
+        return view('pages.asset-management.add', compact('categories','locations','only_categories','status','asset_list'));
     }
 
     public function store(Request $request)

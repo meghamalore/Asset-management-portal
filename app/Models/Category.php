@@ -22,4 +22,9 @@ class Category extends Model
     {
         return $this->hasMany(SubCategory::class);
     }
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'category_id');
+    }
 }
