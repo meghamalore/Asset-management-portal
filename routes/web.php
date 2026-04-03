@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\AssetController;
 
 Route::get('/', function () {return view('dashboard');})->name('dashboard');
 Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
@@ -13,3 +15,7 @@ Route::get('/get-subcategories/{id}', [CategoryController::class, 'getSubCategor
 
 Route::post('/insert-location', [LocationController::class, 'store'])->name('location.store');
 Route::get('/get-sublocation/{id}', [LocationController::class, 'getSubLocation']);
+
+Route::post('/insert-status', [StatusController::class, 'store'])->name('status.store');
+Route::post('/insert-asset', [AssetController::class, 'store'])->name('asset.store');
+
