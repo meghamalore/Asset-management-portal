@@ -15,4 +15,9 @@ class AssetAllotedInfos extends Model
         'allotted_upto',
         'remarks',
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
 }

@@ -44,4 +44,19 @@ class Asset extends Model
     {
         return $this->hasOne(AssetPurchaseInfos::class, 'asset_id');
     }
+
+    public function finacialInfos()
+    {
+        return $this->hasOne(AssetFinacialInfos::class, 'asset_id');
+    }
+
+    public function assetallotedInfos()
+    {
+        return $this->hasOne(AssetAllotedInfos::class, 'asset_id');
+    }
+
+    public function assetwarrantyInfos()
+    {
+        return $this->hasOne(AssetWarrantyInfos::class, 'asset_id');
+    }
 }

@@ -12,6 +12,8 @@ use App\Models\AssetWarrantyInfos;
 use App\Models\AssetLinks;
 use App\Models\AssetFiles;
 use App\Models\ColumnMaster;
+use App\Models\CustomeView;
+
 
 
 class AssetController extends Controller
@@ -153,10 +155,12 @@ class AssetController extends Controller
 
     public function index(){
 
-        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo')->get();
-        
+        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->get();
+        // dd($asset_data);
         $column_master = ColumnMaster::select('id','column_name')->get();
+        $views = CustomeView::select('id','view_name')->get();
 
-        return view('pages.asset-management.list',compact('asset_data','column_master'));
+
+        return view('pages.asset-management.list',compact('asset_data','column_master','views'));
     }
 }

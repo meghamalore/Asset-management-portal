@@ -19,4 +19,9 @@ class AssetWarrantyInfos extends Model
         'warranty_start_date',
         'warranty_end_date',
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
 }
