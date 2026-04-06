@@ -278,17 +278,17 @@
                             <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent}}</td>
 
                             {{-- //allotted data --}}
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department}}</td>
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->transferred_to}}</td>
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->allotted_upto}}</td>
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->remark}}t</td>
+                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department ?? ''}}</td>
+                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->transferred_to ?? ''}}</td>
+                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->allotted_upto ?? ''}}</td>
+                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->remark ?? ''}}t</td>
 
                             {{--  // warranty data --}}
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_vendor}}</td>
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->warranty_vendor}}</td>
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_date}}</td>
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_end}}</td>
-                            <td class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_start_date}}</td>
+                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_vendor ?? ''}}</td>
+                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->warranty_vendor  ?? ''}}</td>
+                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_date ?? ''}}</td>
+                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_end ?? ''}}</td>
+                            <td class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_start_date ?? ''}}</td>
 
                             <!-- Existing -->
                             <td>Good</td>
