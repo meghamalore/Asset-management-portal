@@ -13,6 +13,8 @@ use App\Models\AssetLinks;
 use App\Models\AssetFiles;
 use App\Models\ColumnMaster;
 use App\Models\CustomeView;
+use App\Models\Location;
+use App\Models\SubLocation;
 
 
 
@@ -155,12 +157,12 @@ class AssetController extends Controller
 
     public function index(){
 
-        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->get();
-        // dd($asset_data);
+        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->latest()->get();
         $column_master = ColumnMaster::select('id','column_name')->get();
         $views = CustomeView::select('id','view_name')->get();
+        $location = Location::select('id','name')->get();
+        $sub_location = SubLocation::select('id','name')->get();
 
-
-        return view('pages.asset-management.list',compact('asset_data','column_master','views'));
+        return view('pages.asset-management.list',compact('asset_data','column_master','views','location','sub_location'));
     }
 }

@@ -1885,7 +1885,9 @@
             errorPlacement: function (error, element) {
                 if (element.hasClass('select2')) {
                     error.insertAfter(element.next('.select2-container'));
-                } else {
+                }else if (element.closest('.input-group').length) {
+                    error.insertAfter(element.closest('.input-group'));
+                }else {
                     error.insertAfter(element);
                 }
             },
@@ -2618,7 +2620,9 @@
             errorPlacement: function (error, element) {
                 if (element.hasClass('select2')) {
                     error.insertAfter(element.next('.select2-container'));
-                } else {
+                } else if (element.closest('.input-group').length) {
+                    error.insertAfter(element.closest('.input-group'));
+                }else {
                     error.insertAfter(element);
                 }
             },
