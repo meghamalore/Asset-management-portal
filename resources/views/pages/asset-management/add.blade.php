@@ -174,7 +174,7 @@
                                 <div class="accordion-body">
                                     <form>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" >Asset Name</label>
+                                            <label class="col-sm-2 col-form-label" >Asset Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <input type="text" name="asset_name" class="form-control" />
                                             </div>
@@ -187,10 +187,10 @@
                                             <label class="col-sm-2 col-form-label" for="basic-default-company">Asset Code</label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" name="asset_code" id="basic-default-company" />
-                                                    <div class="form-text">
+                                                    <small class="form-text">
                                                         Leave blank to auto-generate. System generated code
                                                         formats can be setup from Advanced settings
-                                                    </div>
+                                                    </small>
                                             </div>
                                             <!-- <div class="col-sm-4">
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -200,7 +200,7 @@
                                             </div> -->
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label">Category</label>
+                                            <label class="col-sm-2 col-form-label">Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select class="form-select select2" id="category_id" name="categ_id">
                                                     <option value="">Select</option>
@@ -217,7 +217,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label">Sub Category</label>
+                                            <label class="col-sm-2 col-form-label">Sub Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select class="form-select select2"  name="sub_category_id" id="sub_category_id">
                                                     <option value="">Select</option>
@@ -225,7 +225,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Location</label>
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Location <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select id="location_id" name="location" class="form-select">
                                                     <option value="">Select</option>
@@ -242,7 +242,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label">Sub Location</label>
+                                            <label class="col-sm-2 col-form-label">Sub Location <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select class="form-select"  name="sub_location_id" id="sub_location_id">
                                                     <option value="">Select</option>
@@ -250,7 +250,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status</label>
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select id="country" name="status" class="select2 form-select">
                                                     <option value="">Select Status</option>
@@ -312,14 +312,11 @@
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
                                         <div class="col-sm-4">
                                             <select id="link" class="select2 form-select" name="link_asset[]" multiple>
-                                                <option value="">Select</option>
-                                                <option value="axial_fan_unit">Axial Fan Unit</option>
-                                                <option value="electric_starter_panel">Electric Starter Panel</option>
-                                                <option value="fresh_air_fan_unit">Fresh Air Fan Unit</option>
-                                                <option value="kitchen_sump">Kitchen Sump</option>
-                                                <option value="laptop">Laptop</option>
-                                                <option value="printer">Printer</option>
+                                                @foreach($asset_list as $asset_lists)
+                                                <option value="{{ $asset_lists->id }}">{{ $asset_lists->asset_name }}({{$asset_lists->asset_code}})</option>
+                                                @endforeach
                                             </select>
+                                            <small class="form-text">The selected assets will be linked to this asset. The selected assets are the child assets and this will be the parent asset</small>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -334,11 +331,11 @@
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Upload Files</label>
+                                        <small class="form-text">Additional Documents (For Insurance / Maintenance / Replacements, etc.)</small>
                                         <div class="col-sm-4">
                                             <label class="btn btn-sm btn-primary mb-0">
                                                 <i class="bx bx-upload me-1"></i> Upload Files
-                                                <!-- 'multiple' attribute allows selecting multiple files at once -->
-                                                <input type="file" id="fileUpload" multiple hidden>
+                                                <input type="file" id="fileUpload" name="files[]" multiple hidden>
                                             </label>
                                             <!-- Loader shown during file processing -->
                                             <div id="fileLoader" class="mt-2 d-none">
@@ -349,8 +346,7 @@
                                             </div>
                                             <!-- Container for multiple uploaded filenames -->
                                             <div id="fileList" class="mt-2"></div>
-                                            <!-- Hidden input to store file data for form submission -->
-                                            <input type="hidden" id="uploadedFilesData" name="uploaded_files">
+                                            <input type="file" id="fileUpload" name="files[]" multiple hidden>
                                         </div>
                                     </div>
                                 </div>
@@ -524,7 +520,7 @@
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
-                                            To</label>
+                                            To<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" name="transf_to" class="form-select force-validate">
                                                 <option value="">Select</option>
@@ -608,20 +604,9 @@
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="date"  name="warranty_staart_date"/>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
-                                        <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="date"  name="amc_end_date"/>
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
-                                            Date</label>
-                                        <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="warranty_start_date" />
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
                         </div>
@@ -642,7 +627,6 @@
             </form>
         </div>
     </div>
-    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
     <!-- Extra Large Category Modal -->
     <div class="modal fade" id="exLargeModalCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -1557,12 +1541,12 @@
         input.type = 'hidden';
         input.name = 'categ_id[]';   //  THIS IS KEY
         input.value = el.value;      // cat_1 / sub_5
-        input.classList.add('force-validate'); // ✅ for validation
+        input.classList.add('force-validate'); //  for validation
         container.appendChild(input);
     });
 
     updateCount();
-    // ✅ CLOSE DROPDOWN
+    //  CLOSE DROPDOWN
     let menu = document.getElementById('dropdownMenu');
     let icon = document.getElementById('toggleIcon');
 
@@ -1570,7 +1554,7 @@
     icon.innerText = '|';
 }
 
-    // ❌ Clear
+    //  Clear
     function clearSelection(event) {
     event.stopPropagation();
 

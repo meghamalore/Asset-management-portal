@@ -15,4 +15,9 @@ class Location extends Model
         'description',
         'is_inventory',
     ];
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'location_id');
+    }
 }

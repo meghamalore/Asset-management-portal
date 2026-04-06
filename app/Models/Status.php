@@ -14,4 +14,9 @@ class Status extends Model
         'next_status',
         'hold_pause_activity',
     ];
+
+    public function assets()
+    {
+        return $this->hasMany(Asset::class, 'status_id');
+    }
 }

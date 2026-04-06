@@ -18,4 +18,9 @@ class AssetFinacialInfos extends Model
         'income_tax_depreciation_percent',
         'end_of_life',
     ];
+
+    public function asset()
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
 }
