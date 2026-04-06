@@ -26,6 +26,7 @@ return new class extends Migration
                 $table->foreignId('status_id')->nullable()->constrained()->nullOnDelete();
 
                 $table->string('cwip_invoice_id')->nullable();
+                $table->string('status')->nullable();
                 $table->timestamps();
         });
     }
