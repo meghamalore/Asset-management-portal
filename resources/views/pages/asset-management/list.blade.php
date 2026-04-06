@@ -703,9 +703,9 @@
                             <div class="col-sm-4">
                                 <select class="form-select multiselect">
                                     <option value="">Select Option</option>
-                                    <option value="1">Option 1</option>
-                                    <option value="2">Option 2</option>
-                                    <option value="3">Option 3</option>
+                                    <option value="calibration">Calibration</option>
+                                    <option value="inspection">Inspection</option>
+                                    <option value="warranty_expiry">Warranty Expiry</option>
                                 </select>
                             </div>
                             <label class="col-sm-2 col-form-label" >Description</label>
@@ -726,11 +726,8 @@
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="Belarus">Belarus</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Canada">Canada</option>
+                                        <option value="maintenance_group">Maintenance Group</option>
+                                        <option value="it_helpdesk">IT Helpdesk</option>
                                     </select>
                             </div>
                             <label class="col-sm-2 col-form-label">Upload Files</label>
@@ -746,11 +743,9 @@
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="Belarus">Belarus</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Canada">Canada</option>
+                                        <option value="1">dust (dust@dustvalue.com)</option>
+                                        <option value="2">James Smith (james.smith@test.com)</option>
+                                        <option value="3">Jennifer Miller (jennifer.miller@test.com)</option>
                                     </select>
                             </div>
                         </div>
@@ -759,11 +754,11 @@
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="Belarus">Belarus</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Canada">Canada</option>
+                                        <option value="daily">Daily</option>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="yearly">Yearly</option>
+                                        <option value="one_time">One Time</option>
                                     </select>
                             </div>
                             <label class="col-sm-2 col-form-label" >Start Date</label>
@@ -797,11 +792,8 @@
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="Belarus">Belarus</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Canada">Canada</option>
+                                        <option value="user_involved">User Involved</option>
+                                        <option value="user">User(s)</option>
                                     </select>
                             </div>
                         </div>
