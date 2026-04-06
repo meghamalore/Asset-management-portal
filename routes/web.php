@@ -6,6 +6,7 @@ use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\CustomeViewControlller;
+use App\Http\Controllers\AssetDisposalController;
 
 Route::get('/', function () {return view('dashboard');})->name('dashboard');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
@@ -25,4 +26,7 @@ Route::post('/store-view', [CustomeViewControlller::class, 'store'])->name('cust
 Route::delete('/custom-view/delete/{id}', [CustomeViewControlller::class, 'destroy'])->name('custom-view.destroy');
 
 Route::get('/custom-view/{id}', [CustomeViewControlller::class, 'show']);
+
+Route::post('/insert-asset-disposal', [AssetDisposalController::class, 'store'])->name('disposal.store');
+
 

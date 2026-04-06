@@ -82,8 +82,7 @@
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#exLargeModalAssetDisposal">
+                    <button type="button" id="disposeBtn" class="btn btn-outline-primary">
                         <span class="tf-icons bx bx-trash"></span>&nbsp; Discard or Sell
                     </button>
                 </div>
@@ -213,7 +212,8 @@
                     </thead>
 
                     <tbody>
-                        @foreach($asset_data as $asset_datas) <tr data-asset-name="Asset" data-asset-code="AST00">
+                        @foreach($asset_data as $asset_datas)
+                        <tr data-asset-name="{{ $asset_datas->asset_name}}" data-asset-code="{{ $asset_datas->asset_code}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price}}">
 
                             <td>
                                 <input type="checkbox" class="asset-checkbox">
@@ -294,8 +294,8 @@
                             <td>Good</td>
                             <td>Dell</td>
 
-                            </tr>
-                            @endforeach
+                        </tr>
+                        @endforeach
                     </tbody>
 
                 </table>
@@ -323,12 +323,12 @@
                     <div class="modal-body">
                         <div class="card mb-3">
                             <div class="row mb-3 mx-2">
-                                <label class="col-sm-2 col-form-label" for="asset_name">View Name</label>
+                                <label class="col-sm-2 col-form-label" >View Name</label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="view_name" class="form-control force-validate" id="asset_name"
+                                    <input type="text" name="view_name" class="form-control force-validate" 
                                         placeholder="Enter Asset Name" />
                                 </div>
-                                <label class="col-sm-2 col-form-label" for="asset_name">Columns</label>
+                                <label class="col-sm-2 col-form-label" >Columns</label>
                                 <div class="col-sm-4">    
                                     <select id="link" class="select3 form-select force-validate" data-placeholder="Select Columns"  name="columns[]" multiple>
                                         <!-- <option value="">Select Views</option> -->
@@ -355,7 +355,7 @@
                                             id="flexSwitchCheckDefault" name="is_private" value="1"/>  
                                     </div>
                                 </div>
-                                 <label class="col-sm-2 col-form-label" for="asset_name">Role Name</label>
+                                 <label class="col-sm-2 col-form-label" >Role Name</label>
                                 <div class="col-sm-4">
                                     <select class="form-select multiselect force-validate">
                                         <option value="">Select Option</option>
@@ -536,14 +536,14 @@
                                 </table>
                             </div>
                             <div class="row mb-3 mx-2">
-                                <label class="col-sm-2 col-form-label" for="asset_name">New Location</label>
+                                <label class="col-sm-2 col-form-label" >New Location</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="asset_name"
+                                    <input type="text" class="form-control" 
                                         placeholder="Enter Asset Name" />
                                 </div>
                             </div>
                             <div class="row mb-3 mx-2">
-                                <label class="col-sm-2 col-form-label" for="asset_name">Transfer Status</label>
+                                <label class="col-sm-2 col-form-label" >Transfer Status</label>
                                 <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -555,7 +555,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3 mx-2">
-                                <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
+                                <label class="col-sm-2 col-form-label" >Asset Name</label>
                                 <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -565,18 +565,18 @@
                                         <option value="Brazil">Brazil</option>
                                     </select>
                                 </div>
-                                <label class="col-sm-2 col-form-label" for="asset_name">Remark</label>
+                                <label class="col-sm-2 col-form-label" >Remark</label>
                                 <div class="col-sm-4">
-                                    <input type="text" class="form-control" id="asset_name"
+                                    <input type="text" class="form-control" 
                                         placeholder="Enter Asset Name" />
                                 </div>
                             </div>
                             <div class="row mb-3 mx-2 align-items-center">
                                 <label class="col-sm-2 col-form-label">Upload Files</label>
                                 <div class="col-sm-4">
-                                    <label class="btn btn-primary mb-0">
-                                        <i class="bx bx-upload me-1"></i> Upload File
-                                        <input type="file" hidden>
+                                    <label class="btn btn-sm btn-primary mb-0">
+                                        <i class="bx bx-upload me-1"></i> Upload Files
+                                        {{-- <input type="file" id="fileUpload" name="files[]" multiple hidden> --}}
                                     </label>
                                 </div>
                             </div>
@@ -604,277 +604,74 @@
                     <h5 class="modal-title" id="exampleModalLabel4">Asset Disposal Form</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="card mb-3">
-                        <h6 class="card-header">Section 1</h6>
+                <form id="assetDispoForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div id="assetSections"></div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Asset Code</label>
+                            <label class="col-sm-2 col-form-label" >Reason</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
-                                    placeholder="Enter Asset Name" />
-                            </div>
-                            <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
-                                    placeholder="Enter Asset Name" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Sold value</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                            <label class="col-sm-2 col-form-label" >Purchase Price</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Price Difference</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Remark</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
-                                    placeholder="Enter Asset Name" />
-                            </div>
-                            <label class="col-sm-2 col-form-label" >Net Book Value(Current date)</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Location</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                                    <select id="country" name="reason" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="Belarus">Belarus</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Canada">Canada</option>
+                                        <option value="lost">Lost</option>
+                                        <option value="stolen">Stolen</option>
+                                        <option value="write_off">Write-off</option> 
                                     </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="card mb-3">
-                        <h6 class="card-header">Section 2</h6>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Asset Code</label>
+                            <label class="col-sm-2 col-form-label" >Discard Date</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
-                                    placeholder="Enter Asset Name" />
+                                <input type="date" class="form-control" name="date"
+                                    placeholder="Enter Asset Name" value="{{ date('Y-m-d') }}" />
                             </div>
-                            <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
+                            <label class="col-sm-2 col-form-label" >Vendor Name</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
-                                    placeholder="Enter Asset Name" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Sold value</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                            <label class="col-sm-2 col-form-label" >Purchase Price</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Price Difference</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Remark</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
-                                    placeholder="Enter Asset Name" />
-                            </div>
-                            <label class="col-sm-2 col-form-label" >Net Book Value(Current date)</label>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-text" id="full_name_icon">
-                                        <i class="bx bx-rupee"></i>
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="full_name"
-                                        class="form-control"
-                                        id="full_name"
-                                        aria-label="Full Name"
-                                        aria-describedby="full_name_icon"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Location</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                                    <select id="country" name="vendor_name" class="select2 form-select">
                                         <option value="">Select</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="Belarus">Belarus</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Canada">Canada</option>
+                                        <option value="acme">Acme Inc (S00081)</option>
                                     </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label" for="asset_name">Reason</label>
-                        <div class="col-sm-4">
-                                <select id="country" class="select2 form-select">
-                                    <option value="">Select</option>
-                                    <option value="Australia">Australia</option>
-                                    <option value="Bangladesh">Bangladesh</option>
-                                    <option value="Belarus">Belarus</option>
-                                    <option value="Brazil">Brazil</option>
-                                    <option value="Canada">Canada</option>
-                                </select>
+                        <div class="row mb-3 mx-2">
+                            <label class="col-sm-2 col-form-label" >Remarks</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="remark" class="form-control"  />
+                            </div>
+                        </div>
+                        <div class="row mb-3 mx-2">
+                            <label class="col-sm-2 col-form-label" >Tax Group</label>
+                            <div class="col-sm-4">
+                                    <select name="tax_group" class="select2 form-select">
+                                        <option value="18">Gst 18%</option>
+                                    </select>
+                            </div>
+                            <label class="col-sm-2 col-form-label">Upload Files</label>
+                            <div class="col-sm-4">
+                                        <label class="btn btn-sm btn-primary mb-0">
+                                            <i class="bx bx-upload me-1"></i> Upload Files
+                                            <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                        </label>
+                                        <!-- Loader shown during file processing -->
+                                        <div id="fileLoader" class="mt-2 d-none">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <span class="ms-2 text-muted small">Uploading...</span>
+                                        </div>
+                                        <!-- Container for multiple uploaded filenames -->
+                                        <div id="fileList" class="mt-2"></div>
+                                        <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                </div>
                         </div>
                     </div>
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label" for="asset_name">Discard Date</label>
-                        <div class="col-sm-4">
-                            <input type="date" class="form-control" id="asset_name"
-                                placeholder="Enter Asset Name" />
-                        </div>
-                        <label class="col-sm-2 col-form-label" for="asset_name">Vendor Name</label>
-                        <div class="col-sm-4">
-                                <select id="country" class="select2 form-select">
-                                    <option value="">Select</option>
-                                    <option value="Australia">Australia</option>
-                                    <option value="Bangladesh">Bangladesh</option>
-                                    <option value="Belarus">Belarus</option>
-                                    <option value="Brazil">Brazil</option>
-                                    <option value="Canada">Canada</option>
-                                </select>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label" for="asset_name">Remarks</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" id="asset_name" />
-                        </div>
-                    </div>
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label" for="asset_name">Tax Group</label>
-                        <div class="col-sm-4">
-                                <select id="country" class="select2 form-select">
-                                    <option value="">Select</option>
-                                    <option value="Australia">Australia</option>
-                                    <option value="Bangladesh">Bangladesh</option>
-                                    <option value="Belarus">Belarus</option>
-                                    <option value="Brazil">Brazil</option>
-                                    <option value="Canada">Canada</option>
-                                </select>
-                        </div>
-                        <label class="col-sm-2 col-form-label">Upload Files</label>
-                        <div class="col-sm-4">
-                            <label class="btn btn-primary mb-0">
-                                <i class="bx bx-upload me-1"></i> Upload File
-                                <input type="file" hidden>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -890,14 +687,14 @@
                 <div class="modal-body">
                     <div class="card mb-3">
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Asset</label>
+                            <label class="col-sm-2 col-form-label" >Asset</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
+                                <input type="text" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
-                            <label class="col-sm-2 col-form-label" for="asset_name">Location</label>
+                            <label class="col-sm-2 col-form-label" >Location</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
+                                <input type="text" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
                         </div>
@@ -913,19 +710,19 @@
                             </div>
                             <label class="col-sm-2 col-form-label" >Description</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
+                                <input type="text" class="form-control" 
                                     placeholder="Enter Asset Name" />   
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Asset Category</label>
+                            <label class="col-sm-2 col-form-label" >Asset Category</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
+                                <input type="text" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">User group</label>
+                            <label class="col-sm-2 col-form-label" >User group</label>
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -945,7 +742,7 @@
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Assigned To</label>
+                            <label class="col-sm-2 col-form-label" >Assigned To</label>
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -958,7 +755,7 @@
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Occurs</label>
+                            <label class="col-sm-2 col-form-label" >Occurs</label>
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -969,15 +766,15 @@
                                         <option value="Canada">Canada</option>
                                     </select>
                             </div>
-                            <label class="col-sm-2 col-form-label" for="asset_name">Start Date</label>
+                            <label class="col-sm-2 col-form-label" >Start Date</label>
                             {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="asset_name"
+                                <input type="date" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Activity Reminders</label>
+                            <label class="col-sm-2 col-form-label" >Activity Reminders</label>
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -988,15 +785,15 @@
                                         <option value="Canada">Canada</option>
                                     </select>
                             </div>
-                            <label class="col-sm-2 col-form-label" for="asset_name">End Date</label>
+                            <label class="col-sm-2 col-form-label" >End Date</label>
                             {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
                             <div class="col-sm-4">
-                                <input type="date" class="form-control" id="asset_name"
+                                <input type="date" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Email Based On</label>
+                            <label class="col-sm-2 col-form-label" >Email Based On</label>
                             <div class="col-sm-4">
                                     <select id="country" class="select2 form-select">
                                         <option value="">Select</option>
@@ -1009,21 +806,21 @@
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Grace/Execution Period Before</label>
+                            <label class="col-sm-2 col-form-label" >Grace/Execution Period Before</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
+                                <input type="text" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">Grace/Execution Period After</label>
+                            <label class="col-sm-2 col-form-label" >Grace/Execution Period After</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="asset_name"
+                                <input type="text" class="form-control" 
                                     placeholder="Enter Asset Name" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" for="asset_name">CC</label>
+                            <label class="col-sm-2 col-form-label" >CC</label>
                             <div class="col-sm-4">
                                 <select id="country" class="select2 form-select">
                                     <option value="">Select</option>
@@ -1050,7 +847,7 @@
                                 <div class="row mb-3">
                                     <label class="col-sm-2 col-form-label" >Vendor Name </label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="asset_name" />
+                                        <input type="text" class="form-control"  />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -1110,9 +907,9 @@
                                         <div class="accordion-body">
                                             <form>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
+                                                    <label class="col-sm-2 col-form-label" >Asset Name</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="asset_name"
+                                                        <input type="text" class="form-control" 
                                                             placeholder="Enter Asset Name" />
                                                     </div>
                                                     <label class="col-sm-2 col-form-label" >Asset Image</label>
@@ -1187,16 +984,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="asset_name">Asset Name</label>
+                                                    <label class="col-sm-2 col-form-label" >Asset Name</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="asset_name"
+                                                        <input type="text" class="form-control" 
                                                             placeholder="Enter Asset Name" />
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="asset_name">CWIP Invoice Id</label>
+                                                    <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
                                                     <div class="col-sm-4">
-                                                        <input type="text" class="form-control" id="asset_name"
+                                                        <input type="text" class="form-control" 
                                                             placeholder="Enter Asset Name" />
                                                     </div>
                                                 </div>
@@ -1581,6 +1378,113 @@
 <script>
     $(document).ready(function () {
 
+
+        $('#assetDispoForm').validate({
+
+            ignore: ":hidden:not(.force-validate)",
+
+            rules: {
+                // Asset Details
+                reason: {
+                    required: true,
+                    minlength: 3
+                },
+                date: {
+                    maxlength: 20
+                },
+                vendor_name: {
+                    required: true
+                },
+                remark: {
+                    required: true
+                },
+                tax_group: {
+                    required: true
+                },
+                'files[]': {
+                    required: true
+                },
+
+            },
+
+            messages: {
+                asset_name: "Enter asset name (min 3 characters)",
+                asset_code: "Max 20 characters allowed",
+
+                categ_id: "Select category",
+                sub_category_id: "Select sub category",
+                location: "Select location",
+                sub_location_id: "Select sub location",
+                status: "Select status",
+                cwip_invoice_id: "Enter CWIP invoice id",
+
+            },
+
+            errorElement: 'span',
+            errorClass: 'text-danger',
+
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            },
+
+            errorPlacement: function (error, element) {
+                if (element.hasClass('select2')) {
+                    error.insertAfter(element.next('.select2-container'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+
+                $.ajax({
+                    url: "{{ route('disposal.store') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    beforeSend: function () {
+                        $('#assetForm button[type="submit"]').prop('disabled', true)
+                            .html('<span class="spinner-border spinner-border-sm"></span> Saving...');
+                    },
+
+                    success: function (response) {
+                        if (response.status) {
+                            showToast(response.message, 'success');
+
+                            $('#assetForm')[0].reset();
+                            $('.select2').val(null).trigger('change');
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+
+                    error: function (xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            $.each(errors, function (key, value) {
+                                showToast(value[0], 'error');
+                            });
+                        } else {
+                            showToast('Something went wrong!', 'error');
+                        }
+                    },
+
+                    complete: function () {
+                        $('#assetForm button[type="submit"]').prop('disabled', false)
+                            .html('Send');
+                    }
+                });
+            }
+        });
+
         //  Select2 Init
         $('.select3').select2({
             placeholder: "Select Columns",
@@ -1819,6 +1723,207 @@
             });
 
         });
+
+        let locations = @json($location);
+        let subLocations = @json($sub_location);
+
+        function getLocationOptions(selectedId = '') {
+            let options = '<option value="">Select</option>';
+
+            locations.forEach(loc => {
+                let selected = loc.id == selectedId ? 'selected' : '';
+                options += `<option value="${loc.id}" ${selected}>${loc.name}</option>`;
+            });
+
+            return options;
+        }
+
+        function getSubLocationOptions(selectedId = '') {
+            let options = '<option value="">Select</option>';
+
+            subLocations.forEach(sub => {
+                let selected = sub.id == selectedId ? 'selected' : '';
+                options += `<option value="${sub.id}" ${selected}>${sub.name}</option>`;
+            });
+
+            return options;
+        }
+
+        $('#disposeBtn').on('click', function () {
+
+            let checked = $('.asset-checkbox:checked');
+
+            if (checked.length === 0) {
+                showToast('Please select at least one asset');
+                return;
+            }
+
+            let container = $('#assetSections');
+            container.html(''); // clear old
+
+            let index = 1;
+
+            checked.each(function () {
+
+                let row = $(this).closest('tr');
+
+                let name = row.data('asset-name');
+                let code = row.data('asset-code');
+                let price = row.data('asset-pur-price');
+                let locationId = row.data('location-id');
+                let subLocationId = row.data('sub-location-id');
+
+                let section = `
+                <div class="card mb-3">
+                    <h6 class="card-header">Section ${index}</h6>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Asset Code</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="assets[${index}][asset_code]" value="${code}">
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Asset Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="assets[${index}][asset_name]" value="${name}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Sold value</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control sold_value"  name="assets[${index}][sold_value]">
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Purchase Price</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control pur_price" name="assets[${index}][purchase_price]" value="${price}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Price Difference</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control price_diff" name="assets[${index}][price_difference]" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Location</label>
+                        <div class="col-sm-4">
+                            <select class="form-select location" name="assets[${index}][location_id]">
+                                ${getLocationOptions(locationId)}
+                            </select>
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Sub Location</label>
+                        <div class="col-sm-4">
+                            <select class="form-select sub_location" name="assets[${index}][sub_location_id]">
+                                ${getSubLocationOptions(subLocationId)}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                container.append(section);
+
+                // Set selected values
+                container.find('.location').last().val(locationId);
+                container.find('.sub_location').last().val(subLocationId);
+
+                index++;
+            });
+
+            // Open modal
+            let modal = new bootstrap.Modal(document.getElementById('exLargeModalAssetDisposal'));
+            modal.show();
+        });
+
+        $(document).on('keyup change', '.sold_value, .pur_price', function () {
+
+            let card = $(this).closest('.card'); // current section
+
+            let sold = parseFloat(card.find('.sold_value').val()) || 0;
+            let purchase = parseFloat(card.find('.pur_price').val()) || 0;
+
+            let diff = purchase - sold;
+
+            card.find('.price_diff').val(diff.toFixed(2));
+        });
+
+        // ================ FILE UPLOAD JS LOGIC START ====================
+
+        // Array to store uploaded file data
+        let uploadedFiles = [];
+
+        document.getElementById('fileUpload').addEventListener('change', function() {
+            var files = this.files;
+            var fileLoader = document.getElementById('fileLoader');
+            var fileList = document.getElementById('fileList');
+            var hiddenInput = document.getElementById('uploadedFilesData');
+
+            if (files.length > 0) {
+                // Show loader
+                fileLoader.classList.remove('d-none');
+
+                // Simulate upload process (2 seconds)
+                setTimeout(function() {
+                    // Hide loader
+                    fileLoader.classList.add('d-none');
+
+                    // Loop through all selected files and add to array
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        var fileId = Date.now() + '_' + i; // Unique ID for each file
+
+                        // Add to uploaded files array
+                        uploadedFiles.push({
+                            id: fileId,
+                            name: file.name,
+                            size: file.size
+                        });
+
+                        // Create file item HTML with remove button
+                        var fileItem = document.createElement('div');
+                        fileItem.className = 'd-flex align-items-center mb-1';
+                        fileItem.id = 'file_' + fileId;
+                        fileItem.innerHTML =
+                            '<i class="bx bx-file text-primary me-2"></i>' +
+                            '<span class="text-success small fw-semibold flex-grow-1">' + file.name + '</span>' +
+                            '<button type="button" class="btn btn-sm btn-link text-danger p-0 ms-2" onclick="removeFile(\'' + fileId + '\')">' +
+                            '<i class="bx bx-trash"></i>' +
+                            '</button>';
+                        fileList.appendChild(fileItem);
+                    }
+
+                    // Update hidden input with file data (for form submission)
+                    hiddenInput.value = JSON.stringify(uploadedFiles);
+
+                    // Clear input so same files can be selected again if needed
+                    document.getElementById('fileUpload').value = '';
+                }, 2000);
+            }
+        });
+
+        // Function to remove a file from the list
+        window.removeFile = function(fileId) {
+            // Remove from DOM
+            var fileElement = document.getElementById('file_' + fileId);
+            if (fileElement) {
+                fileElement.remove();
+            }
+
+            // Remove from array
+            uploadedFiles = uploadedFiles.filter(function(file) {
+                return file.id !== fileId;
+            });
+
+            // Update hidden input
+            document.getElementById('uploadedFilesData').value = JSON.stringify(uploadedFiles);
+        };
+// ==================== FILE UPLOAD JS LOGIC END ====================
+
 
     });
 </script>
