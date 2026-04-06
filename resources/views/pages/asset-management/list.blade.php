@@ -661,7 +661,7 @@
                                         </div>
                                         <!-- Container for multiple uploaded filenames -->
                                         <div id="fileList" class="mt-2"></div>
-                                        <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                        <input type="hidden" id="uploadedFilesData" name="uploaded_files">
                                 </div>
                         </div>
                     </div>
@@ -1383,42 +1383,8 @@
 
             ignore: ":hidden:not(.force-validate)",
 
-            rules: {
-                // Asset Details
-                reason: {
-                    required: true,
-                    minlength: 3
-                },
-                date: {
-                    maxlength: 20
-                },
-                vendor_name: {
-                    required: true
-                },
-                remark: {
-                    required: true
-                },
-                tax_group: {
-                    required: true
-                },
-                'files[]': {
-                    required: true
-                },
 
-            },
-
-            messages: {
-                asset_name: "Enter asset name (min 3 characters)",
-                asset_code: "Max 20 characters allowed",
-
-                categ_id: "Select category",
-                sub_category_id: "Select sub category",
-                location: "Select location",
-                sub_location_id: "Select sub location",
-                status: "Select status",
-                cwip_invoice_id: "Enter CWIP invoice id",
-
-            },
+            
 
             errorElement: 'span',
             errorClass: 'text-danger',
