@@ -524,9 +524,9 @@
                                         <div class="col-sm-4">
                                             <select id="country" name="transf_to" class="form-select force-validate">
                                                 <option value="">Select</option>
-                                                <option value="Australia">dust</option>
-                                                <option value="Bangladesh">James smith</option>
-                                                <option value="Belarus">Jennifer Miller</option>
+                                                <option value="dust">dust</option>
+                                                <option value="james_smith">James smith</option>
+                                                <option value="jennifer_miller">Jennifer Miller</option>
                                             </select>
                                         </div>
                                     </div>
@@ -627,6 +627,9 @@
             </form>
         </div>
     </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+
     <!-- Extra Large Category Modal -->
     <div class="modal fade" id="exLargeModalCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">

@@ -87,8 +87,7 @@
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#exLargeModalUpdateAsset">
+                    <button type="button" id="updateBtn" class="btn btn-outline-primary">
                         <span class="tf-icons bx bx-edit"></span>&nbsp; Update Asset
                     </button>
                 </div>
@@ -184,16 +183,16 @@
 
 
 
-                            <th data-column="1"class="allotted-extra">Department</th>
-                            <th data-column="1"class="allotted-extra">Transferred To</th>
-                            <th data-column="1"class="allotted-extra">Allotted Upto</th>
-                            <th data-column="1"class="allotted-extra">Remarks</th>
+                            <th data-column="35"class="allotted-extra">Department</th>
+                            <th data-column="36"class="allotted-extra">Transferred To</th>
+                            <th data-column="37"class="allotted-extra">Allotted Upto</th>
+                            <th data-column="38"class="allotted-extra">Remarks</th>
 
-                            <th data-column="1"class="warranty-extra">AMC Vendor</th>
-                            <th data-column="1"class="warranty-extra">Warranty Vendor</th>
-                            <th data-column="1"class="warranty-extra">Insurance Start Date</th>
-                            <th data-column="1"class="warranty-extra">Insurance End Date</th>
-                            <th data-column="1"class="warranty-extra">AMC Start Date</th>
+                            <th data-column="39"class="warranty-extra">AMC Vendor</th>
+                            <th data-column="40"class="warranty-extra">Warranty Vendor</th>
+                            <th data-column="41"class="warranty-extra">Insurance Start Date</th>
+                            <th data-column="42"class="warranty-extra">Insurance End Date</th>
+                            <th data-column="43"class="warranty-extra">AMC Start Date</th>
 
                             <th>Condition</th>
                             <th>Model</th>
@@ -216,7 +215,7 @@
                         <tr data-asset-name="{{ $asset_datas->asset_name}}" data-asset-code="{{ $asset_datas->asset_code}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price}}">
 
                             <td>
-                                <input type="checkbox" class="asset-checkbox">
+                                <input type="checkbox" class="asset-checkbox" value="{{ $asset_datas->id }}">
                             </td>
 
                             <td>
@@ -234,61 +233,61 @@
                             <td data-column="3" class="default-extra">{{ $asset_datas->asset_code}}</td>
                             <td data-column="4" class="default-extra">{{ $asset_datas->category->name}}</td>
                             <td data-column="5" class="default-extra">{{ $asset_datas->created_at}}</td>
-                            <td data-column="1" class="default-extra">HO</td>
-                            <td data-column="1" class="default-extra">Admin</td>
-                            <td data-column="1" class="default-extra">Active</td>
-                            <td data-column="1" class="default-extra">2025-01-02</td>
-                            <td data-column="1" class="default-extra">{{ $asset_datas->location->name}}</td>
-                            <td data-column="1" class="default-extra">2025-01-03</td>
-                            <td data-column="1" class="default-extra">User</td>
-                            <td data-column="1" class="default-extra">{{ $asset_datas->brand}}</td>
+                            <td data-column="6" class="default-extra">HO</td>
+                            <td data-column="7" class="default-extra">Admin</td>
+                            <td data-column="8" class="default-extra">Active</td>
+                            <td data-column="9" class="default-extra">2025-01-02</td>
+                            <td data-column="10" class="default-extra">{{ $asset_datas->location->name}}</td>
+                            <td data-column="11" class="default-extra">2025-01-03</td>
+                            <td data-column="12" class="default-extra">User</td>
+                            <td data-column="13" class="default-extra">{{ $asset_datas->brand}}</td>
 
                             <!-- Additional -->
-                            <td data-column="1" class="additional-extra">{{ $asset_datas->additionalInfo->brand}}</td>
-                            <td data-column="1" class="additional-extra">{{ $asset_datas->additionalInfo->model}}</td>
-                            <td data-column="1" class="additional-extra">Linked Asset</td>
-                            <td data-column="1" class="additional-extra">{{ $asset_datas->additionalInfo->description}}</td>
-                            <td data-column="1" class="additional-extra">{{ $asset_datas->additionalInfo->serial_no}}</td>
-                            <td data-column="1" class="additional-extra">Upload Files</td>
+                            <td data-column="14" class="additional-extra">{{ $asset_datas->additionalInfo->brand}}</td>
+                            <td data-column="15" class="additional-extra">{{ $asset_datas->additionalInfo->model}}</td>
+                            <td data-column="16" class="additional-extra">Linked Asset</td>
+                            <td data-column="17" class="additional-extra">{{ $asset_datas->additionalInfo->description}}</td>
+                            <td data-column="18" class="additional-extra">{{ $asset_datas->additionalInfo->serial_no}}</td>
+                            <td data-column="19" class="additional-extra">Upload Files</td>
 
                             <!-- Purchase -->
-                            <td data-column="1" class="purchase-extra">-</td>
-                            <td data-column="1" class="purchase-extra">{{ $asset_datas->purchaseInfo->asset_po_number}}</td>
-                            <td data-column="1" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_date}}</td>
-                            <td data-column="1" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_no}}</td>
-                            <td data-column="1" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_date}}</td>
-                            <td data-column="1" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_price}}</td>
-                            <td data-column="1" class="purchase-extra">
+                            <td data-column="20" class="purchase-extra">-</td>
+                            <td data-column="21" class="purchase-extra">{{ $asset_datas->purchaseInfo->asset_po_number}}</td>
+                            <td data-column="22" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_date}}</td>
+                            <td data-column="23" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_no}}</td>
+                            <td data-column="24" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_date}}</td>
+                            <td data-column="25" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_price}}</td>
+                            <td data-column="26" class="purchase-extra">
                                 <select>
                                     <option>None</option>
                                     <option>Yes</option>
                                     <option>No</option>
                                 </select>
                             </td>
-                            <td data-column="1" class="purchase-extra">Partner</td>
+                            <td data-column="27" class="purchase-extra">Partner</td>
 
 
                             {{-- //financial data --}}
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_price}}</td>
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->end_of_life}}</td>
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_date}}</td>
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->depreciation_percent}}</td>
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->accumulated_depreciation}}</td>
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->scrap_value}}</td>
-                            <td data-column="1" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent}}</td>
+                            <td data-column="28" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_price}}</td>
+                            <td data-column="29" class="financial-extra">{{ $asset_datas->finacialInfos->end_of_life}}</td>
+                            <td data-column="30" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_date}}</td>
+                            <td data-column="31" class="financial-extra">{{ $asset_datas->finacialInfos->depreciation_percent}}</td>
+                            <td data-column="32" class="financial-extra">{{ $asset_datas->finacialInfos->accumulated_depreciation}}</td>
+                            <td data-column="33" class="financial-extra">{{ $asset_datas->finacialInfos->scrap_value}}</td>
+                            <td data-column="34" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent}}</td>
 
                             {{-- //allotted data --}}
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department ?? ''}}</td>
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->transferred_to ?? ''}}</td>
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->allotted_upto ?? ''}}</td>
-                            <td data-column="1" class="allotted-extra">{{ $asset_datas->assetallotedInfos->remark ?? ''}}t</td>
+                            <td data-column="35" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department ?? ''}}</td>
+                            <td data-column="36" class="allotted-extra">{{ $asset_datas->assetallotedInfos->transferred_to ?? ''}}</td>
+                            <td data-column="37" class="allotted-extra">{{ $asset_datas->assetallotedInfos->allotted_upto ?? ''}}</td>
+                            <td data-column="38" class="allotted-extra">{{ $asset_datas->assetallotedInfos->remark ?? ''}}t</td>
 
                             {{--  // warranty data --}}
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_vendor ?? ''}}</td>
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->warranty_vendor  ?? ''}}</td>
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_date ?? ''}}</td>
-                            <td data-column="1" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_end ?? ''}}</td>
-                            <td class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_start_date ?? ''}}</td>
+                            <td data-column="39" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_vendor ?? ''}}</td>
+                            <td data-column="40" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->warranty_vendor  ?? ''}}</td>
+                            <td data-column="41" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_date ?? ''}}</td>
+                            <td data-column="42" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_end ?? ''}}</td>
+                            <td data-column="43" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_start_date ?? ''}}</td>
 
                             <!-- Existing -->
                             <td>Good</td>
@@ -326,7 +325,7 @@
                                 <label class="col-sm-2 col-form-label" >View Name</label>
                                 <div class="col-sm-4">
                                     <input type="text" name="view_name" class="form-control force-validate" 
-                                        placeholder="Enter Asset Name" />
+                                        placeholder="" />
                                 </div>
                                 <label class="col-sm-2 col-form-label" >Columns</label>
                                 <div class="col-sm-4">    
@@ -539,7 +538,7 @@
                                 <label class="col-sm-2 col-form-label" >New Location</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" 
-                                        placeholder="Enter Asset Name" />
+                                        placeholder="" />
                                 </div>
                             </div>
                             <div class="row mb-3 mx-2">
@@ -568,7 +567,7 @@
                                 <label class="col-sm-2 col-form-label" >Remark</label>
                                 <div class="col-sm-4">
                                     <input type="text" class="form-control" 
-                                        placeholder="Enter Asset Name" />
+                                        placeholder="" />
                                 </div>
                             </div>
                             <div class="row mb-3 mx-2 align-items-center">
@@ -623,7 +622,7 @@
                             <label class="col-sm-2 col-form-label" >Discard Date</label>
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" name="date"
-                                    placeholder="Enter Asset Name" value="{{ date('Y-m-d') }}" />
+                                    placeholder="" value="{{ date('Y-m-d') }}" />
                             </div>
                             <label class="col-sm-2 col-form-label" >Vendor Name</label>
                             <div class="col-sm-4">
@@ -662,7 +661,7 @@
                                         <!-- Container for multiple uploaded filenames -->
                                         <div id="fileList" class="mt-2"></div>
                                         <input type="hidden" id="uploadedFilesData" name="uploaded_files">
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -690,12 +689,12 @@
                             <label class="col-sm-2 col-form-label" >Asset</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                             <label class="col-sm-2 col-form-label" >Location</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
@@ -711,14 +710,14 @@
                             <label class="col-sm-2 col-form-label" >Description</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" 
-                                    placeholder="Enter Asset Name" />   
+                                    placeholder="" />   
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
                             <label class="col-sm-2 col-form-label" >Asset Category</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
@@ -765,7 +764,7 @@
                             {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
@@ -784,7 +783,7 @@
                             {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
                             <div class="col-sm-4">
                                 <input type="date" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
@@ -801,14 +800,14 @@
                             <label class="col-sm-2 col-form-label" >Grace/Execution Period Before</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
                             <label class="col-sm-2 col-form-label" >Grace/Execution Period After</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" 
-                                    placeholder="Enter Asset Name" />
+                                    placeholder="" />
                             </div>
                         </div>
                         <div class="row mb-3 mx-2">
@@ -902,32 +901,28 @@
                                                     <label class="col-sm-2 col-form-label" >Asset Name</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" 
-                                                            placeholder="Enter Asset Name" />
+                                                            placeholder="" id="asset_name"/>
                                                     </div>
                                                     <label class="col-sm-2 col-form-label" >Asset Image</label>
                                                     <div class="col-sm-4">
-                                                        <input class="form-control" type="file" id="asset_image" />
+                                                        <input class="form-control" type="file"  />
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="basic-default-company">Asset
+                                                    <label class="col-sm-2 col-form-label">Asset
                                                         Code</label>
                                                     <div class="col-sm-4">
-                                                        <div class="form-text">Leave blank to auto-generate. System generated code
-                                                            formats can be setup from Advanced settings</div>
-                                                        <input type="text" class="form-control" id="basic-default-company"
-                                                            placeholder="ACME Inc." />
+                                                        <input type="text" class="form-control" id="asset_code"/>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Category</label>
+                                                    <label class="col-sm-2 col-form-label">Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                     <div class="col-sm-4">
-                                                        <select id="country" class="select2 form-select">
+                                                        <select class="form-select" id="category_id" name="categ_id">
                                                             <option value="">Select</option>
-                                                            <option value="Australia">Australia</option>
-                                                            <option value="Bangladesh">Bangladesh</option>
-                                                            <option value="Belarus">Belarus</option>
-                                                            <option value="Brazil">Brazil</option>
+                                                            @foreach ($categories as $categ)
+                                                            <option value="{{ $categ->id }}">{{ $categ->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -938,15 +933,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Location</label>
+                                                    <label class="col-sm-2 col-form-label">Sub Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                     <div class="col-sm-4">
-                                                        <select id="country" class="select2 form-select">
+                                                        <select class="form-select"  name="sub_category_id" id="sub_category_id">
                                                             <option value="">Select</option>
-                                                            <option value="Australia">Australia</option>
-                                                            <option value="Bangladesh">Bangladesh</option>
-                                                            <option value="Belarus">Belarus</option>
-                                                            <option value="Brazil">Brazil</option>
-                                                            <option value="Canada">Canada</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-sm-2 col-form-label" >Location <span style="color:#f1416c; font-size:18px;">*</span></label>
+                                                    <div class="col-sm-4">
+                                                        <select id="location_id" name="location" class="form-select">
+                                                            <option value="">Select</option>
+                                                            @foreach ($location as $locations)
+                                                            <option value="{{ $locations->id }}">{{ $locations->name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -957,15 +958,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" for="basic-default-phone">Status</label>
+                                                    <label class="col-sm-2 col-form-label">Sub Location <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                     <div class="col-sm-4">
-                                                        <select id="country" class="select2 form-select">
+                                                        <select class="form-select"  name="sub_location_id" id="sub_location_id">
                                                             <option value="">Select</option>
-                                                            <option value="Australia">Australia</option>
-                                                            <option value="Bangladesh">Bangladesh</option>
-                                                            <option value="Belarus">Belarus</option>
-                                                            <option value="Brazil">Brazil</option>
-                                                            <option value="Canada">Canada</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-sm-2 col-form-label" >Status <span style="color:#f1416c; font-size:18px;">*</span></label>
+                                                    <div class="col-sm-4">
+                                                        <select id="status_id" name="status" class=" form-select">
+                                                            <option value="">Select Status</option>
+                                                            @foreach ($status as $statuses)
+                                                            <option value="{{ $statuses->id }}">{{ $statuses->status_name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-4">
@@ -976,17 +983,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-sm-2 col-form-label" >Asset Name</label>
-                                                    <div class="col-sm-4">
-                                                        <input type="text" class="form-control" 
-                                                            placeholder="Enter Asset Name" />
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-3">
                                                     <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
                                                     <div class="col-sm-4">
                                                         <input type="text" class="form-control" 
-                                                            placeholder="Enter Asset Name" />
+                                                            placeholder="" id="cwip_invoice_id"/>
                                                     </div>
                                                 </div>
                                             </form>
@@ -1006,55 +1006,69 @@
                                     <div id="accordionTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Condition</label>
+                                                <label class="col-sm-2 col-form-label" >Condition</label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="condition" name="condition" class=" form-select force-validate">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
-                                                        <option value="Canada">Canada</option>
+                                                        <option value="damaged">Damaged</option>
+                                                        <option value="good">Good</option>
+                                                        <option value="poor">Poor</option>
+                                                        <option value="new">New</option>
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" >Brand</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" id="brand" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Model</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" id="model" />
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
+                                                <label class="col-sm-2 col-form-label" >Link Asset</label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
-                                                        <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
-                                                        <option value="Canada">Canada</option>
+                                                    <select id="link_asset" class="select2 form-select" name="link_asset[]" multiple>
+                                                        <option></option>
+                                                        @foreach($asset_list as $asset_lists)
+                                                            <option value="{{ $asset_lists->id }}">
+                                                                {{ $asset_lists->asset_name }} ({{ $asset_lists->asset_code }})
+                                                            </option>
+                                                        @endforeach
                                                     </select>
+                                                    <small class="form-text">The selected assets will be linked to this asset. The selected assets are the child assets and this will be the parent asset</small>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Description</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text"  id="description"/>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" >Serial No</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" id="serial_no" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" >Upload Files</label>
-                                                <div class="col-sm-4">
-                                                    <input class="form-control" type="file" id="asset_image" />
+                                        <label class="col-sm-2 col-form-label">Upload Files</label>
+                                        <small class="form-text">Additional Documents (For Insurance / Maintenance / Replacements, etc.)</small>
+                                        <div class="col-sm-4">
+                                            <label class="btn btn-sm btn-primary mb-0">
+                                                <i class="bx bx-upload me-1"></i> Upload Files
+                                                <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                            </label>
+                                            <!-- Loader shown during file processing -->
+                                            <div id="fileLoader" class="mt-2 d-none">
+                                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
                                                 </div>
+                                                <span class="ms-2 text-muted small">Uploading...</span>
                                             </div>
+                                            <!-- Container for multiple uploaded filenames -->
+                                            <div id="fileList" class="mt-2"></div>
+                                            <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                        </div>
+                                    </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1073,34 +1087,27 @@
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Vendor Name</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" name="vendor_name" id="vendor_name"  />
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Link Asset</label>
+                                                <label class="col-sm-2 col-form-label" >Po Number</label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
-                                                        <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
-                                                        <option value="Canada">Canada</option>
-                                                    </select>
+                                                    <input class="form-control force-validate" type="text" id="po_number" name="po_number" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Invoice Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="invoice_date" />
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" >Invoice No</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" id="invoice_no" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Purchase Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date"  id="purchase_date"/>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" >Purchase Price</label>
                                                 <div class="col-sm-4">
@@ -1110,12 +1117,9 @@
                                                         </span>
                                                         <input
                                                             type="text"
-                                                            name="full_name"
+                                                            name="purchase_price"
                                                             class="form-control"
-                                                            id="full_name"
-                                                            placeholder="Enter Full Name"
-                                                            aria-label="Full Name"
-                                                            aria-describedby="full_name_icon"
+                                                            id="purchase_price"
                                                         />
                                                     </div>
                                                 </div>
@@ -1124,10 +1128,8 @@
                                                 <label class="col-sm-2 col-form-label" >Self Owned / Partner</label>
                                                 <div class="col-sm-4">
                                                     <div class="form-check form-switch mb-2">
-                                                        <input class="form-check-input" type="checkbox"
-                                                            id="flexSwitchCheckDefault" />
-                                                        <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
-                                                            checkbox input</label>
+                                                        <input class="form-check-input" type="checkbox" id="is_self_owned"/>
+                                                        <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1155,28 +1157,25 @@
                                                         </span>
                                                         <input
                                                             type="text"
-                                                            name="full_name"
+                                                            name="capitalization_price"
                                                             class="form-control"
-                                                            id="full_name"
-                                                            placeholder="Enter Full Name"
-                                                            aria-label="Full Name"
-                                                            aria-describedby="full_name_icon"
+                                                            id="capitalization_price"
                                                         />
                                                     </div>
                                                 </div> 
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life</label>
+                                                <label class="col-sm-2 col-form-label" >End Of Life</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="end_of_life" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Capitalization Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date"  id="capitalization_date"/>
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Depreciation%</label>
+                                                <label class="col-sm-2 col-form-label" >Depreciation%</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" id="depreciation" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -1189,12 +1188,9 @@
                                                         </span>
                                                         <input
                                                             type="text"
-                                                            name="full_name"
+                                                            name="accumulated_depreciation"
                                                             class="form-control"
-                                                            id="full_name"
-                                                            placeholder="Enter Full Name"
-                                                            aria-label="Full Name"
-                                                            aria-describedby="full_name_icon"
+                                                            id="accumulated_depreciation"
                                                         />
                                                     </div>
                                                 </div>
@@ -1202,12 +1198,12 @@
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" >Scrap Value</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="text" name="" id="scrap_value" />
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Income Tax
+                                                <label class="col-sm-2 col-form-label" >Income Tax
                                                     Depreciation%</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text" id="income_tax_depreciation" name="income_tax_depreciation"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1228,34 +1224,31 @@
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Department</label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="department" name="department" class="form-select force-validate">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
+                                                        <option value="hr">HR</option>
+                                                        <option value="accounting">Accounting</option>
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
-                                                    To</label>
+                                                    To<span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="transf_to" name="transf_to" class="form-select force-validate">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
+                                                        <option value="dust">dust</option>
+                                                        <option value="james_smith">James smith</option>
+                                                        <option value="jennifer_miller">Jennifer Miller</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Allotted Upto</label>
+                                                <label class="col-sm-2 col-form-label" >Allotted Upto</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="allotted_upto"  />
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Remarks</label>
+                                                <label class="col-sm-2 col-form-label" >Remarks</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text"  id="remarks"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1274,72 +1267,55 @@
                                     <div id="accordionSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Vendor</label>
+                                                <label class="col-sm-2 col-form-label" >AMC Vendor</label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="amc_vendor" class=" form-select">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
+                                                        <option value="amc_imc">Acme Inc.(S00081)</option>
                                                     </select>
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty
+                                                <label class="col-sm-2 col-form-label" >Warranty
                                                     Vendor</label>
                                                 <div class="col-sm-4">
-                                                    <select id="country" class="select2 form-select">
+                                                    <select id="warranty_vendor" class=" form-select">
                                                         <option value="">Select</option>
-                                                        <option value="Australia">Australia</option>
-                                                        <option value="Bangladesh">Bangladesh</option>
-                                                        <option value="Belarus">Belarus</option>
-                                                        <option value="Brazil">Brazil</option>
+                                                        <option value="warranty_vendor">Acme Inc.(S00081)</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Start
+                                                <label class="col-sm-2 col-form-label" >Insurance Start
                                                     Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date"  id="insurance_start_date" name="insurance_start_date"/>
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
+                                                <label class="col-sm-2 col-form-label" >Insurance End
                                                     Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="text" id="asset_image" />
+                                                    <input class="form-control" type="text"  id="insurance_end_date" name="insurance_end_date"/>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Start
+                                                <label class="col-sm-2 col-form-label" >AMC Start
                                                     Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="amc_start_date" name="amc_start_date" />
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty End
+                                                <label class="col-sm-2 col-form-label" >Warranty End
                                                     Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="warranty_end_date" name="warranty_end_date"/>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
+                                                <label class="col-sm-2 col-form-label" >AMC End Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="amc_end_date"  />
                                                 </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
+                                                <label class="col-sm-2 col-form-label" >Warranty Start
                                                     Date</label>
                                                 <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
-                                                </div>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
-                                                <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
-                                                </div>
-                                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
-                                                    Date</label>
-                                                <div class="col-sm-4">
-                                                    <input class="form-control" type="date" id="asset_image" />
+                                                    <input class="form-control" type="date" id="warranty_start_date" />
                                                 </div>
                                             </div>
                                         </div>
@@ -1355,7 +1331,7 @@
                         </div>
                     </div>
                 </div>
-                </div>
+            </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                         Close
@@ -1365,19 +1341,392 @@
             </div>
         </div>
     </div>
+
+    <!-- Extra Large Update Category Modal -->
+    <div class="modal fade" id="exLargeModalUpdateCategory" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">Update Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="categoryForm">
+                @csrf
+                <div class="modal-body">
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionSeven" aria-expanded="true" aria-controls="accordionSeven">
+                                    Category Details
+                                </button>
+                            </h2>
+                            <div id="accordionSeven" class="accordion-collapse collapse show"
+                                data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Category Name</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" placeholder="Enter Category Name" name="parent_category_name">
+                                                <select class="form-select" name="selective_category_id">
+                                                    <option value="">Select Categories</option>
+                                                    <option value=""></option> 
+                                                </select>
+                                            </div>
+                                            {{-- <div class="col-sm-4">
+                                                <button type="button" class="btn btn-primary">
+                                                    &#10006;
+                                                </button>
+                                            </div> --}}
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Show Category in
+                                                Inventory Module</label>
+                                            <div class="col-sm-4">
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault" name="is_inventory" value="1"/>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label">Sub Category</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="category_name"
+                                                    placeholder="Enter Category Name" name="sub_category_name"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Show this category
+                                                assets in Linked Assets</label>
+                                            <div class="col-sm-4">
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault" name="is_link_asset" value="1"/>
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" >Category Code</label>
+                                            <div class="col-sm-4">
+                                                <input type="text" class="form-control" id="category_code" name="category_code" 
+                                                    placeholder="Enter Category Code" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Default Transfer
+                                                Duration</label>
+                                            <div class="col-sm-2">
+                                                <input type="text" class="form-control" 
+                                                    placeholder="" name="trafs_duration"/>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <select id="country" class="form-select" name="trafs_duration_type">
+                                                    <option value="">Select</option>
+                                                    <option value="day">Day(s)</option>
+                                                    <option value="month">Month(s)</option>
+                                                    <option value="year">Year(s)</option>
+                                                </select>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" >Cascade</label>
+                                            <div class="col-sm-4">
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault" name="cascade" value="1" />
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label" >Allow Auto
+                                                Extend</label>
+                                            <div class="col-sm-4">
+                                                <div class="form-check form-switch mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        id="flexSwitchCheckDefault" name="allow_auto" value="1" />
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionEight" aria-expanded="true" aria-controls="accordionEight">
+                                    Financial Information
+                                </button>
+                            </h2>
+                            <div id="accordionEight" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">End of Life</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control force-validate" type="text" id="end_of_life" name="end_of_life"/>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <select class="form-select force-validate" id="end_of_life_type" name="end_of_life_type">
+                                                <option value="">Select</option>
+                                                <option value="day">Day(s)</option>
+                                                <option value="month">Month(s)</option>
+                                                <option value="year">Year(s)</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Depreciation %</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text"  id="depreciation" name="depreciation"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Scrap Value</label>
+                                        <div class="col-sm-2">
+                                            <input class="form-control force-validate" type="text" id="scrap_value" name="scrap_value"/>
+                                        </div>
+                                        {{-- <div class="col-sm-2">
+                                        <select id="scrap_value_type" class="form-select force-validate" name="scrap_value_type">
+                                            <option value="">Select</option>
+                                            <option value="Percentage">Percentage</option>
+                                            <option value="Amount">Amount</option>
+                                        </select>
+                                        </div> --}}
+
+                                        <label class="col-sm-2 col-form-label" >Income Tax
+                                            Depreciation%</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text"  id="income_tax_depreciation" name="income_tax_depreciation"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionnine" aria-expanded="true" aria-controls="accordionnine">
+                                    Default Activity Schedules For Assets In This Category
+                                </button>
+                            </h2>
+                            <div id="accordionnine" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div id="addition-container">
+                                        <div class="addition">
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" >Details</label>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" >Assignee
+                                                    Based On</label>
+                                                <div class="col-sm-4">
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input force-validate" name="assign_based" type="radio" value="1"
+                                                            id="assign_based" />
+                                                        <label class="form-check-label"> Users Involved
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input force-validate" type="radio" name="assign_based" value="2"
+                                                            id="assign_based" />
+                                                        <label class="form-check-label"> User Role
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check mt-3">
+                                                        <input class="form-check-input force-validate" type="radio" name="assign_based" value="3"
+                                                            id="assign_based" />
+                                                        <label class="form-check-label" for="defaultCheck1"> User group
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label " >User
+                                                    Type</label>
+                                                <div class="col-sm-4">
+                                                    <select id="user_type" name="user_type" class="form-select force-validate">
+                                                        <option value="">Select</option>
+                                                        <option value="Created by">Created by</option>
+                                                        <option value="Asset Transferred From User">Asset Transferred From User</option>
+                                                        <option value="Location Head-Primary Location">Location Head-Primary Location</option>
+                                                        <option value="Alternate Category Head 1">Alternate Category Head 1</option>
+                                                        <option value="Category Head">Category Head</option>
+                                                        <option value="Alternate Location Head 1">Alternate Location Head 1</option>
+                                                        <option value="Department Head">Department Head</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" >Assignee
+                                                    Role</label>
+                                                <div class="col-sm-4">
+                                                    <select id="assign_role" class="form-select force-validate" name="assign_role">
+                                                        <option value="">Select</option>
+                                                        <option value="Owner">Owner</option>
+                                                        <option value="Employee">Employee</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label"
+                                                    >Assignee</label>
+                                                <div class="col-sm-4">
+                                                    <select id="assignee" name="assignee" class="form-select force-validate">
+                                                        <option value="">Select</option>
+                                                        <option value="Australia">test</option>
+                                                        <option value="Bangladesh">Admin</option>
+                                                        <option value="Belarus">James Smith</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" >Activity
+                                                    Type</label>
+                                                <div class="col-sm-4">
+                                                    <select id="activity_type" name="activity_type[]" class="form-select force-validate">
+                                                        <option value="">Select</option>
+                                                        <option value="Calibration">Calibration</option>
+                                                        <option value="Inspection">Inspection</option>
+                                                        <option value="Warranty Expiry">Warranty Expiry</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label"
+                                                    >Occurs</label>
+                                                <div class="col-sm-4">
+                                                    <select id="occurs" name="occurs[]" class="form-select force-validate">
+                                                        <option value="">Select</option>
+                                                        <option value="daily">Daily</option>
+                                                        <option value="weekly">Weekly</option>
+                                                        <option value="monthly">Monthly</option>
+                                                        <option value="yearly">Yearly</option>
+                                                        <option value="one_time">One Time</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label" >Start
+                                                    Schedule After (Days)</label>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control force-validate" type="text" name="start_schedule_after[]"  />
+                                                </div>
+                                                <label class="col-sm-2 col-form-label" >Activity
+                                                    Reminders</label>
+                                                <div class="col-sm-4">
+                                                    <select id="activity_reminder" name="activity_reminder[]" class="form-select force-validate">
+                                                        <option value="">Select</option>
+                                                        <option value="1">One</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label">Schedule Based On</label>
+                                                <div class="col-sm-4">
+                                                    <select id="schedule_based_on" class="form-select force-validate" name="schedule_based_on[]">
+                                                        <option value="">Select</option>
+                                                        <option value="created_date">Created Date</option>
+                                                        <option value="capitalization_date">Capitalization Date</option>
+                                                        <option value="Purchase_date">Purchase Date</option>
+                                                    </select>
+                                                </div>
+                                                <label class="col-sm-2 col-form-label">Custom
+                                                    Days</label>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control force-validate" type="text" id="custom_days"  name="custom_days[]" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-sm-4">
+                                            <button type="button" id="addBtns" class="btn btn-primary">
+                                                &#43;
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordionten" aria-expanded="true" aria-controls="accordionten">
+                                    Category Name Localization
+                                </button>
+                            </h2>
+                            <div id="accordionten" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="row mb-3">
+                                        <label class="col-sm-4 col-form-label" >Category Name
+                                            Localization</label>
+                                    </div>
+                                    <div class="row mb-3">
+                                        {{-- <label class="col-sm-2 col-form-label" ></label>
+                                        <div class="col-sm-4">
+                                        </div> --}}
+                                        <label class="col-sm-2 col-form-label" ></label>
+                                        <div class="col-sm-4">
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Category
+                                            Name</label>
+                                        <div class="col-sm-4">
+                                            <label class=" col-form-label" >Language</label>
+                                        </div>
+                                    </div>
+                                    <div id="addition-container-two">
+                                        <div class="addition-two">
+                                            <div class="row mb-3">
+                                                <div class="col-sm-4">
+                                                    <button type="button" id="addBtnLocal" class="btn btn-primary">
+                                                        &#43;
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <input class="form-control force-validate " type="text" name="category_name[]" />
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <select id="language" class="form-select force-validate" name="language[]">
+                                                        <option value="">Select</option>
+                                                        <option value="marathi">Marathi</option>
+                                                        <option value="hindi">Hindi</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('section-js')
 <script>
     $(document).ready(function () {
 
+        $('#link_asset').select2({
+            dropdownParent: $('#exLargeModalUpdateAsset'),
+            placeholder: "Select Asset",
+            allowClear: true,
+            width: '100%'
+        }).next('.select2-container').css('width', '100%');
+
 
         $('#assetDispoForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
-
-
-            
-
             errorElement: 'span',
             errorClass: 'text-danger',
 
@@ -1664,7 +2013,7 @@
                 success: function (response) {
 
                     let selectedColumns = response.columns; // [1,2,3]
-                    console.log(selectedColumns);
+    
                     // Hide all first
                     $('[data-column]').hide();
 
@@ -1798,6 +2147,118 @@
             modal.show();
         });
 
+        $('#updateBtn').on('click', function () {
+
+            let checked = $('.asset-checkbox:checked'); //  define it
+
+            if (checked.length === 0) {
+                showToast('Please select at least one asset');
+                return;
+            }
+
+            let id = checked.val(); //  now works
+            loadAssetData(id);
+        });
+
+        function loadAssetData(id) {
+
+            $.ajax({
+                url: '/get-asset-details/' + id,
+                type: 'GET',
+
+                success: function (res) {
+
+                    //  Asset Details
+                    $('#asset_name').val(res.asset.asset_name);
+                    $('#asset_code').val(res.asset.asset_code);
+                    $('#cwip_invoice_id').val(res.asset.cwip_invoice_id);
+                    
+                    $('#category_id').val(res.asset.category_id).trigger('change');
+                    $('#sub_category_id').val(res.asset.sub_category_id).trigger('change');
+
+                    $('#location_id').val(res.asset.location_id).trigger('change');
+                    $('#sub_location_id').val(res.asset.sub_location_id).trigger('change');
+
+                    $('#status_id').val(res.asset.status_id).trigger('change');
+
+                    //  Additional Info
+                    $('#brand').val(res.additional.brand);
+                    $('#condition').val(res.additional.condition);
+                    $('#model').val(res.additional.model);
+                    $('#serial_no').val(res.additional.serial_no);
+                    $('#description').val(res.additional.description);
+
+                    //  Purchase Info
+                    $('#vendor_name').val(res.purchase.vendor_name);
+                    $('#po_number').val(res.purchase.po_number);
+                    $('#invoice_date').val(res.purchase.invoice_date);
+                    $('#invoice_no').val(res.purchase.invoice_no);
+                    $('#purchase_date').val(res.purchase.purchase_date);
+                    $('#purchase_price').val(res.purchase.purchase_price);
+                    $('#is_self_owned').prop('checked', res.purchase.is_self_owned == 1);
+
+
+                    //  Financial Info
+                    $('#capitalization_price').val(res.financial.capitalization_price);
+                    $('#capitalization_date').val(res.financial.capitalization_date);
+                    $('#depreciation').val(res.financial.depreciation_percent);
+                    $('#end_of_life').val(res.financial.end_of_life);
+                    $('#scrap_value').val(res.financial.scrap_value);
+                    $('#income_tax_depreciation').val(res.financial.income_tax_depreciation_percent);
+                    $('#accumulated_depreciation').val(res.financial.accumulated_depreciation);
+
+                    //  Alloted Info
+                    $('#department').val(res.assetallotedInfos.department);
+                    $('#transf_to').val(res.assetallotedInfos.transferred_to);
+                    $('#allotted_upto').val(res.assetallotedInfos.allotted_upto);
+                    $('#remarks').val(res.assetallotedInfos.remarks);
+
+                    //  Warranty Info
+                    $('#amc_vendor').val(res.assetwarrantyInfos.amc_vendor);
+                    $('#warranty_vendor').val(res.assetwarrantyInfos.warranty_vendor);
+                    $('#insurance_start_date').val(res.assetwarrantyInfos.insurance_start_date);
+                    $('#insurance_end_date').val(res.assetwarrantyInfos.insurance_end_date);
+                    $('#amc_start_date').val(res.assetwarrantyInfos.amc_start_date);
+                    $('#amc_end_date').val(res.assetwarrantyInfos.amc_end_date);
+                    $('#warranty_end_date').val(res.assetwarrantyInfos.warranty_end_date);
+                    $('#warranty_start_date').val(res.assetwarrantyInfos.warranty_start_date);
+
+                    // ================= LINKED ASSETS (MULTI SELECT) =================
+                    if (res.linked_assets) {
+                        let ids = res.linked_assets.map(item => item.id);
+                        $('#link_asset').val(ids).trigger('change'); // select2
+                    }
+
+                     // ================= FILES SHOW =================
+                    $('#fileList').html('');
+
+                    if (res.files && res.files.length > 0) {
+
+                        res.files.forEach(function(file) {
+
+                            let fileName = file.file_path.split('/').pop();
+                            let fileUrl = '/storage/' + file.file_path;
+
+                            let fileHtml = `
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="bx bx-file me-2 text-primary"></i>
+                                    <a href="${fileUrl}" target="_blank">${fileName}</a>
+                                </div>
+                            `;
+
+                            $('#fileList').append(fileHtml);
+                        });
+
+                    } else {
+                        $('#fileList').html('<small class="text-muted">No files uploaded</small>');
+                    }
+
+                    
+                    new bootstrap.Modal(document.getElementById('exLargeModalUpdateAsset')).show();
+                }
+            });
+        }
+
         $(document).on('keyup change', '.sold_value, .pur_price', function () {
 
             let card = $(this).closest('.card'); // current section
@@ -1880,8 +2341,68 @@
             // Update hidden input
             document.getElementById('uploadedFilesData').value = JSON.stringify(uploadedFiles);
         };
-// ==================== FILE UPLOAD JS LOGIC END ====================
+        // ==================== FILE UPLOAD JS LOGIC END ====================
 
+         // for add page sub categories
+
+        $('#category_id').on('change', function () {
+
+            let categoryId = $(this).val();
+
+            if (categoryId) {
+
+                $.ajax({
+                    url: "/get-subcategories/" + categoryId, // route
+                    type: "GET",
+
+                    success: function (response) {
+
+                        let subCategory = $('#sub_category_id');
+                        subCategory.empty();
+                        subCategory.append('<option value="">Select</option>');
+
+                        $.each(response, function (key, value) {
+                            subCategory.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // refresh select2
+                        subCategory.trigger('change');
+                    }
+                });
+
+            } else {
+                $('#sub_category_id').empty().append('<option value="">Select</option>');
+            }
+        });
+
+        $('#location_id').on('change', function () {
+
+            let locationId = $(this).val();
+            if (locationId) {
+
+                $.ajax({
+                    url: "/get-sublocation/" + locationId, // route
+                    type: "GET",
+
+                    success: function (response) {
+                        console.log(response);
+                        let subLocations = $('#sub_location_id');
+                        subLocations.empty();
+                        subLocations.append('<option value="">Select</option>');
+
+                        $.each(response, function (key, value) {
+                            subLocations.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+
+                        // refresh select2
+                        subLocations.trigger('change');
+                    }
+                });
+
+            } else {
+                $('#sub_location_id').empty().append('<option value="">Select</option>');
+            }
+        });
 
     });
 </script>

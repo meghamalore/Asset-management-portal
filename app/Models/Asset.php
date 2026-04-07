@@ -59,4 +59,24 @@ class Asset extends Model
     {
         return $this->hasOne(AssetWarrantyInfos::class, 'asset_id');
     }
+
+    // public function linkedAssets()
+    // {
+    //     return $this->belongsToMany(AssetLinks::class,'asset_id');
+    // }
+
+    public function linkedAssets()
+    {
+        return $this->belongsToMany(
+            Asset::class,          // same model
+            'asset_links',         // pivot table
+            'asset_id',            // current asset id
+            'linked_asset_id'      // linked asset id
+        );
+    }
+
+    public function files()
+    {
+        return $this->hasMany(AssetFiles::class, 'asset_id');
+    }
 }

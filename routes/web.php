@@ -28,5 +28,6 @@ Route::delete('/custom-view/delete/{id}', [CustomeViewControlller::class, 'destr
 Route::get('/custom-view/{id}', [CustomeViewControlller::class, 'show']);
 
 Route::post('/insert-asset-disposal', [AssetDisposalController::class, 'store'])->name('disposal.store');
+Route::get('/get-asset-details/{id}', [AssetController::class, 'getAssetDetails']);
 
 
