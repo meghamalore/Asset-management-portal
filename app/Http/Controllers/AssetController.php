@@ -15,7 +15,10 @@ use App\Models\ColumnMaster;
 use App\Models\CustomeView;
 use App\Models\Location;
 use App\Models\SubLocation;
-
+use App\Models\Category;
+use App\Models\Status;
+use App\Models\AssetTransfer;
+use Illuminate\Support\Facades\Storage;
 
 
 class AssetController extends Controller
@@ -157,12 +160,301 @@ class AssetController extends Controller
 
     public function index(){
 
+        $categories = Category::with('subCategories:id,category_id,name')->get();
         $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->latest()->whereNull('status')->get();
         $column_master = ColumnMaster::select('id','column_name')->get();
         $views = CustomeView::select('id','view_name')->get();
         $location = Location::select('id','name')->get();
         $sub_location = SubLocation::select('id','name')->get();
+        $status = Status::select('id','status_name')->get();
+        $asset_list = Asset::select('id','asset_name','asset_code')->get();
 
-        return view('pages.asset-management.list',compact('asset_data','column_master','views','location','sub_location'));
+
+        return view('pages.asset-management.list',compact('asset_data','column_master','views','location','sub_location','categories','status','asset_list'));
     }
+
+    public function getAssetDetails($id)
+    {
+        $asset = Asset::with([
+            'additionalInfo',
+            'purchaseInfo',
+            'finacialInfos',
+            'assetallotedInfos',
+            'assetwarrantyInfos',
+            'linkedAssets',
+            'files'
+        ])->findOrFail($id);
+        return response()->json([
+            'asset' => $asset,
+            'additional' => $asset->additionalInfo,
+            'purchase' => $asset->purchaseInfo,
+            'financial' => $asset->finacialInfos,
+            'assetallotedInfos' => $asset->assetallotedInfos,
+            'assetwarrantyInfos' => $asset->assetwarrantyInfos,
+            'linked_assets' => $asset->linkedAssets,
+            'files' => $asset->files
+        ]);
+    }
+
+    public function updateAsset(Request $request, $id)
+    {
+        try {
+
+            $asset = Asset::findOrFail($id);
+
+            /*
+            |--------------------------------------------------------------------------
+            | MAIN ASSET
+            |--------------------------------------------------------------------------
+            */
+            $asset->update($request->only([
+                'asset_name',
+                'asset_code',
+                'category_id',
+                'sub_category_id',
+                'location_id',
+                'sub_location_id',
+                'status_id',
+                'cwip_invoice_id'
+            ]));
+
+            /*
+            |--------------------------------------------------------------------------
+            | IMAGE UPLOAD
+            |--------------------------------------------------------------------------
+            */
+            if ($request->hasFile('image')) {
+
+                // delete old image (optional)
+                if ($asset->image && Storage::exists($asset->image)) {
+                    Storage::delete($asset->image);
+                }
+
+                $path = $request->file('image')->store('assets');
+
+                $asset->update([
+                    'image' => $path
+                ]);
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | ADDITIONAL INFO
+            |--------------------------------------------------------------------------
+            */
+            $asset->additionalInfo()->updateOrCreate(
+                ['asset_id' => $id],
+                $request->only([
+                    'condition',
+                    'brand',
+                    'model',
+                    'description',
+                    'serial_no'
+                ])
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | PURCHASE INFO
+            |--------------------------------------------------------------------------
+            */
+            $asset->purchaseInfo()->updateOrCreate(
+                ['asset_id' => $id],
+                [
+                    'vendor_name'     => $request->vendor_name,
+                    'po_number'       => $request->po_number,
+                    'invoice_date'    => $request->invoice_date,
+                    'invoice_no'      => $request->invoice_no,
+                    'purchase_date'   => $request->purchase_date,
+                    'purchase_price'  => $request->purchase_price,
+                    'is_self_owned'   => $request->is_self_owned ?? 0,
+                ]
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | FINANCIAL INFO
+            |--------------------------------------------------------------------------
+            */
+            $asset->finacialInfos()->updateOrCreate(
+                ['asset_id' => $id],
+                $request->only([
+                    'capitalization_price',
+                    'capitalization_date',
+                    'depreciation',
+                    'accumulated_depreciation',
+                    'scrap_value',
+                    'income_tax_depreciation',
+                    'end_of_life'
+                ])
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | ALLOTTED INFO
+            |--------------------------------------------------------------------------
+            */
+            $asset->assetallotedInfos()->updateOrCreate(
+                ['asset_id' => $id],
+                $request->only([
+                    'department',
+                    'transf_to',
+                    'allotted_upto',
+                    'remarks'
+                ])
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | WARRANTY INFO
+            |--------------------------------------------------------------------------
+            */
+            $asset->assetwarrantyInfos()->updateOrCreate(
+                ['asset_id' => $id],
+                $request->only([
+                    'amc_vendor',
+                    'warranty_vendor',
+                    'insurance_start_date',
+                    'insurance_end_date',
+                    'amc_start_date',
+                    'amc_end_date',
+                    'warranty_start_date',
+                    'warranty_end_date'
+                ])
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | LINKED ASSETS (MULTI-SELECT)
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->has('link_asset')) {
+                // assuming many-to-many relation
+                $asset->linkedAssets()->sync($request->link_asset);
+            }
+
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Asset updated successfully'
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage() 
+            ], 500);
+        }
+    }
+
+    public function transfer(Request $request)
+    {
+        try {
+            $transferredAssets = [];
+            if (!isset($request->assets) || empty($request->assets)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No assets selected for transfer'
+                ], 400);
+            }
+            foreach ($request->assets as $assetData) {
+                $asset = Asset::find($assetData['asset_id']);
+                if ($asset) {
+                    // Store old values for transfer record
+                    $oldLocationId = $asset->location_id;
+                    $oldSubLocationId = $asset->sub_location_id;
+                    $oldStatusId = $asset->status_id;
+                    // Get old allotted info
+                    $oldAllottedInfo = AssetAllotedInfos::where('asset_id', $asset->id)->first();
+                    $oldTransferredTo = $oldAllottedInfo->transferred_to ?? null;
+                    $oldRemarks = $oldAllottedInfo->remarks ?? null;
+                    $oldAllottedUpto = $oldAllottedInfo->allotted_upto ?? null;
+                    // Update location
+                    if (isset($assetData['location_id']) && !empty($assetData['location_id'])) {
+                        $asset->location_id = $assetData['location_id'];
+                    }
+                    // Update sub location
+                    if (isset($assetData['sub_location_id']) && !empty($assetData['sub_location_id'])) {
+                        $asset->sub_location_id = $assetData['sub_location_id'];
+                    }
+                    // Update status
+                    if (isset($assetData['transfer_status']) && !empty($assetData['transfer_status'])) {
+                        $asset->status_id = $assetData['transfer_status'];
+                    }
+                    $asset->save();
+                    // Update allotted info
+                    $allottedInfo = AssetAllotedInfos::where('asset_id', $asset->id)->first();
+                    $newTransferredTo = null;
+                    $newRemarks = null;
+                    $newAllottedUpto = null;
+                    if ($allottedInfo) {
+                        if (isset($assetData['transferred_to']) && !empty($assetData['transferred_to'])) {
+                            $allottedInfo->transferred_to = $assetData['transferred_to'];
+                            $newTransferredTo = $assetData['transferred_to'];
+                        }
+                        if (isset($assetData['remarks']) && !empty($assetData['remarks'])) {
+                            $allottedInfo->remarks = $assetData['remarks'];
+                            $newRemarks = $assetData['remarks'];
+                        }
+                        if (isset($assetData['allotted_upto']) && !empty($assetData['allotted_upto'])) {
+                            $allottedInfo->allotted_upto = $assetData['allotted_upto'];
+                            $newAllottedUpto = $assetData['allotted_upto'];
+                        }
+                        $allottedInfo->save();
+                    } else {
+                        // Create if not exists
+                        $newTransferredTo = $assetData['transferred_to'] ?? null;
+                        $newRemarks = $assetData['remarks'] ?? null;
+                        $newAllottedUpto = $assetData['allotted_upto'] ?? null;
+                        AssetAllotedInfos::create([
+                            'asset_id' => $asset->id,
+                            'transferred_to' => $newTransferredTo,
+                            'remarks' => $newRemarks,
+                            'allotted_upto' => $newAllottedUpto,
+                        ]);
+                    }
+                    // Handle file uploads
+                    $filePaths = [];
+                    if ($request->hasFile('files')) {
+                        foreach ($request->file('files') as $file) {
+                            $path = $file->store('asset_transfers', 'public');
+                            $filePaths[] = $path;
+                        }
+                    }
+                    // Create transfer record
+                    AssetTransfer::create([
+                        'asset_id' => $asset->id,
+                        'from_location_id' => $oldLocationId,
+                        'to_location_id' => $assetData['location_id'] ?? null,
+                        'from_sub_location_id' => $oldSubLocationId,
+                        'to_sub_location_id' => $assetData['sub_location_id'] ?? null,
+                        'transfer_status' => $assetData['transfer_status'] ?? null,
+                        'transferred_to' => $newTransferredTo,
+                        'allotted_upto' => $newAllottedUpto,
+                        'transfer_cc' => $request->transfer_cc ?? null,
+                        'remarks' => $newRemarks,
+                        'file_paths' => json_encode($filePaths),
+                        'transferred_by' => auth()->id(),
+                        'transferred_at' => now(),
+                    ]);
+                    $transferredAssets[] = $asset->asset_name;
+                }
+            }
+            return response()->json([
+                'status' => true,
+                'message' => count($transferredAssets) . ' asset(s) transferred successfully!',
+                'assets' => $transferredAssets
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    
 }
