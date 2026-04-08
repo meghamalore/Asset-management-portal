@@ -79,7 +79,7 @@
                 <div class="col-md-2">
                     <button type="button" class="btn btn-outline-primary"  id="assetTrasfBtn">
                         <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer
-                    </button>
+                    </buttpon>
                 </div>
                 <div class="col-md-2">
                     <button type="button" id="disposeBtn" class="btn btn-outline-primary">
@@ -878,7 +878,7 @@
                                         <h2 class="accordion-header" id="headingOne">
                                             <button type="button" class="accordion-button" data-bs-toggle="collapse"
                                                 data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
-                                                Asset Details
+                                                Asset Detail
                                             </button>
                                         </h2>
                                         <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -891,12 +891,12 @@
                                                         </div>
                                                         <label class="col-sm-2 col-form-label" >Asset Image</label>
                                                         <div class="col-sm-4">
-                                                            <input class="form-control" type="file" name="image" />
+                                                           <input class="form-control" type="file" name="asset_image" id="asset_image"/>
+                                                            <img id="imagePreview" src="" width="100" class="mt-2" style="display:none;">
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
-                                                        <label class="col-sm-2 col-form-label">Asset
-                                                            Code</label>
+                                                        <label class="col-sm-2 col-form-label">Asset Code</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="asset_code" name="asset_code"/>
                                                         </div>
@@ -975,7 +975,6 @@
                                                                 placeholder="" name="cwip_invoice_id" id="cwip_invoice_id"/>
                                                         </div>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -2151,7 +2150,6 @@
                 type: 'GET',
 
                 success: function (res) {
-
                     //  Asset Details
                     $('#asset_id').val(res.asset.id);
                     $('#asset_name').val(res.asset.asset_name);
@@ -2165,6 +2163,15 @@
                     $('#sub_location_id').val(res.asset.sub_location_id).trigger('change');
 
                     $('#status_id').val(res.asset.status_id).trigger('change');
+
+                    // ================= IMAGE PREVIEW =================
+                    if (res.asset.asset_image) {
+                        $('#imagePreview')
+                            .attr('src', '/storage/' + res.asset.asset_image)
+                            .show();
+                    } else {
+                        $('#imagePreview').hide();
+                    }
 
                     //  Additional Info
                     $('#brand').val(res.additional.brand);

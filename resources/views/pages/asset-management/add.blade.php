@@ -178,9 +178,9 @@
                                             <div class="col-sm-4">
                                                 <input type="text" name="asset_name" class="form-control" />
                                             </div>
-                                            <label class="col-sm-2 col-form-label" >Asset Image</label>
+                                            <label class="col-sm-2 col-form-label" >Asset Image <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
-                                                <input class="form-control" type="file" name="asset_image" />
+                                                <input class="form-control" type="file" name="asset_image" id="image"/>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -267,7 +267,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
+                                            <label class="col-sm-2 col-form-label" >CWIP Invoice Id <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <input type="text" name="cwip_invoice_id" class="form-control" />
                                             </div>
@@ -289,7 +289,7 @@
                             <div id="accordionTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Condition</label>
+                                        <label class="col-sm-2 col-form-label">Condition <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" name="condition" class=" form-select force-validate">
                                                 <option value="">Select</option>
@@ -299,13 +299,13 @@
                                                 <option value="new">New</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Brand</label>
+                                        <label class="col-sm-2 col-form-label" >Brand <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text"  name="brand" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Model</label>
+                                        <label class="col-sm-2 col-form-label" >Model <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text" name="model" />
                                         </div>
@@ -320,11 +320,11 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Description</label>
+                                        <label class="col-sm-2 col-form-label" >Description <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text" name="description" />
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Serial No</label>
+                                        <label class="col-sm-2 col-form-label" >Serial No </label>
                                         <div class="col-sm-4">
                                             <input class="form-control" type="text" name="serial_no" />
                                         </div>
@@ -372,27 +372,27 @@
                                                 <option value="Australia">Acme Inc.</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Po Number</label>
+                                        <label class="col-sm-2 col-form-label" >Po Number <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text" name="po_number" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Invoice Date</label>
+                                        <label class="col-sm-2 col-form-label" >Invoice Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="invoice_date" />
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Invoice No</label>
+                                        <label class="col-sm-2 col-form-label" >Invoice No <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text" name="invoice_no"  />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Purchase Date</label>
+                                        <label class="col-sm-2 col-form-label" >Purchase Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date"  name="purchase_date"/>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Purchase Price</label>
+                                        <label class="col-sm-2 col-form-label" >Purchase Price <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <div class="input-group">
                                                 <span class="input-group-text" id="full_name_icon">
@@ -435,7 +435,7 @@
                             <div id="accordionFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Capitalization Price</label>
+                                        <label class="col-sm-2 col-form-label" >Capitalization Price <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <div class="input-group">
                                                 <span class="input-group-text" id="full_name_icon">
@@ -450,24 +450,24 @@
                                                 />
                                             </div>
                                         </div> 
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" name="end_of_life" type="date"  />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Capitalization Date</label>
+                                        <label class="col-sm-2 col-form-label" >Capitalization Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="capitalization_date"  />
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Depreciation%</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Depreciation% <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" name="depreciation" type="text"  />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Accumulated
-                                            Depreciation</label>
+                                            Depreciation<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <div class="input-group">
                                                 <span class="input-group-text" id="full_name_icon">
@@ -511,7 +511,7 @@
                             <div id="accordionFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Department</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Department<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" name="department" class="form-select force-validate">
                                                 <option value="">Select</option>
@@ -531,7 +531,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Allotted Upto</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Allotted Upto<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="allotted_upto" />
                                         </div>
@@ -556,7 +556,7 @@
                             <div id="accordionSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Vendor</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Vendor <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" name="amc_vendor" class="form-select force-validate">
                                                 <option value="">Select</option>
@@ -564,7 +564,7 @@
                                             </select>
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty
-                                            Vendor</label>
+                                            Vendor <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" name="Warranty_vendor" class="form-select force-validate">
                                                 <option value="">Select</option>
@@ -574,35 +574,35 @@
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Start
-                                            Date</label>
+                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date"  name="insurance_start_date"/>
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
-                                            Date</label>
+                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="insurance_end_date" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Start
-                                            Date</label>
+                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date"  name="amc_start_date"/>
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty End
-                                            Date</label>
+                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="warranty_end_date" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC End Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="amc_end_date" />
                                         </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
-                                            Date</label>
+                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="warranty_start_date" />
                                         </div>
@@ -653,7 +653,7 @@
                                 data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" >Category Name</label>
+                                            <label class="col-sm-2 col-form-label" >Category Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" placeholder="Enter Category Name" name="parent_category_name">
                                                 <select class="form-select" name="selective_category_id">
@@ -671,7 +671,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Show Category in
-                                                Inventory Module</label>
+                                                Inventory Module <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
@@ -679,7 +679,7 @@
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
-                                            <label class="col-sm-2 col-form-label">Sub Category</label>
+                                            <label class="col-sm-2 col-form-label">Sub Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="category_name"
                                                     placeholder="Enter Category Name" name="sub_category_name"/>
@@ -687,7 +687,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Show this category
-                                                assets in Linked Assets</label>
+                                                assets in Linked Assets <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
@@ -695,7 +695,7 @@
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
                                             </div>
-                                            <label class="col-sm-2 col-form-label" >Category Code</label>
+                                            <label class="col-sm-2 col-form-label" >Category Code <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="category_code" name="category_code" 
                                                     placeholder="Enter Category Code" />
@@ -703,7 +703,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Default Transfer
-                                                Duration</label>
+                                                Duration <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-2">
                                                 <input type="text" class="form-control" 
                                                     placeholder="Enter Asset Name" name="trafs_duration"/>
@@ -716,7 +716,7 @@
                                                     <option value="year">Year(s)</option>
                                                 </select>
                                             </div>
-                                            <label class="col-sm-2 col-form-label" >Cascade</label>
+                                            <label class="col-sm-2 col-form-label" >Cascade <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
@@ -727,7 +727,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Allow Auto
-                                                Extend</label>
+                                                Extend <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
                                                     <input class="form-check-input" type="checkbox"
@@ -753,7 +753,7 @@
                             <div id="accordionEight" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">End of Life</label>
+                                        <label class="col-sm-2 col-form-label">End of Life <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-2">
                                             <input class="form-control force-validate" type="text" id="end_of_life" name="end_of_life"/>
                                         </div>
@@ -765,13 +765,13 @@
                                                 <option value="year">Year(s)</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Depreciation %</label>
+                                        <label class="col-sm-2 col-form-label" >Depreciation % <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text"  id="depreciation" name="depreciation"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Scrap Value</label>
+                                        <label class="col-sm-2 col-form-label">Scrap Value <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-2">
                                             <input class="form-control force-validate" type="text" id="scrap_value" name="scrap_value"/>
                                         </div>
@@ -784,7 +784,7 @@
                                         </div>
 
                                         <label class="col-sm-2 col-form-label" >Income Tax
-                                            Depreciation%</label>
+                                            Depreciation% <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text"  id="income_tax_depreciation" name="income_tax_depreciation"/>
                                         </div>
@@ -811,7 +811,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee
-                                                    Based On</label>
+                                                    Based On <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <div class="form-check mt-3">
                                                         <input class="form-check-input force-validate" name="assign_based" type="radio" value="1"
@@ -833,7 +833,7 @@
                                                     </div>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label " for="basic-default-phone">User
-                                                    Type</label>
+                                                    Type <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="user_type" name="user_type" class="form-select force-validate">
                                                         <option value="">Select</option>
@@ -849,7 +849,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Assignee
-                                                    Role</label>
+                                                    Role <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="assign_role" class="form-select force-validate" name="assign_role">
                                                         <option value="">Select</option>
@@ -858,7 +858,7 @@
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label"
-                                                    for="basic-default-phone">Assignee</label>
+                                                    for="basic-default-phone">Assignee <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="assignee" name="assignee" class="form-select force-validate">
                                                         <option value="">Select</option>
@@ -870,7 +870,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity
-                                                    Type</label>
+                                                    Type <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="activity_type" name="activity_type[]" class="form-select force-validate">
                                                         <option value="">Select</option>
@@ -880,7 +880,7 @@
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label"
-                                                    for="basic-default-phone">Occurs</label>
+                                                    for="basic-default-phone">Occurs <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="occurs" name="occurs[]" class="form-select force-validate">
                                                         <option value="">Select</option>
@@ -894,12 +894,12 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Start
-                                                    Schedule After (Days)</label>
+                                                    Schedule After (Days) <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <input class="form-control force-validate" type="text" name="start_schedule_after[]"  />
                                                 </div>
                                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Activity
-                                                    Reminders</label>
+                                                    Reminders <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="activity_reminder" name="activity_reminder[]" class="form-select force-validate">
                                                         <option value="">Select</option>
@@ -908,7 +908,7 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label class="col-sm-2 col-form-label">Schedule Based On</label>
+                                                <label class="col-sm-2 col-form-label">Schedule Based On <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <select id="schedule_based_on" class="form-select force-validate" name="schedule_based_on[]">
                                                         <option value="">Select</option>
@@ -918,7 +918,7 @@
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-2 col-form-label">Custom
-                                                    Days</label>
+                                                    Days <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                 <div class="col-sm-4">
                                                     <input class="form-control force-validate" type="text" id="custom_days"  name="custom_days[]" />
                                                 </div>
@@ -1025,7 +1025,7 @@
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Parent Location Name</label>
+                                        <label class="col-sm-2 col-form-label" >Parent Location Name<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" placeholder="Enter Location" id="parent_location_name" name="parent_location_name"/>
                                             <select class="form-select" name="selective_location_id">
@@ -1037,19 +1037,19 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Sub Location</label>
+                                        <label class="col-sm-2 col-form-label" >Sub Location <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
                                                 placeholder="Enter Sub Location" id="local_location_name" name="local_location_name"/>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Location Code</label>
+                                        <label class="col-sm-2 col-form-label" >Location Code <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control" 
                                                 placeholder="Enter Location Code" id="location_code" name="location_code" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Inventory Location</label>
+                                        <label class="col-sm-2 col-form-label" >Inventory Location <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input" type="checkbox"
@@ -1057,7 +1057,7 @@
                                                 <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                             </div>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Default Coordinates</label>
+                                        <label class="col-sm-2 col-form-label" >Default Coordinates <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control mb-1" 
                                                 placeholder="Latitude" id="latitude" name="latitude"/>
@@ -1066,21 +1066,21 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Description</label>
+                                        <label class="col-sm-2 col-form-label" >Description <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control" type="text" name="description" id="description" />
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-4 col-form-label" >Additional Info</label>
+                                        <label class="col-sm-4 col-form-label" >Additional Info <span style="color:#f1416c; font-size:18px;">*</span></label>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
                                         <div class="col-sm-4">
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Department</label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Department <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <label class=" col-form-label" for="basic-default-phone">Users</label>
+                                            <label class=" col-form-label" for="basic-default-phone">Users<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         </div>
                                     </div>
                                     <div id="addition-container-location">
@@ -1132,9 +1132,9 @@
                                             <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
                                             <div class="col-sm-4">
                                             </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Category Name</label>
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Category Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
-                                            <label class=" col-form-label" for="basic-default-phone">Language</label>
+                                            <label class=" col-form-label" for="basic-default-phone">Language <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             </div>
                                         </div>
                                         <div id="addition-container-localization">
@@ -1198,7 +1198,7 @@
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Status Type</label>
+                                        <label class="col-sm-2 col-form-label" >Status Type <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" class="form-select force-validate" name="status_type">
                                                 <option value="">Select</option>
@@ -1207,13 +1207,13 @@
                                                 <option value="discarded_assets">Discarded Assets</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" >Status Name</label>
+                                        <label class="col-sm-2 col-form-label" >Status Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="text"  name="status_name"/>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Next Status</label>
+                                        <label class="col-sm-2 col-form-label" >Next Status <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select id="country" class="form-select force-validate" name="next_status">
                                                 <option value="">Select</option>
@@ -1290,7 +1290,7 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Hold/Pause Activity</label>
+                                    <label class="col-sm-2 col-form-label" >Hold/Pause Activity <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
                                                 <input class="form-check-input force-validate" type="checkbox"
@@ -1323,9 +1323,9 @@
                                             <label class="col-sm-2 col-form-label" for="basic-default-phone"></label>
                                             <div class="col-sm-4">
                                             </div>
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status Name</label>
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
-                                            <label class=" col-form-label" for="basic-default-phone">Language</label>
+                                            <label class=" col-form-label" for="basic-default-phone">Language <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             </div>
                                         </div>
                                         <div id="addition-container-status">
