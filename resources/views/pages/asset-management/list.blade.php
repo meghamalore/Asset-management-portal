@@ -237,7 +237,7 @@
                             <td data-column="7" class="default-extra">Admin</td>
                             <td data-column="8" class="default-extra">Active</td>
                             <td data-column="9" class="default-extra">2025-01-02</td>
-                            <td data-column="10" class="default-extra">{{ $asset_datas->location->name}}</td>
+                            <td data-column="10" class="default-extra">{{ $asset_datas->location->name ?? ''}}</td>
                             <td data-column="11" class="default-extra">2025-01-03</td>
                             <td data-column="12" class="default-extra">User</td>
                             <td data-column="13" class="default-extra">{{ $asset_datas->brand}}</td>
@@ -1014,7 +1014,7 @@
                                                     </div>
                                                     <label class="col-sm-2 col-form-label" >Link Asset</label>
                                                     <div class="col-sm-4">
-                                                        <select id="link_asset" name="link_asset" class="select2 form-select" name="link_asset[]" multiple>
+                                                        <select id="link_asset" class="select2 form-select" name="link_asset[]" multiple>
                                                             <option></option>
                                                             @foreach($asset_list as $asset_lists)
                                                                 <option value="{{ $asset_lists->id }}">

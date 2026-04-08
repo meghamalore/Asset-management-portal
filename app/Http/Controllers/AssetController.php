@@ -28,8 +28,6 @@ class AssetController extends Controller
     {
 
         try {
-
-
             if (empty($request->asset_code)) {
 
             $year = date('Y');
@@ -196,7 +194,7 @@ class AssetController extends Controller
         ]);
     }
 
-    public function updateAsset(Request $request, $id)
+    public function updateAssets(Request $request, $id)
     {
         try {
 
@@ -340,6 +338,57 @@ class AssetController extends Controller
                 'message' => 'Asset updated successfully'
             ]);
 
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage() 
+            ], 500);
+        }
+    }
+
+    public function updateAsset(Request $request, $id)
+    {
+        try {
+
+            $asset = Asset::findOrFail($id);
+            $asset->update([
+                'asset_name' => $request->asset_name,
+                'asset_code' => $request->asset_code,
+                'category_id' => $request->categ_id,
+                'sub_category_id' => $request->sub_category_id,   
+                'location_id' => $request->location_id,   
+                'sub_location_id' => $request->sub_location_id,      
+                'cwip_invoice_id' => $request->cwip_invoice_id,   
+            ]);
+
+            $assetadditional = AssetAdditionalInfos::findOrFail($id);
+            $assetadditional->update([
+                'condition' => $request->condition,
+                'brand' => $request->brand,
+                'model' => $request->model,
+                'description' => $request->description,   
+                'serial_no' => $request->serial_no,      
+            ]);
+            
+            AssetLinks::where('asset_id', $id)->delete();
+            if ($request->has('link_asset') && is_array($request->link_asset)) {
+                foreach ($request->link_asset as $linkedId) {
+                    $data[] = [
+                        'asset_id' => $id,
+                        'linked_asset_id' => $linkedId,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+
+                AssetLinks::insert($data);
+            }
+
+
+
+            
         } catch (\Exception $e) {
 
             return response()->json([
