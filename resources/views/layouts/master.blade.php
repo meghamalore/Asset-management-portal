@@ -53,7 +53,7 @@
             <!-- Help Desk -->
             <li class="menu-item {{ request()->routeIs('add.help.desk') || request()->routeIs('list.help.desk') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <i class="menu-icon tf-icons bx bx-support"></i>
                 <div data-i18n="Layouts">Help Desk</div>
               </a>
 
