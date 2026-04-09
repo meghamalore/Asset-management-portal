@@ -902,6 +902,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
+                                                        
                                                         <label class="col-sm-2 col-form-label">Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                         <div class="col-sm-4">
                                                             <select class="form-select" id="category_id" name="categ_id">
