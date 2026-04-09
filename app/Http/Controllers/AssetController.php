@@ -16,8 +16,12 @@ use App\Models\CustomeView;
 use App\Models\Location;
 use App\Models\SubLocation;
 use App\Models\Category;
+use App\Models\ScheduleActivity;
+use App\Models\ScheduleActivityAssetsLink;
 use App\Models\Status;
 use App\Models\AssetTransfer;
+use App\Exports\AssetsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -191,7 +195,8 @@ class AssetController extends Controller
         }
     }
 
-    public function index(){
+    public function index()
+    {
 
         $categories = Category::with('subCategories:id,category_id,name')->get();
         $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->latest()->whereNull('status')->get();
@@ -228,7 +233,6 @@ class AssetController extends Controller
             'files' => $asset->files
         ]);
     }
-
 
     public function updateAsset(Request $request, $id)
     {
@@ -473,6 +477,59 @@ class AssetController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function storeScheduleActivity(Request $request)
+    {
+        try {
+            // Create main schedule activity
+            $schedule = ScheduleActivity::create([
+                'location'            => $request->location,
+                'activity_type'       => $request->activity_type,
+                'description'         => $request->description,
+                'category'            => $request->categoty,
+                'user_group'          => $request->user_group,
+                'assigned_to'         => $request->assigned_to,
+                'occurs'              => $request->occurs,
+                'start_date'          => $request->start_date,
+                'end_date'            => $request->end_date,
+                'activity_reminder'  => $request->activity_reminder,
+                'email_based_on'      => $request->email_based_on,
+                'grace_before'        => $request->grace_before,
+                'grace_after'         => $request->grace_after,
+                'cc'                  => $request->cc,
+                'vendor_name'          => $request->vendor_name,
+                'amount'               => $request->amount,
+            ]);
+
+            // Store linked assets (multiple select)
+            if ($request->has('link_asset')) {
+                foreach ($request->link_asset as $assetId) {
+                    ScheduleActivityAssetsLink::create([
+                        'schedule_activity_id' => $schedule->id,
+                        'asset_id'             => $assetId,
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Schedule activity created successfully'
+            ]);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function exportAssets(Request $request)
+    {
+        return Excel::download(new AssetsExport($request), 'assets.xlsx');
     }
 
     

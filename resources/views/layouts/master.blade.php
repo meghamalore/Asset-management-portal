@@ -29,7 +29,7 @@
               </a>
             </li>
 
-            <!-- Layouts -->
+            <!-- Asset Management -->
             <li class="menu-item {{ request()->routeIs('add.asset.management') || request()->routeIs('list.asset.management') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
@@ -45,6 +45,27 @@
                 <li class="menu-item">
                   <a href="{{ route("list.asset.management")  }}" class="menu-link">
                     <div data-i18n="Without navbar">Asset List</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Help Desk -->
+            <li class="menu-item {{ request()->routeIs('add.help.desk') || request()->routeIs('list.help.desk') ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Help Desk</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{{ route("list.help.desk")  }}" class="menu-link">
+                    <div data-i18n="Without menu">Manage Tickets</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ route("add.help.desk")  }}" class="menu-link">
+                    <div data-i18n="Without navbar">New Tickets</div>
                   </a>
                 </li>
               </ul>

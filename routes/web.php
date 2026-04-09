@@ -7,6 +7,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\CustomeViewControlller;
 use App\Http\Controllers\AssetDisposalController;
+use App\Http\Controllers\HelpDeskController;
 
 Route::get('/', function () {return view('dashboard');})->name('dashboard');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
@@ -31,5 +32,14 @@ Route::post('/insert-asset-disposal', [AssetDisposalController::class, 'store'])
 Route::get('/get-asset-details/{id}', [AssetController::class, 'getAssetDetails']);
 Route::post('/update-asset/{id}', [AssetController::class, 'updateAsset']);
 Route::post('/asset-transfer', [AssetController::class, 'transfer'])->name('asset.transfer');
+
+Route::post('/insert-asset-schedule', [AssetController::class, 'storeScheduleActivity'])->name('schedule.store');
+Route::get('/export-assets', [AssetController::class, 'exportAssets'])->name('assets.export');
+
+
+Route::get('/add-help-desk', [HelpDeskController::class, 'insert'])->name('add.help.desk');
+Route::get('/list-help-desk', [HelpDeskController::class, 'index'])->name('list.help.desk');
+
+
 
 
