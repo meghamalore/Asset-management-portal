@@ -57,10 +57,10 @@
                             data-bs-target="#exLargeModalAddWidget">
                             <span class="tf-icons bx bx-bar-chart-alt-2"></span>
                         </button> --}}
-                        <button type="button" class="btn btn-icon btn-warning">
-                            <span class="tf-icons bx bx-export"></span>
-                        </button>
-                        <button type="button" id="refreshTableBtn" class="btn btn-icon refreshTableBtn btn-danger">
+                        <a href="{{ route('assets.export') }}" class="btn btn-icon btn-info">
+                            <span class="tf-icons bx bx-download"></span>
+                        </a>
+                        <button type="button" id="refreshTableBtn" class="btn btn-icon refreshTableBtn btn-primary">
                             <span class="tf-icons bx bx-refresh"></span>
                         </button>
                         {{-- <button type="button" class="btn btn-icon btn-primary">
@@ -79,7 +79,7 @@
                 <div class="col-md-2">
                     <button type="button" class="btn btn-outline-primary"  id="assetTrasfBtn">
                         <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer
-                    </buttpon>
+                    </button>
                 </div>
                 <div class="col-md-2">
                     <button type="button" id="disposeBtn" class="btn btn-outline-primary">
@@ -92,8 +92,7 @@
                     </button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#exLargeModalScheduleActivity">
+                    <button type="button" id="scheduleActivityBtn" class="btn btn-outline-primary" >
                         <span class="tf-icons bx bx-calendar"></span>&nbsp; Schedule Activity
                     </button>
                 </div>
@@ -673,69 +672,74 @@
                     <h5 class="modal-title" id="exampleModalLabel4">Schedule Activity</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="card mb-3">
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Asset</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" 
-                                    placeholder="" />
+                <form id="scheduleActivityForm">
+                    
+                    <div class="modal-body">
+                        <div class="card mb-3">
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Asset</label>
+                                <div class="col-sm-4">
+                                    <select id="link_asset_schedule" class="select2 form-select" name="link_asset[]" multiple>
+                                        @foreach($asset_list as $asset_lists)
+                                        <option value="{{ $asset_lists->id }}">{{ $asset_lists->asset_name
+                                            }}({{$asset_lists->asset_code}})</option>
+                                        @endforeach
+                                    </select>
+                                    <small class="form-text">The selected assets will be linked to this asset. The selected
+                                        assets are the child assets and this will be the parent asset</small>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Location</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="location" class="form-control force-validate" placeholder="" />
+                                </div>
                             </div>
-                            <label class="col-sm-2 col-form-label" >Location</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" 
-                                    placeholder="" />
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Activity Type</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select force-validate multiselect" name="activity_type">
+                                        <option value="">Select Option</option>
+                                        <option value="calibration">Calibration</option>
+                                        <option value="inspection">Inspection</option>
+                                        <option value="warranty_expiry">Warranty Expiry</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Description</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="description" class="form-control force-validate" placeholder="" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Activity Type</label>
-                            <div class="col-sm-4">
-                                <select class="form-select multiselect">
-                                    <option value="">Select Option</option>
-                                    <option value="calibration">Calibration</option>
-                                    <option value="inspection">Inspection</option>
-                                    <option value="warranty_expiry">Warranty Expiry</option>
-                                </select>
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Asset Category</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="categoty" class="form-control force-validate" placeholder="" />
+                                </div>
                             </div>
-                            <label class="col-sm-2 col-form-label" >Description</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" 
-                                    placeholder="" />   
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Asset Category</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" 
-                                    placeholder="" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >User group</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">User group</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="select2 form-select force-validate" name="user_group">
                                         <option value="">Select</option>
                                         <option value="maintenance_group">Maintenance Group</option>
                                         <option value="it_helpdesk">IT Helpdesk</option>
                                     </select>
-                            </div>
+                                </div>
 
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Assigned To</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                            </div>
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Assigned To</label>
+                                <div class="col-sm-4">
+                                    <select id="country" name="assigned_to" class="select2 form-select force-validate">
                                         <option value="">Select</option>
                                         <option value="1">dust (dust@dustvalue.com)</option>
                                         <option value="2">James Smith (james.smith@test.com)</option>
                                         <option value="3">Jennifer Miller (jennifer.miller@test.com)</option>
                                     </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Occurs</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Occurs</label>
+                                <div class="col-sm-4">
+                                    <select id="country" name="occurs" class="select2 form-select force-validate">
                                         <option value="">Select</option>
                                         <option value="daily">Daily</option>
                                         <option value="weekly">Weekly</option>
@@ -743,18 +747,17 @@
                                         <option value="yearly">Yearly</option>
                                         <option value="one_time">One Time</option>
                                     </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label">Start Date</label>
+                                {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
+                                <div class="col-sm-4">
+                                    <input type="date" class="form-control force-validate" name="start_date" placeholder="" />
+                                </div>
                             </div>
-                            <label class="col-sm-2 col-form-label" >Start Date</label>
-                            {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
-                            <div class="col-sm-4">
-                                <input type="date" class="form-control" 
-                                    placeholder="" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Activity Reminders</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Activity Reminders</label>
+                                <div class="col-sm-4">
+                                    <select id="country" name="activity_remiders" class="select2 form-select force-validate">
                                         <option value="">Select</option>
                                         <option value="Australia">Australia</option>
                                         <option value="Bangladesh">Bangladesh</option>
@@ -762,99 +765,92 @@
                                         <option value="Brazil">Brazil</option>
                                         <option value="Canada">Canada</option>
                                     </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label">End Date</label>
+                                {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
+                                <div class="col-sm-4">
+                                    <input type="date" name="end_date" class="form-control force-validate" placeholder="" />
+                                </div>
                             </div>
-                            <label class="col-sm-2 col-form-label" >End Date</label>
-                            {{-- <small>First activity's due date will be the start date of the schedule</small> --}}
-                            <div class="col-sm-4">
-                                <input type="date" class="form-control" 
-                                    placeholder="" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Email Based On</label>
-                            <div class="col-sm-4">
-                                    <select id="country" class="select2 form-select">
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Email Based On</label>
+                                <div class="col-sm-4">
+                                    <select id="country" name="email_based_on" class="select2 form-select force-validate">
                                         <option value="">Select</option>
                                         <option value="user_involved">User Involved</option>
                                         <option value="user">User(s)</option>
                                     </select>
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Grace/Execution Period Before</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" 
-                                    placeholder="" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >Grace/Execution Period After</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" 
-                                    placeholder="" />
-                            </div>
-                        </div>
-                        <div class="row mb-3 mx-2">
-                            <label class="col-sm-2 col-form-label" >CC</label>
-                            <div class="col-sm-4">
-                                <select id="country" class="select2 form-select">
-                                    <option value="">Select</option>
-                                    <option value="Australia">Australia</option>
-                                    <option value="Bangladesh">Bangladesh</option>
-                                    <option value="Belarus">Belarus</option>
-                                    <option value="Brazil">Brazil</option>
-                                    <option value="Canada">Canada</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card mb-3">
-                        <div class="accordion mt-3" id="accordionActivityDetails">
-                    <div class="card accordion-item active">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button type="button" class="accordion-button" data-bs-toggle="collapse"
-                                data-bs-target="#accordionFour" aria-expanded="true" aria-controls="accordionFour">
-                                Activity Details
-                            </button>
-                        </h2>
-                        <div id="accordionFour" class="accordion-collapse collapse" data-bs-parent="#accordionActivityDetails">
-                            <div class="accordion-body">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Vendor Name </label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control"  />
-                                    </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" >Amount</label>
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            <span class="input-group-text" id="full_name_icon">
-                                                <i class="bx bx-rupee"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                name="full_name"
-                                                class="form-control"
-                                                id="full_name"
-                                                aria-label="Full Name"
-                                                aria-describedby="full_name_icon"
-                                            />
+                            </div>
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Grace/Execution Period Before</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control force-validate" name="grace_before" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">Grace/Execution Period After</label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control force-validate" name="grace_after" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="row mb-3 mx-2">
+                                <label class="col-sm-2 col-form-label">CC</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="select2 form-select force-validate" name="cc">
+                                        <option value="">Select</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Bangladesh">Bangladesh</option>
+                                        <option value="Belarus">Belarus</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="Canada">Canada</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-3">
+                            <div class="accordion mt-3" id="accordionActivityDetails">
+                                <div class="card accordion-item active">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button type="button" class="accordion-button" data-bs-toggle="collapse"
+                                            data-bs-target="#accordionFour" aria-expanded="true" aria-controls="accordionFour">
+                                            Activity Details
+                                        </button>
+                                    </h2>
+                                    <div id="accordionFour" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionActivityDetails">
+                                        <div class="accordion-body">
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label">Vendor Name </label>
+                                                <div class="col-sm-4">
+                                                    <input type="text" class="form-control force-validate" name="vendor_name" />
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <label class="col-sm-2 col-form-label">Amount</label>
+                                                <div class="col-sm-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text" id="full_name_icon">
+                                                            <i class="bx bx-rupee"></i>
+                                                        </span>
+                                                        <input type="text" name="amount" class="form-control force-validate" id="full_name"
+                                                            aria-label="Full Name" aria-describedby="full_name_icon" />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -878,7 +874,7 @@
                                         <h2 class="accordion-header" id="headingOne">
                                             <button type="button" class="accordion-button" data-bs-toggle="collapse"
                                                 data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
-                                                Asset Detail
+                                                Asset Details
                                             </button>
                                         </h2>
                                         <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -891,18 +887,17 @@
                                                         </div>
                                                         <label class="col-sm-2 col-form-label" >Asset Image</label>
                                                         <div class="col-sm-4">
-                                                           <input class="form-control" type="file" name="asset_image" id="asset_image"/>
-                                                            <img id="imagePreview" src="" width="100" class="mt-2" style="display:none;">
+                                                            <input class="form-control" type="file" name="image" />
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
-                                                        <label class="col-sm-2 col-form-label">Asset Code</label>
+                                                        <label class="col-sm-2 col-form-label">Asset
+                                                            Code</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="asset_code" name="asset_code"/>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
-                                                        
                                                         <label class="col-sm-2 col-form-label">Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                         <div class="col-sm-4">
                                                             <select class="form-select" id="category_id" name="categ_id">
@@ -976,6 +971,7 @@
                                                                 placeholder="" name="cwip_invoice_id" id="cwip_invoice_id"/>
                                                         </div>
                                                     </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -1696,8 +1692,20 @@
 <script>
     $(document).ready(function () {
 
+        $('#refreshTableBtn').on('click', function () {
+            location.reload();
+        });
+
         $('#link_asset').select2({
             dropdownParent: $('#exLargeModalUpdateAsset'),
+            placeholder: "Select Asset",
+            allowClear: true,
+            width: '100%'
+        }).next('.select2-container').css('width', '100%');
+        
+
+        $('#link_asset_schedule').select2({
+            dropdownParent: $('#exLargeModalScheduleActivity'),
             placeholder: "Select Asset",
             allowClear: true,
             width: '100%'
@@ -2151,6 +2159,7 @@
                 type: 'GET',
 
                 success: function (res) {
+
                     //  Asset Details
                     $('#asset_id').val(res.asset.id);
                     $('#asset_name').val(res.asset.asset_name);
@@ -2164,15 +2173,6 @@
                     $('#sub_location_id').val(res.asset.sub_location_id).trigger('change');
 
                     $('#status_id').val(res.asset.status_id).trigger('change');
-
-                    // ================= IMAGE PREVIEW =================
-                    if (res.asset.asset_image) {
-                        $('#imagePreview')
-                            .attr('src', '/storage/' + res.asset.asset_image)
-                            .show();
-                    } else {
-                        $('#imagePreview').hide();
-                    }
 
                     //  Additional Info
                     $('#brand').val(res.additional.brand);
@@ -2251,6 +2251,28 @@
                 }
             });
         }
+
+        // scheduleActivityBtn
+         $('#scheduleActivityBtn').on('click', function () {
+
+            let checked = $('.asset-checkbox:checked');
+
+            if (checked.length === 0) {
+                showToast('Please select at least one asset');
+                return;
+            }
+
+            let selectedIds = [];
+
+            checked.each(function () {
+                selectedIds.push($(this).val());
+            });
+
+            $('#link_asset_schedule').val(selectedIds).trigger('change');
+
+            $('#exLargeModalScheduleActivity').modal('show');
+        });
+
 
         $(document).on('keyup change', '.sold_value, .pur_price', function () {
 
@@ -2763,6 +2785,164 @@
             }
 
         });
+
+        // Asset Schedule Form Submission
+
+        $('#scheduleActivityForm').validate({
+            ignore: [], // IMPORTANT for select2
+
+            rules: {
+                'link_asset[]': {
+                    required: true
+                },
+                location: {
+                    required: true
+                },
+                activity_type: {
+                    required: true
+                },
+                user_group: {
+                    required: true
+                },
+                assigned_to: {
+                    required: true
+                },
+                occurs: {
+                    required: true
+                },
+                start_date: {
+                    required: true
+                },
+                end_date: {
+                    required: true
+                },
+                email_based_on: {
+                    required: true
+                },
+                grace_before: {
+                    number: true
+                },
+                grace_after: {
+                    number: true
+                },
+                amount: {
+                    number: true,
+                    min: 0
+                }
+            },
+
+            messages: {
+                'link_asset[]': {
+                    required: "Please select at least one asset"
+                },
+                location: {
+                    required: "Location is required"
+                },
+                activity_type: {
+                    required: "Select activity type"
+                },
+                user_group: {
+                    required: "Select user group"
+                },
+                assigned_to: {
+                    required: "Select assigned user"
+                },
+                occurs: {
+                    required: "Select occurrence type"
+                },
+                start_date: {
+                    required: "Start date is required"
+                },
+                end_date: {
+                    required: "End date is required"
+                },
+                email_based_on: {
+                    required: "Select email option"
+                },
+                grace_before: {
+                    number: "Must be a number"
+                },
+                grace_after: {
+                    number: "Must be a number"
+                },
+                amount: {
+                    number: "Amount must be number",
+                    min: "Amount cannot be negative"
+                }
+            },
+
+            errorElement: 'span',
+            errorClass: 'text-danger',
+
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            },
+
+            errorPlacement: function (error, element) {
+
+                // Select2 fix
+                if (element.hasClass('select2-hidden-accessible')) {
+                    error.insertAfter(element.next('.select2'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+                let btn = $('#scheduleActivityForm button[type="submit"]');
+
+                $.ajax({
+                    url: "{{ route('schedule.store') }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    beforeSend: function () {
+                        btn.prop('disabled', true);
+                        btn.html(`<span class="spinner-border spinner-border-sm me-2"></span> Saving...`);
+                    },
+
+                    success: function (res) {
+                        if (res.status) {
+                            showToast(res.message, 'success');
+
+                            $('#scheduleActivityForm')[0].reset();
+                            $('.select2').val(null).trigger('change');
+
+                            $('#exLargeModalScheduleActivity').modal('hide');
+                        } else {
+                            showToast(res.message, 'error');
+                        }
+                    },
+
+                    error: function (xhr) {
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+
+                            $.each(errors, function (key, value) {
+                                showToast(value[0], 'error');
+                            });
+                        } else {
+                            showToast('Something went wrong', 'error');
+                        }
+                    },
+
+                    complete: function () {
+                        btn.prop('disabled', false);
+                        btn.html('Save changes');
+                    }
+                });
+            }
+        });
+
  
     });
 </script>

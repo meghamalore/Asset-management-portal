@@ -172,7 +172,6 @@
                             </h2>
                             <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    <form>
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Asset Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
@@ -272,7 +271,6 @@
                                                 <input type="text" name="cwip_invoice_id" class="form-control" />
                                             </div>
                                         </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
