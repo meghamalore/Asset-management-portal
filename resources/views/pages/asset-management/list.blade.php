@@ -79,7 +79,7 @@
                 <div class="col-md-2">
                     <button type="button" class="btn btn-outline-primary"  id="assetTrasfBtn">
                         <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer
-                    </button>
+                    </buttpon>
                 </div>
                 <div class="col-md-2">
                     <button type="button" id="disposeBtn" class="btn btn-outline-primary">
@@ -237,7 +237,7 @@
                             <td data-column="7" class="default-extra">Admin</td>
                             <td data-column="8" class="default-extra">Active</td>
                             <td data-column="9" class="default-extra">2025-01-02</td>
-                            <td data-column="10" class="default-extra">{{ $asset_datas->location->name}}</td>
+                            <td data-column="10" class="default-extra">{{ $asset_datas->location->name ?? ''}}</td>
                             <td data-column="11" class="default-extra">2025-01-03</td>
                             <td data-column="12" class="default-extra">User</td>
                             <td data-column="13" class="default-extra">{{ $asset_datas->brand}}</td>
@@ -878,7 +878,7 @@
                                         <h2 class="accordion-header" id="headingOne">
                                             <button type="button" class="accordion-button" data-bs-toggle="collapse"
                                                 data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
-                                                Asset Details
+                                                Asset Detail
                                             </button>
                                         </h2>
                                         <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -891,17 +891,18 @@
                                                         </div>
                                                         <label class="col-sm-2 col-form-label" >Asset Image</label>
                                                         <div class="col-sm-4">
-                                                            <input class="form-control" type="file" name="image" />
+                                                           <input class="form-control" type="file" name="asset_image" id="asset_image"/>
+                                                            <img id="imagePreview" src="" width="100" class="mt-2" style="display:none;">
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
-                                                        <label class="col-sm-2 col-form-label">Asset
-                                                            Code</label>
+                                                        <label class="col-sm-2 col-form-label">Asset Code</label>
                                                         <div class="col-sm-4">
                                                             <input type="text" class="form-control" id="asset_code" name="asset_code"/>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
+                                                        
                                                         <label class="col-sm-2 col-form-label">Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                                         <div class="col-sm-4">
                                                             <select class="form-select" id="category_id" name="categ_id">
@@ -975,7 +976,6 @@
                                                                 placeholder="" name="cwip_invoice_id" id="cwip_invoice_id"/>
                                                         </div>
                                                     </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -1014,7 +1014,7 @@
                                                     </div>
                                                     <label class="col-sm-2 col-form-label" >Link Asset</label>
                                                     <div class="col-sm-4">
-                                                        <select id="link_asset" name="link_asset" class="select2 form-select" name="link_asset[]" multiple>
+                                                        <select id="link_asset" class="select2 form-select" name="link_asset[]" multiple>
                                                             <option></option>
                                                             @foreach($asset_list as $asset_lists)
                                                                 <option value="{{ $asset_lists->id }}">
@@ -2151,7 +2151,6 @@
                 type: 'GET',
 
                 success: function (res) {
-
                     //  Asset Details
                     $('#asset_id').val(res.asset.id);
                     $('#asset_name').val(res.asset.asset_name);
@@ -2165,6 +2164,15 @@
                     $('#sub_location_id').val(res.asset.sub_location_id).trigger('change');
 
                     $('#status_id').val(res.asset.status_id).trigger('change');
+
+                    // ================= IMAGE PREVIEW =================
+                    if (res.asset.asset_image) {
+                        $('#imagePreview')
+                            .attr('src', '/storage/' + res.asset.asset_image)
+                            .show();
+                    } else {
+                        $('#imagePreview').hide();
+                    }
 
                     //  Additional Info
                     $('#brand').val(res.additional.brand);

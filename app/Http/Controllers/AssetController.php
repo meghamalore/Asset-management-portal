@@ -26,10 +26,42 @@ class AssetController extends Controller
 
     public function store(Request $request)
     {
+        //  VALIDATION
+        $request->validate([
+            'asset_name' => 'required|string|max:255',
+            'categ_id' => 'required|exists:categories,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
+            'location' => 'required|exists:locations,id',
+            'sub_location_id' => 'nullable|exists:sub_locations,id',
+            'status' => 'required|exists:statuses,id',
+
+            // Additional Info
+            'brand' => 'nullable|string|max:255',
+            'model' => 'nullable|string|max:255',
+            'serial_no' => 'nullable|string|max:255',
+
+            // Purchase Info
+            'vendor_name' => 'nullable|string|max:255',
+            'invoice_date' => 'nullable|date',
+            'purchase_date' => 'nullable|date',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'po_number' => 'nullable|numeric|min:0',
+
+            // Financial Info
+            'capitalization_price' => 'nullable|numeric|min:0',
+            'depreciation' => 'nullable|numeric|min:0|max:100',
+            'scrap_value' => 'nullable|numeric|min:0',
+
+            // File & Image
+            'asset_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'files.*' => 'nullable|file|max:5120',
+
+            // Linking
+            'link_asset' => 'nullable|array',
+            'link_asset.*' => 'exists:assets,id',
+        ]);
 
         try {
-
-
             if (empty($request->asset_code)) {
 
             $year = date('Y');
@@ -95,6 +127,7 @@ class AssetController extends Controller
                 'vendor_name' => $request->vendor_name,
                 'invoice_date' => $request->invoice_date,
                 'invoice_no' => $request->invoice_no,
+                'asset_po_number' => $request->po_number,
                 'purchase_date' => $request->purchase_date,
                 'purchase_price' => $request->purchase_price,
                 'is_self_owned' => $request->has('self_owned') ? 1 : 0,
@@ -196,71 +229,83 @@ class AssetController extends Controller
         ]);
     }
 
+
     public function updateAsset(Request $request, $id)
     {
+
         try {
 
-            $asset = Asset::findOrFail($id);
+            $asset = Asset::where('id', $id)->first();
 
-            /*
-            |--------------------------------------------------------------------------
-            | MAIN ASSET
-            |--------------------------------------------------------------------------
-            */
-            $asset->update($request->only([
-                'asset_name',
-                'asset_code',
-                'category_id',
-                'sub_category_id',
-                'location_id',
-                'sub_location_id',
-                'status_id',
-                'cwip_invoice_id'
-            ]));
+            $asset->update([
+                'asset_name' => $request->asset_name,
+                'asset_code' => $request->asset_code,
+                'category_id' => $request->categ_id,
+                'sub_category_id' => $request->sub_category_id,   
+                'location_id' => $request->location,
+                'status' => $request->status,   
+                'sub_location_id' => $request->sub_location_id,      
+                'cwip_invoice_id' => $request->cwip_invoice_id,   
+            ]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | IMAGE UPLOAD
-            |--------------------------------------------------------------------------
-            */
-            if ($request->hasFile('image')) {
 
-                // delete old image (optional)
-                if ($asset->image && Storage::exists($asset->image)) {
-                    Storage::delete($asset->image);
+             // Handle image upload
+            if ($request->hasFile('asset_image')) {
+
+                // Delete old image
+                if ($asset->asset_image && Storage::disk('public')->exists($asset->asset_image)) {
+                    Storage::disk('public')->delete($asset->asset_image);
                 }
 
-                $path = $request->file('image')->store('assets');
+                // Store new image
+                $path = $request->file('asset_image')->store('assets', 'public');
+                // Save new path
+                $asset->asset_image = $path;
+            }
 
-                $asset->update([
-                    'image' => $path
+            $assetadditional = AssetAdditionalInfos::where('asset_id', $id)->first();
+
+            if ($assetadditional) {
+                $assetadditional->update([
+                    'condition' => $request->condition,
+                    'brand' => $request->brand,
+                    'model' => $request->model,
+                    'description' => $request->description,
+                    'serial_no' => $request->serial_no,
+                ]);
+            }
+            
+            AssetLinks::where('asset_id', $id)->delete();
+
+            if ($request->has('link_asset') && is_array($request->link_asset)) {
+                foreach ($request->link_asset as $linkedId) {
+                    $data[] = [
+                        'asset_id' => $id,
+                        'linked_asset_id' => $linkedId,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+
+                AssetLinks::insert($data);
+            }
+
+            $assetadditional = AssetAdditionalInfos::where('asset_id', $id)->first();
+
+            if ($assetadditional) {
+                $assetadditional->update([
+                    'condition' => $request->condition,
+                    'brand' => $request->brand,
+                    'model' => $request->model,
+                    'description' => $request->description,
+                    'serial_no' => $request->serial_no,
                 ]);
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | ADDITIONAL INFO
-            |--------------------------------------------------------------------------
-            */
-            $asset->additionalInfo()->updateOrCreate(
-                ['asset_id' => $id],
-                $request->only([
-                    'condition',
-                    'brand',
-                    'model',
-                    'description',
-                    'serial_no'
-                ])
-            );
+            $assetpurchase = AssetPurchaseInfos::where('asset_id', $id)->first();
 
-            /*
-            |--------------------------------------------------------------------------
-            | PURCHASE INFO
-            |--------------------------------------------------------------------------
-            */
-            $asset->purchaseInfo()->updateOrCreate(
-                ['asset_id' => $id],
-                [
+            if ($assetpurchase) {
+                $assetpurchase->update([
                     'vendor_name'     => $request->vendor_name,
                     'po_number'       => $request->po_number,
                     'invoice_date'    => $request->invoice_date,
@@ -268,80 +313,54 @@ class AssetController extends Controller
                     'purchase_date'   => $request->purchase_date,
                     'purchase_price'  => $request->purchase_price,
                     'is_self_owned'   => $request->is_self_owned ?? 0,
-                ]
-            );
-
-            /*
-            |--------------------------------------------------------------------------
-            | FINANCIAL INFO
-            |--------------------------------------------------------------------------
-            */
-            $asset->finacialInfos()->updateOrCreate(
-                ['asset_id' => $id],
-                $request->only([
-                    'capitalization_price',
-                    'capitalization_date',
-                    'depreciation',
-                    'accumulated_depreciation',
-                    'scrap_value',
-                    'income_tax_depreciation',
-                    'end_of_life'
-                ])
-            );
-
-            /*
-            |--------------------------------------------------------------------------
-            | ALLOTTED INFO
-            |--------------------------------------------------------------------------
-            */
-            $asset->assetallotedInfos()->updateOrCreate(
-                ['asset_id' => $id],
-                $request->only([
-                    'department',
-                    'transf_to',
-                    'allotted_upto',
-                    'remarks'
-                ])
-            );
-
-            /*
-            |--------------------------------------------------------------------------
-            | WARRANTY INFO
-            |--------------------------------------------------------------------------
-            */
-            $asset->assetwarrantyInfos()->updateOrCreate(
-                ['asset_id' => $id],
-                $request->only([
-                    'amc_vendor',
-                    'warranty_vendor',
-                    'insurance_start_date',
-                    'insurance_end_date',
-                    'amc_start_date',
-                    'amc_end_date',
-                    'warranty_start_date',
-                    'warranty_end_date'
-                ])
-            );
-
-            /*
-            |--------------------------------------------------------------------------
-            | LINKED ASSETS (MULTI-SELECT)
-            |--------------------------------------------------------------------------
-            */
-
-            if ($request->has('link_asset')) {
-                // assuming many-to-many relation
-                $asset->linkedAssets()->sync($request->link_asset);
+                ]);
             }
 
+            $assetfinacial = AssetFinacialInfos::where('asset_id', $id)->first();
+
+            if ($assetfinacial) {
+                $assetfinacial->update([
+                    'capitalization_price' => $request->capitalization_price,
+                    'capitalization_date' => $request->capitalization_date,
+                    'depreciation_percent' => $request->depreciation,
+                    'accumulated_depreciation' => $request->accumulated_dep,
+                    'scrap_value' => $request->scrap_value,
+                    'end_of_life' => $request->end_of_life,
+                ]);
+            }
+
+            $assetalloted = AssetAllotedInfos::where('asset_id', $id)->first();
+
+            if ($assetalloted) {
+                $assetalloted->update([
+                    'department' => $request->department,
+                    'transferred_to' => $request->transf_to,
+                    'allotted_upto' => $request->allotted_upto,
+                    'remarks' => $request->remark,
+                ]);
+            }
+
+            $assetwarranty = AssetWarrantyInfos::where('asset_id', $id)->first();
+
+            if ($assetwarranty) {
+                $assetwarranty->update([
+                'amc_vendor' => $request->amc_vendor,
+                'warranty_vendor' => $request->Warranty_vendor,
+                'insurance_start_date' => $request->insurance_start_date,
+                'insurance_end_date' => $request->insurance_end_date,
+                'amc_start_date' => $request->amc_start_date,
+                'amc_end_date' => $request->amc_end_date,
+                'warranty_start_date' => $request->warranty_start_date,
+                'warranty_end_date' => $request->warranty_end_date,
+                ]);
+            }
 
             return response()->json([
                 'status' => true,
                 'message' => 'Asset updated successfully'
             ]);
-
+  
         } catch (\Exception $e) {
-
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong',
