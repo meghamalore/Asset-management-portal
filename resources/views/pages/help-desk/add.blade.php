@@ -12,43 +12,115 @@
                         <form>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Parent Ticket</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="basic-default-name"
-                                        placeholder="John Doe" />
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-company">Ticket Type</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="basic-default-company"
-                                        placeholder="ACME Inc." />
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Type</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-email">Location</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <input type="text" id="basic-default-email" class="form-control"
-                                            placeholder="john.doe" aria-label="john.doe"
-                                            aria-describedby="basic-default-email2" />
-                                        <span class="input-group-text" id="basic-default-email2">@example.com</span>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Location</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Asset</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Assigned To</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Group</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Priority</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                            </div>
+                             <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reported Date</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control force-validate" type="date" name="invoice_date" />
                                     </div>
-                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reported By</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="basic-default-phone" class="form-control phone-mask"
-                                        placeholder="658 799 8941" aria-label="658 799 8941"
-                                        aria-describedby="basic-default-phone" />
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Description</label>
+                                <div class="col-sm-4">
+                                    <textarea class="form-control"></textarea>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reported By</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-message">Message</label>
-                                <div class="col-sm-10">
-                                    <textarea id="basic-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?"
-                                        aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2"></textarea>
+                                <label class="col-sm-2 col-form-label" >Notifiy Reported By</label>
+                                <div class="col-sm-4">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input force-validate" type="checkbox"
+                                            id="flexSwitchCheckDefault" name="self_owned"/>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="row justify-content-end">

@@ -25,6 +25,11 @@ class Asset extends Model
         return $this->belongsTo(Category::class, 'category_id'); // FK in assets table
     }
 
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id');
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id'); // FK in assets table
