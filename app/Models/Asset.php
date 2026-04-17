@@ -22,17 +22,27 @@ class Asset extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id'); // FK in assets table
+        return $this->belongsTo(Category::class, 'category_id'); 
+    }
+
+    public function subCategory()
+    {
+        return $this->belongsTo(SubCategory::class, 'sub_category_id');
+    }
+
+    public function SubLocation()
+    {
+        return $this->belongsTo(SubLocation::class, 'sub_location_id');
     }
 
     public function location()
     {
-        return $this->belongsTo(Location::class, 'location_id'); // FK in assets table
+        return $this->belongsTo(Location::class, 'location_id'); 
     }
 
     public function status()
     {
-        return $this->belongsTo(Status::class, 'status_id'); // FK in assets table
+        return $this->belongsTo(Status::class,'status_id'); 
     }
 
     public function additionalInfo()

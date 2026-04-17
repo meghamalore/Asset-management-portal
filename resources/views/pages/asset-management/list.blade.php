@@ -22,6 +22,7 @@
             z-index: 9999 !important;
         }
         
+        
     </style>
 @endsection
 @section('content')
@@ -217,10 +218,8 @@
                                 <input type="checkbox" class="asset-checkbox" value="{{ $asset_datas->id }}">
                             </td>
 
-                            <td>
-                                <a href="" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>
-                                <a href="" class="text-primary"><i class="bx bx-edit"></i></a>
-                                <a href="" class="text-primary"><i class="bx bx-dots-vertical-rounded"></i></a>
+                            <td class="text-center">
+                                <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
                             </td>
 
                             <td data-column="1">{{ $asset_datas->asset_name}}</td>
@@ -1687,6 +1686,111 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Extra Large Update Asset Modal -->
+    <div class="modal fade" id="exLargeModalMultiUpdateAsset" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span class="tf-icons bx bx-edit"></span>&​nbsp; Bulk Update Assets
+                        <span id="selectedCountBadge" class="badge bg-primary ms-2">0 assets selected</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" tabindex="-1">
+                    
+                    <!-- Unsaved Changes Alert -->
+                    <div id="unsavedBadge" class="alert alert-warning alert-dismissible fade show mb-3" style="display: none;">
+                        <span class="tf-icons bx bx-error-circle"></span>
+                        <strong>You have unsaved changes!</strong> Click "Save Changes" to persist your edits.
+                        <button type="button" class="btn-close" onclick="$('#unsavedBadge').hide();"></button>
+                    </div>
+
+                    <!-- Update Actions -->
+                    <div class="card mb-3">
+                        <div class="card-header py-2 d-flex justify-content-between align-items-center bg-light">
+                            <div class="text-muted small fw-bold">
+                                <i class="bx bx-info-circle"></i> 
+                                Click any cell to edit. Fields with dropdown/date support will show popup.
+                            </div>
+                            <div class="d-flex gap-2">
+                                <div class="btn-group">
+                                    <input type="file" id="excelUploadInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="$('#excelUploadInput').click()">
+                                        <i class="bx bx-upload"></i> Upload Excel
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnDownloadExcel">
+                                        <i class="bx bx-download"></i> Download
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-info" id="btnSelectFields">
+                                        <i class="bx bx-grid-small"></i> Select Fields
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+
+                            <!-- Bulk Update Table -->
+                            <div class="table-responsive" style="max-height: 500px; overflow: auto;">
+                                <table class="table table-bordered table-sm bulk-update-table" id="bulkUpdateTable">
+                                    <thead class="bg-light sticky-top">
+                                        <tr id="bulkUpdateHeaderRow">
+                                            <th class="first-col">#</th>
+                                            <th class="second-col">Asset Code</th>
+                                            <th>Asset Name</th>
+                                            <th>Category</th>
+                                            <th>Location</th>
+                                            <th>Status</th>
+                                            <th>CWIP Invoice Id</th>
+                                            <th>Condition</th>
+                                            <th>Brand</th>
+                                            <th>Model</th>
+                                            <th>Linked Asset</th>
+                                            <th>Description</th>
+                                            <th>Serial No</th>
+                                            <th>Vendor Name</th>
+                                            <th>PO Number</th>
+                                            <th>Invoice Date</th>
+                                            <th>Invoice No</th>
+                                            <th>Purchase Date</th>
+                                            <th>Purchase Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="bulkUpdateBody">
+                                        <tr class="text-center text-muted">
+                                            <td colspan="40" class="py-4">
+                                                <i class="bx bx-info-circle fs-4 d-block mb-2"></i>
+                                                Select assets and click "Update Asset" to load data
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Footer Actions inside card -->
+                            <div class="d-flex justify-content-between align-items-center mt-3 p-3">
+                                <div class="text-muted small">
+                                    <i class="bx bx-info-circle"></i> Max 100 assets can be edited at once
+                                </div>
+                                <div id="saveStatus" class="text-muted small"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="btnCloseBulkUpdate">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnSaveBulkUpdate" disabled>
+                        <i class="bx bx-save"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('section-js')
 <script>
@@ -1984,44 +2088,157 @@
 
         });
 
+        /*****Implementing the custom table view feature*****/
+        function getAssetTable() {
+            // Reuse shared DataTable instance only when it is a valid API object.
+            if (window.assetTable && typeof window.assetTable.columns === 'function') {
+                return window.assetTable;
+            }
+ 
+            // Recover gracefully if a stale/non-API object was assigned.
+            window.assetTable = null;
+ 
+            if ($.fn.DataTable && $.fn.DataTable.isDataTable('#assetTable')) {
+                const api = $('#assetTable').DataTable();
+                if (api && typeof api.columns === 'function') {
+                    window.assetTable = api;
+                    return window.assetTable;
+                }
+            }
+ 
+            return null;
+        }
+ 
+        function updateGroupHeaderVisibility(visibleColumnIds) {
+            const groups = [
+                { id: '#defaultToggle', cols: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                { id: '#additionalToggle', cols: [14, 15, 16, 17, 18, 19] },
+                { id: '#purchaseToggle', cols: [20, 21, 22, 23, 24, 25, 26, 27] },
+                { id: '#financialToggle', cols: [28, 29, 30, 31, 32, 33, 34] },
+                { id: '#allottedToggle', cols: [35, 36, 37, 38] },
+                { id: '#warrantyToggle', cols: [39, 40, 41, 42, 43] },
+                { id: '#otherToggle', cols: [44, 45] }
+            ];
+ 
+            groups.forEach(group => {
+                const count = group.cols.filter(col => visibleColumnIds.has(col)).length;
+                $(group.id).toggle(count > 0).attr('colspan', Math.max(count, 1));
+            });
+        }
+ 
+        function applyColumnVisibilityByIds(selectedColumns) {
+            const table = getAssetTable();
+            if (!table || typeof table.columns !== 'function') return;
+ 
+            const selectedColumnIds = new Set((selectedColumns || []).map(col => parseInt(col, 10)).filter(Boolean));
+            // Keep checkbox + Actions always visible (avoid relying on hardcoded indices).
+            const alwaysVisibleIndexes = new Set();
+            table.columns().every(function (idx) {
+                const header = this.header();
+                if (!header) return;
+                const $header = $(header);
+                if ($header.find('#selectAll').length) alwaysVisibleIndexes.add(idx);
+                if ($header.text().trim().toLowerCase() === 'actions') alwaysVisibleIndexes.add(idx);
+            });
+            // Fallback (older structure): first 2 columns.
+            alwaysVisibleIndexes.add(0);
+            alwaysVisibleIndexes.add(1);
+            const visibleColumnIds = new Set();
+ 
+            // Start with only fixed columns visible.
+            const totalColumns = table.columns().indexes().toArray();
+            totalColumns.forEach(index => {
+                table.column(index).visible(alwaysVisibleIndexes.has(index), false);
+            });
+ 
+            function getColumnIndexByDataColumn(colId) {
+                let matchIndex = null;
+                table.columns().every(function (idx) {
+                    const header = this.header();
+                    const headerColumn = parseInt($(header).data('column'), 10);
+                    if (!Number.isNaN(headerColumn) && headerColumn === colId) {
+                        matchIndex = idx;
+                    }
+                });
+                return matchIndex;
+            }
+ 
+            // Show selected mapped columns.
+            selectedColumnIds.forEach(colId => {
+                const index = getColumnIndexByDataColumn(colId);
+                if (index !== null) {
+                    table.column(index).visible(true, false);
+                    visibleColumnIds.add(colId);
+                }
+            });
+ 
+            updateGroupHeaderVisibility(visibleColumnIds);
+            table.columns.adjust().draw(false);
+        }
+ 
+        function showAllColumns() {
+            const table = getAssetTable();
+            if (!table || typeof table.columns !== 'function') return;
+ 
+            table.columns().visible(true, false);
+            const allColumnIds = new Set();
+ 
+            $('#assetTable thead tr:eq(1) th[data-column]').each(function () {
+                allColumnIds.add(parseInt($(this).data('column'), 10));
+            });
+ 
+            updateGroupHeaderVisibility(allColumnIds);
+            table.columns.adjust().draw(false);
+        }
+ 
         $(document).on('change', '#viewSelect', function () {
-
+ 
             let viewId = $(this).val();
-
+            let selectedText = $('#viewSelect option:selected').text().trim().toLowerCase();
+ 
             if (!viewId) {
-                $('[data-column]').show();
+                showAllColumns();
                 return;
             }
-
+ 
             $.ajax({
                 url: "{{ url('custom-view') }}/" + viewId,
                 type: "GET",
-
+ 
                 success: function (response) {
-
-
-                    let selectedColumns = response.columns;
-
-                    // Hide all
-                    $('[data-column]').hide();
-
-                    // Show selected
-                    selectedColumns.forEach(function (colId) {
-                        $('[data-column]').each(function () {
-                            if ($(this).data('column').toString() === colId.toString()) {
-                                $(this).show();
-                            }
-                        });
-                    });
-
+                    let selectedColumns = response.columns || [];
+ 
+                    // Force fixed behavior for requested views.
+                    if (selectedText === 'assetname') {
+                        // Asset-related set (default section)
+                        selectedColumns = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+                    } else if (selectedText === 'department') {
+                        // Department-related set (allotted information)
+                        selectedColumns = [35, 36, 37, 38];
+                    } else if (selectedText === 'insurance start date') {
+                        selectedColumns = [39, 40, 41, 42, 43];
+                    } else if (selectedText === 'amcvendor') {
+                        selectedColumns = [39, 40, 41, 42, 43];
+                    }
+ 
+                    applyColumnVisibilityByIds(selectedColumns);
+ 
                 },
-
+ 
                 error: function () {
                     showToast('Failed to load view', 'error');
                 }
             });
-
+ 
         });
+ 
+        // Apply selected view after page refresh/load.
+        if ($('#viewSelect').val()) {
+            $('#viewSelect').trigger('change');
+        } else {
+            showAllColumns();
+        }
+        /*****Implementing the custom table view feature*****/
 
         let locations = @json($location);
         let subLocations = @json($sub_location);
@@ -2142,9 +2359,14 @@
         $('#updateBtn').on('click', function () {
 
             let checked = $('.asset-checkbox:checked'); //  define it
-
+           
             if (checked.length === 0) {
                 showToast('Please select at least one asset');
+                return;
+            }
+
+            if (checked.length > 1) {
+                new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset')).show();
                 return;
             }
 
@@ -2942,7 +3164,301 @@
                 });
             }
         });
+        // multi update js
 
+        // ==================== BULK UPDATE SYSTEM ====================
+
+const BULK_UPDATE_MAX_ASSETS = 100;
+let selectedAssetIds = [];
+let editedData = [];
+let originalData = [];
+let hasUnsavedChanges = false;
+let currentDropdownContext = null;
+let isSavingBulkUpdate = false;
+let visibleFields = null; // null = show all fields
+
+const FIELD_CONFIG = {
+    'asset_name': { type: 'text', label: 'Asset Name', editable: true, required: true },
+    'sub_category': { type: 'text', label: 'Sub Category', editable: true },
+    'sub_location': { type: 'text', label: 'Sub Location', editable: true },
+    'cwip_invoice_id': { type: 'text', label: 'CWIP Invoice ID', editable: true },
+    'brand': { type: 'text', label: 'Brand', editable: true },
+    'model': { type: 'text', label: 'Model', editable: true },
+    'description': { type: 'text', label: 'Description', editable: true },
+    'serial_no': { type: 'text', label: 'Serial No', editable: true },
+    'vendor_name': { type: 'text', label: 'Vendor Name', editable: true },
+    'asset_po_number': { type: 'text', label: 'PO Number', editable: true },
+    'invoice_date': { type: 'date', label: 'Invoice Date', editable: true },
+    'invoice_no': { type: 'text', label: 'Invoice No', editable: true },
+    'purchase_date': { type: 'date', label: 'Purchase Date', editable: true },
+    'purchase_price': { type: 'number', label: 'Purchase Price', editable: true },
+    'is_self_owned': { type: 'dropdown', label: 'Self Owned', editable: true, options: ['Yes', 'No'] },
+    'capitalization_price': { type: 'number', label: 'Capitalization Price', editable: true },
+    'end_of_life': { type: 'date', label: 'End of Life', editable: true },
+    'capitalization_date': { type: 'date', label: 'Capitalization Date', editable: true },
+    'depreciation_percent': { type: 'number', label: 'Depreciation %', editable: true },
+    'accumulated_depreciation': { type: 'number', label: 'Accumulated Dep', editable: true },
+    'scrap_value': { type: 'number', label: 'Scrap Value', editable: true },
+    'income_tax_depreciation_percent': { type: 'number', label: 'Income Tax Dep %', editable: true },
+    'department': { type: 'dropdown', label: 'Department', editable: true, options: ['IT', 'HR', 'Finance', 'Operations', 'Sales', 'Marketing'] },
+    'transferred_to': { type: 'text', label: 'Transferred To', editable: true },
+    'allotted_upto': { type: 'date', label: 'Allotted Upto', editable: true },
+    'remarks': { type: 'text', label: 'Remarks', editable: true },
+    'amc_vendor': { type: 'text', label: 'AMC Vendor', editable: true },
+    'warranty_vendor': { type: 'text', label: 'Warranty Vendor', editable: true },
+    'insurance_start_date': { type: 'date', label: 'Insurance Start', editable: true },
+    'insurance_end_date': { type: 'date', label: 'Insurance End', editable: true },
+    'amc_start_date': { type: 'date', label: 'AMC Start', editable: true },
+    'amc_end_date': { type: 'date', label: 'AMC End', editable: true },
+    'warranty_start_date': { type: 'date', label: 'Warranty Start', editable: true },
+    'warranty_end_date': { type: 'date', label: 'Warranty End', editable: true },
+    'category': { type: 'dropdown', label: 'Category', editable: true, source: 'categories' },
+    'location': { type: 'dropdown', label: 'Location', editable: true, source: 'locations' },
+    'status': { type: 'dropdown', label: 'Status', editable: true, source: 'statuses' },
+    'condition': { type: 'dropdown', label: 'Condition', editable: true, options: ['New', 'Good', 'Fair', 'Poor', 'Damaged'] },
+};
+
+let dropdownData = {
+    locations: @json($location ?? []),
+    subLocations: @json($sub_location ?? [])
+};
+
+// Handle Update Asset button click
+$(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isSavingBulkUpdate) {
+        showToast('Please wait, previous save is still processing...', 'warning');
+        return;
+    }
+
+    let checked = $('.asset-checkbox:checked');
+    if (checked.length === 0) {
+        showToast('Please select at least one asset to update', 'warning');
+        return;
+    }
+    if (checked.length > BULK_UPDATE_MAX_ASSETS) {
+        showToast(`Maximum ${BULK_UPDATE_MAX_ASSETS} assets can be edited at once`, 'error');
+        return;
+    }
+
+    let assetIds = [];
+    checked.each(function() {
+        let row = $(this).closest('tr');
+        let assetId = row.data('asset-id') || row.find('td:eq(3)').text();
+        if (assetId) assetIds.push(assetId);
+    });
+
+    $('#bulkUpdateBody').html('<tr><td colspan="40" class="text-center py-4"><div class="spinner-border"></div><p class="mt-2">Loading assets...</p></td></tr>');
+
+    let modal = new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset'));
+    modal.show();
+
+    $.ajax({
+        url: "{{ route('assets.bulk-fetch') }}?_t=" + new Date().getTime(),
+        type: "POST",
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            asset_ids: assetIds
+        },
+        success: function(response) {
+            if (response.status && response.assets) {
+                selectedAssetIds = assetIds;
+                editedData = JSON.parse(JSON.stringify(response.assets));
+                originalData = JSON.parse(JSON.stringify(response.assets));
+                visibleFields = null; // Reset to show all columns
+                $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
+                renderBulkUpdateGrid();
+                hasUnsavedChanges = false;
+                $('#unsavedBadge').hide();
+                $('#btnSaveBulkUpdate').prop('disabled', true);
+            } else {
+                showToast('Failed to load assets', 'error');
+            }
+        },
+        error: function(xhr) {
+            showToast('Error loading assets: ' + xhr.statusText, 'error');
+        }
+    });
+});
+
+// Render the grid
+function renderBulkUpdateGrid() {
+    const allFields = [
+        { key: 'asset_name', label: 'Asset Name', required: true },
+        { key: 'category', label: 'Category' },
+        { key: 'sub_category', label: 'Sub Category' },
+        { key: 'location', label: 'Location' },
+        { key: 'sub_location', label: 'Sub Location' },
+        { key: 'status', label: 'Status' },
+        { key: 'condition', label: 'Condition' },
+        { key: 'brand', label: 'Brand' },
+        { key: 'model', label: 'Model' },
+        { key: 'description', label: 'Description' },
+        { key: 'serial_no', label: 'Serial No' },
+        { key: 'vendor_name', label: 'Vendor' },
+        { key: 'asset_po_number', label: 'PO Number' },
+        { key: 'invoice_date', label: 'Invoice Date' },
+        { key: 'purchase_date', label: 'Purchase Date' },
+        { key: 'purchase_price', label: 'Purchase Price' },
+        { key: 'department', label: 'Department' },
+        { key: 'allotted_upto', label: 'Allotted Upto' },
+        { key: 'remarks', label: 'Remarks' },
+        { key: 'insurance_start_date', label: 'Insurance Start' },
+        { key: 'insurance_end_date', label: 'Insurance End' },
+        { key: 'warranty_start_date', label: 'Warranty Start' },
+        { key: 'warranty_end_date', label: 'Warranty End' }
+    ];
+
+    let fieldsToShow = allFields;
+    if (visibleFields && visibleFields.length > 0) {
+        fieldsToShow = allFields.filter(f => f.required || visibleFields.includes(f.key));
+    }
+
+    let headerHtml = '<th class="first-col">#</th><th class="second-col">Asset Code</th>';
+    fieldsToShow.forEach(f => { headerHtml += `<th>${f.label}</th>`; });
+    $('#bulkUpdateHeaderRow').html(headerHtml);
+
+    let html = '';
+    editedData.forEach((asset, index) => {
+        html += `<tr data-row-index="${index}">
+            <td class="first-col">${index + 1}</td>
+            <td class="second-col">${asset.asset_code || ''}</td>`;
+        fieldsToShow.forEach(f => {
+            let value = asset[f.key] || '';
+            if (f.key === 'is_self_owned') value = asset[f.key] ? 'Yes' : 'No';
+            html += `<td class="editable-cell" data-field="${f.key}">${value}</td>`;
+        });
+        html += `</tr>`;
+    });
+    $('#bulkUpdateBody').html(html);
+}
+
+// Field selection popup
+$('#btnSelectFields').on('click', function() {
+    let fields = [
+        { key: 'asset_name', label: 'Asset Name (Required)', required: true },
+        { key: 'category', label: 'Category' },
+        { key: 'location', label: 'Location' },
+        { key: 'status', label: 'Status' },
+        { key: 'condition', label: 'Condition' },
+        { key: 'brand', label: 'Brand' },
+        { key: 'vendor_name', label: 'Vendor' },
+        { key: 'purchase_price', label: 'Purchase Price' },
+        { key: 'department', label: 'Department' }
+    ];
+
+    let html = `
+        <div id="fieldSelectionPopup" class="dropdown-popup-overlay" style="z-index:10000;">
+            <div class="dropdown-popup" style="width:350px;">
+                <div class="dropdown-popup-header">
+                    <h6>Select Fields to Display</h6>
+                    <button type="button" class="btn-close" onclick="$('#fieldSelectionPopup').remove();"></button>
+                </div>
+                <div class="dropdown-popup-body">
+                    ${fields.map(f => `
+                        <div class="form-check">
+                            <input class="form-check-input field-checkbox" type="checkbox" value="${f.key}" id="field_${f.key}" ${f.required ? 'checked' : ''}>
+                            <label class="form-check-label" for="field_${f.key}">${f.label}</label>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="dropdown-popup-footer">
+                    <div class="btn-group me-auto">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$('.field-checkbox').prop('checked', true);">Select All</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$('.field-checkbox').prop('checked', false); $('.field-checkbox').first().prop('checked', true);">Clear All</button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="$('#fieldSelectionPopup').remove();">Cancel</button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="applyFieldSelection()">Apply</button>
+                </div>
+            </div>
+        </div>
+    `;
+    $('body').append(html);
+    $('#fieldSelectionPopup').fadeIn(150);
+});
+
+window.applyFieldSelection = function() {
+    visibleFields = $('.field-checkbox:checked').map(function() { return $(this).val(); }).get();
+    $('#fieldSelectionPopup').remove();
+    showToast(`Showing ${visibleFields.length} columns. Refreshing grid...`, 'success');
+    renderBulkUpdateGrid();
+};
+
+// Save button
+$('#btnSaveBulkUpdate').on('click', function() {
+    $(this).blur();
+    $('#exLargeModalMultiUpdateAsset .modal-body').focus();
+
+    let changes = [];
+    editedData.forEach((asset, index) => {
+        let assetChanges = {};
+        Object.keys(asset).forEach(field => {
+            let oldVal = originalData[index][field];
+            let newVal = asset[field];
+            if (newVal !== oldVal) {
+                assetChanges[field] = { old: oldVal, new: newVal };
+            }
+        });
+        if (Object.keys(assetChanges).length > 0) {
+            changes.push({ asset_id: asset.id || asset.asset_code, changes: assetChanges });
+        }
+    });
+
+    if (changes.length === 0) {
+        showToast('No changes to save', 'info');
+        return;
+    }
+
+    isSavingBulkUpdate = true;
+    $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', true);
+    $('#btnSaveBulkUpdate').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+
+    $.ajax({
+        url: "{{ route('assets.bulkUpdate') }}",
+        type: "POST",
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            changes: changes
+        },
+        success: function(response) {
+            if (response.status) {
+                showToast(response.message, 'success');
+                hasUnsavedChanges = false;
+                $('#unsavedBadge').hide();
+                $('#btnSaveBulkUpdate').prop('disabled', true).html('Save Changes');
+                $('.row-changed').removeClass('row-changed');
+                originalData = JSON.parse(JSON.stringify(editedData));
+
+                setTimeout(function() {
+                    let modalEl = document.getElementById('exLargeModalMultiUpdateAsset');
+                    let modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                    setTimeout(function() {
+                        $('.modal-backdrop').remove();
+                        $('body').removeClass('modal-open');
+                    }, 350);
+                }, 1500);
+
+                setTimeout(function() {
+                    location.reload();
+                }, 2000);
+            } else {
+                showToast(response.message || 'Failed to save', 'error');
+                $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
+                isSavingBulkUpdate = false;
+                $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
+            }
+        },
+        error: function(xhr) {
+            showToast('Save failed: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
+            $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
+            isSavingBulkUpdate = false;
+            $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
+        }
+    });
+});
  
     });
 </script>

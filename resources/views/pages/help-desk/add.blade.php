@@ -1,133 +1,125 @@
 @extends('layouts.master')
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="fw-bold py-3 mb-4">Add Asset</h4>
         <div class="row">
             <!-- Basic Layout -->
             <div class="col-xxl">
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Basic Layout</h5>
-                        <small class="text-muted float-end">Default label</small>
+                        <h5 class="mb-0">Generate Ticket</h5>
                     </div>
                     <div class="card-body">
                         <form>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="basic-default-name"
-                                        placeholder="John Doe" />
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Parent Ticket</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-company">Company</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="basic-default-company"
-                                        placeholder="ACME Inc." />
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Type</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <input type="text" id="basic-default-email" class="form-control"
-                                            placeholder="john.doe" aria-label="john.doe"
-                                            aria-describedby="basic-default-email2" />
-                                        <span class="input-group-text" id="basic-default-email2">@example.com</span>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Location</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="selective_category_id">
+                                        <option value="">Select Location</option>
+                                            @foreach($location as $locations)
+                                            <option value="{{$locations->id }}">{{ $locations->name }}</option> 
+                                            @endforeach
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Asset</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="selective_category_id">
+                                        <option value="">Select Asset</option>
+                                            @foreach($asset as $assets)
+                                            <option value="{{$assets->id }}">{{ $assets->asset_name }}</option> 
+                                            @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Assigned To</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Group</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Priority</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
+                                </div>
+                            </div>
+                             <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reported Date</label>
+                                    <div class="col-sm-4">
+                                        <input class="form-control force-validate" type="date" name="invoice_date" />
                                     </div>
-                                    <div class="form-text">You can use letters, numbers & periods</div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reported By</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone No</label>
-                                <div class="col-sm-10">
-                                    <input type="text" id="basic-default-phone" class="form-control phone-mask"
-                                        placeholder="658 799 8941" aria-label="658 799 8941"
-                                        aria-describedby="basic-default-phone" />
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Description</label>
+                                <div class="col-sm-4">
+                                    <textarea class="form-control"></textarea>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reported By</label>
+                                <div class="col-sm-4">
+                                    <select id="country" class="form-select" name="trafs_duration_type">
+                                        <option value="">Select</option>
+                                        <option value="day">Day(s)</option>
+                                        <option value="month">Month(s)</option>
+                                        <option value="year">Year(s)</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-message">Message</label>
-                                <div class="col-sm-10">
-                                    <textarea id="basic-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?"
-                                        aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2"></textarea>
-                                </div>
-                            </div>
-                            <div class="row justify-content-end">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Send</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- Basic with Icons -->
-            <div class="col-xxl">
-                <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Basic with Icons</h5>
-                        <small class="text-muted float-end">Merged input group</small>
-                    </div>
-                    <div class="card-body">
-                        <form>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Name</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="basic-icon-default-fullname2" class="input-group-text"><i
-                                                class="bx bx-user"></i></span>
-                                        <input type="text" class="form-control" id="basic-icon-default-fullname"
-                                            placeholder="John Doe" aria-label="John Doe"
-                                            aria-describedby="basic-icon-default-fullname2" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Company</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="basic-icon-default-company2" class="input-group-text"><i
-                                                class="bx bx-buildings"></i></span>
-                                        <input type="text" id="basic-icon-default-company" class="form-control"
-                                            placeholder="ACME Inc." aria-label="ACME Inc."
-                                            aria-describedby="basic-icon-default-company2" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                        <input type="text" id="basic-icon-default-email" class="form-control"
-                                            placeholder="john.doe" aria-label="john.doe"
-                                            aria-describedby="basic-icon-default-email2" />
-                                        <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
-                                    </div>
-                                    <div class="form-text">You can use letters, numbers & periods</div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 form-label" for="basic-icon-default-phone">Phone No</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="basic-icon-default-phone2" class="input-group-text"><i
-                                                class="bx bx-phone"></i></span>
-                                        <input type="text" id="basic-icon-default-phone"
-                                            class="form-control phone-mask" placeholder="658 799 8941"
-                                            aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 form-label" for="basic-icon-default-message">Message</label>
-                                <div class="col-sm-10">
-                                    <div class="input-group input-group-merge">
-                                        <span id="basic-icon-default-message2" class="input-group-text"><i
-                                                class="bx bx-comment"></i></span>
-                                        <textarea id="basic-icon-default-message" class="form-control" placeholder="Hi, Do you have a moment to talk Joe?"
-                                            aria-label="Hi, Do you have a moment to talk Joe?" aria-describedby="basic-icon-default-message2"></textarea>
+                                <label class="col-sm-2 col-form-label" >Notifiy Reported By</label>
+                                <div class="col-sm-4">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input force-validate" type="checkbox"
+                                            id="flexSwitchCheckDefault" name="self_owned"/>
+                                        <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
                                     </div>
                                 </div>
                             </div>

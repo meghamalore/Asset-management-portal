@@ -20,4 +20,9 @@ class Location extends Model
     {
         return $this->hasMany(Asset::class, 'location_id');
     }
+
+    public function subLocation()
+    {
+        return $this->hasMany(SubLocation::class, 'location_id');
+    }
 }

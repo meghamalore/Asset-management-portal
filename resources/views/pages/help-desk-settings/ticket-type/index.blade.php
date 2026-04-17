@@ -1,12 +1,16 @@
 @extends('layouts.master')
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="fw-bold py-3 mb-4">Manage Ticket</h4>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Ticket Type</h4>
+        <button type="button" class="btn btn-primary">
+            <i class="bx bx-plus"></i> Add
+        </button>
+    </div>
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
                 <table id="assetTable" class="table table-bordered">
-
                     <thead>
                         <!-- GROUP HEADER -->
                         <tr>
