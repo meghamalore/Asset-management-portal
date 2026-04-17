@@ -35,20 +35,20 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Location</label>
                                 <div class="col-sm-4">
-                                    <select id="country" class="form-select" name="trafs_duration_type">
-                                        <option value="">Select</option>
-                                        <option value="day">Day(s)</option>
-                                        <option value="month">Month(s)</option>
-                                        <option value="year">Year(s)</option>
+                                    <select class="form-select" name="selective_category_id">
+                                        <option value="">Select Location</option>
+                                            @foreach($location as $locations)
+                                            <option value="{{$locations->id }}">{{ $locations->name }}</option> 
+                                            @endforeach
                                     </select>
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Asset</label>
                                 <div class="col-sm-4">
-                                    <select id="country" class="form-select" name="trafs_duration_type">
-                                        <option value="">Select</option>
-                                        <option value="day">Day(s)</option>
-                                        <option value="month">Month(s)</option>
-                                        <option value="year">Year(s)</option>
+                                    <select class="form-select" name="selective_category_id">
+                                        <option value="">Select Asset</option>
+                                            @foreach($asset as $assets)
+                                            <option value="{{$assets->id }}">{{ $assets->asset_name }}</option> 
+                                            @endforeach
                                     </select>
                                 </div>
                             </div>

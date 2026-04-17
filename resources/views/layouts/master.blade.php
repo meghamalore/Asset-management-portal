@@ -53,7 +53,7 @@
             <!-- Help Desk -->
             <li class="menu-item {{ request()->routeIs('add.help.desk') || request()->routeIs('list.help.desk') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-support"></i>
+                <i class="menu-icon tf-icons bx bx-help-circle"></i>
                 <div data-i18n="Layouts">Help Desk</div>
               </a>
 
@@ -66,6 +66,27 @@
                 <li class="menu-item">
                   <a href="{{ route("add.help.desk")  }}" class="menu-link">
                     <div data-i18n="Without navbar">New Tickets</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Help Desk Settings-->
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bx-cog"></i>
+                <div data-i18n="Layouts">Help Desk Settings</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{{ route('list.ticket.status')}}" class="menu-link">
+                    <div data-i18n="Without menu">Ticket Status</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ route('list.ticket.type')}}" class="menu-link">
+                    <div data-i18n="Without navbar">Ticket Type</div>
                   </a>
                 </li>
               </ul>

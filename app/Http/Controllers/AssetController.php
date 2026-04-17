@@ -197,7 +197,6 @@ class AssetController extends Controller
 
     public function index()
     {
-
         $categories = Category::with('subCategories:id,category_id,name')->get();
         $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->latest()->whereNull('status')->get();
         $column_master = ColumnMaster::select('id','column_name')->get();
@@ -206,7 +205,6 @@ class AssetController extends Controller
         $sub_location = SubLocation::select('id','name')->get();
         $status = Status::select('id','status_name')->get();
         $asset_list = Asset::select('id','asset_name','asset_code')->get();
-
 
         return view('pages.asset-management.list',compact('asset_data','column_master','views','location','sub_location','categories','status','asset_list'));
     }
@@ -245,7 +243,10 @@ class AssetController extends Controller
             'linkedAssets',
             'files',
             'category.subCategories',
-            'subCategory'
+            'subCategory',
+            'location.subLocation',
+            'SubLocation',
+            'status'
         ])->findOrFail($id);
 
         return view('pages.asset-management.view',compact('asset'));

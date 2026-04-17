@@ -21,80 +21,58 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Asset Name</label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->asset_name }}</p>
+                                            <p>{{ $asset->asset_name ?? 'N/A'}}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Asset Image</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="file" name="image" />
+                                            @if($asset->asset_image)
+                                                <img src="{{ asset('storage/' . $asset->asset_image) }}" alt="Asset Image" width="100" height="100" class="img-thumbnail">
+                                            @else
+                                                <p>No Image</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Asset
                                             Code</label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->asset_code }}</p>
+                                            <p>{{ $asset->asset_code ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Category <span
-                                                style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Category </label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->category->name }}</p>
+                                            <p>{{ $asset->category->name ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Sub Category <span
-                                                style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Sub Category </label>
                                         <div class="col-sm-4">
-                                             <p>{{ $asset->subCategories }}</p>
+                                             <p>{{ $asset->subCategory->name ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Location <span
-                                                style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Location </label>
                                         <div class="col-sm-4">
-                                            <select id="location_id" name="location" class="form-select">
-                                                <option value="">Select</option>
-                                                
-                                            </select>
-                                        </div>
-                                        {{-- <div class="col-sm-4">
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#exLargeModalLocation">
-                                                                &#43;
-                                                            </button>
-                                                        </div> --}}
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Sub Location <span
-                                                style="color:#f1416c; font-size:18px;">*</span></label>
-                                        <div class="col-sm-4">
-                                            <select class="form-select" name="sub_location_id" id="sub_location_id">
-                                                <option value="">Select</option>
-                                            </select>
+                                            <p>{{ $asset->location->name ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label">Status <span
-                                                style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Sub Location </label>
                                         <div class="col-sm-4">
-                                            <select id="status_id" name="status" class=" form-select">
-                                                <option value="">Select Status</option>
-                                               
-                                            </select>
+                                            <p>{{ $asset->SubLocation->name ?? 'N/A' }}</p>
                                         </div>
-                                        {{-- <div class="col-sm-4">
-                                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                                data-bs-target="#exLargeModalStatus">
-                                                                &#43;
-                                                            </button>
-                                                        </div> --}}
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-sm-2 col-form-label">Status </label>
+                                        <div class="col-sm-4">
+                                                <p>{{ $asset->status->status_name ?? 'N/A' }}</p>
+                                        </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">CWIP Invoice Id</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" placeholder="" name="cwip_invoice_id"
-                                                id="cwip_invoice_id" />
+                                          <p>{{ $asset->cwip_invoice_id ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -116,46 +94,33 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Condition</label>
                                         <div class="col-sm-4">
-                                            <select id="condition" name="condition" class=" form-select force-validate">
-                                                <option value="">Select</option>
-                                                <option value="damaged">Damaged</option>
-                                                <option value="good">Good</option>
-                                                <option value="poor">Poor</option>
-                                                <option value="new">New</option>
-                                            </select>
+                                            <p>{{ $asset->additionalInfo->condition ?? 'N/A' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Brand</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="brand" id="brand" />
+                                            <p>{{ $asset->additionalInfo->brand ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Model</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="model" id="model" />
+                                                <p>{{ $asset->additionalInfo->model ?? 'N/A' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Link Asset</label>
                                         <div class="col-sm-4">
-                                            <select id="link_asset" class="select2 form-select" name="link_asset[]"
-                                                multiple>
-                                                <option></option>
-                                                
-                                            </select>
-                                            <small class="form-text">The selected assets will be linked to this asset. The
-                                                selected assets
-                                                are the child assets and this will be the parent asset</small>
+                                                @foreach($asset->linkedAssets as $linked)
+                                                    {{ $linked->asset_name }}@if(!$loop->last), @endif
+                                                @endforeach
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Description</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="description"
-                                                id="description" />
+                                            <p>{{ $asset->additionalInfo->description ?? 'N/A' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Serial No</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="serial_no"
-                                                id="serial_no" />
+                                            <p>{{ $asset->additionalInfo->serial_no ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
@@ -197,50 +162,38 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Vendor Name</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="vendor_name"
-                                                id="vendor_name" />
+                                            <p>{{ $asset->purchaseInfo->vendor_name }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Po Number</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control force-validate" type="text" id="po_number"
-                                                name="po_number" />
+                                           <p>{{ $asset->purchaseInfo->asset_po_number }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Invoice Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" name="invoice_date" type="date"
-                                                id="invoice_date" />
+                                           <p>{{ $asset->purchaseInfo->invoice_date }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Invoice No</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" name="invoice_no" type="text"
-                                                id="invoice_no" />
+                                            <p>{{ $asset->purchaseInfo->invoice_no }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Purchase Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" name="purchase_date"
-                                                id="purchase_date" />
+                                            <p>{{ $asset->purchaseInfo->purchase_date }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Purchase Price</label>
                                         <div class="col-sm-4">
-                                            <div class="input-group">
-                                                <span class="input-group-text" id="full_name_icon">
-                                                    <i class="bx bx-rupee"></i>
-                                                </span>
-                                                <input type="text" name="purchase_price" class="form-control"
-                                                    id="purchase_price" />
-                                            </div>
+                                            <p>{{ $asset->purchaseInfo->purchase_price }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Self Owned / Partner</label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
-                                                <input class="form-check-input" type="checkbox" id="is_self_owned" />
-                                                <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
+                                                <p>{{ $asset->purchaseInfo->is_self_owned == 1 ? 'yes' : 'No' }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -264,55 +217,40 @@
                                         <label class="col-sm-2 col-form-label">Capitalization Price</label>
                                         <div class="col-sm-4">
                                             <div class="input-group">
-                                                <span class="input-group-text" id="full_name_icon">
-                                                    <i class="bx bx-rupee"></i>
-                                                </span>
-                                                <input type="text" name="capitalization_price" class="form-control"
-                                                    id="capitalization_price" />
+                                                <p>{{ $asset->finacialInfos->capitalization_price ?? 'N/A' }}</p>
                                             </div>
                                         </div>
                                         <label class="col-sm-2 col-form-label">End Of Life</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" id="end_of_life"
-                                                name="end_of_life" />
+                                            <p>{{ $asset->finacialInfos->end_of_life ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Capitalization Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" name="capitalization_date"
-                                                id="capitalization_date" />
+                                            <p>{{ $asset->finacialInfos->capitalization_date ?? 'N/A' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Depreciation%</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="depreciation"
-                                                id="depreciation" />
+                                            <p>{{ $asset->finacialInfos->depreciation_percent ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Accumulated
                                             Depreciation</label>
                                         <div class="col-sm-4">
-                                            <div class="input-group">
-                                                <span class="input-group-text" id="full_name_icon">
-                                                    <i class="bx bx-rupee"></i>
-                                                </span>
-                                                <input type="text" name="accumulated_depreciation"
-                                                    class="form-control" id="accumulated_depreciation" />
-                                            </div>
+                                            <p>{{ $asset->finacialInfos->accumulated_depreciation ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Scrap Value</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="scrap_value"
-                                                id="scrap_value" />
+                                            <p>{{ $asset->finacialInfos->scrap_value ?? 'N/A' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Income Tax
                                             Depreciation%</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" id="income_tax_depreciation"
-                                                name="income_tax_depreciation" />
+                                              <p>{{ $asset->finacialInfos->income_tax_depreciation_percent ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -335,32 +273,21 @@
                                         <label class="col-sm-2 col-form-label"
                                             for="basic-default-phone">Department</label>
                                         <div class="col-sm-4">
-                                            <select id="department" name="department" class="form-select force-validate">
-                                                <option value="">Select</option>
-                                                <option value="hr">HR</option>
-                                                <option value="accounting">Accounting</option>
-                                            </select>
+                                         <p>{{ $asset->assetallotedInfos->department ?? 'N/A' }}</p>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
-                                            To<span style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred To</label>
                                         <div class="col-sm-4">
-                                            <select id="transf_to" name="transf_to" class="form-select force-validate">
-                                                <option value="">Select</option>
-                                                <option value="dust">dust</option>
-                                                <option value="james_smith">James smith</option>
-                                                <option value="jennifer_miller">Jennifer Miller</option>
-                                            </select>
+                                            <p>{{ $asset->assetallotedInfos->transferred_to ?? 'N/A' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Allotted Upto</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" name="allotted_upto"
-                                                id="allotted_upto" />
+                                              <p>{{ $asset->assetallotedInfos->allotted_upto ?? 'N/A' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Remarks</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="remarks" id="remarks" />
+                                                 <p>{{ $asset->assetallotedInfos->remarks ?? 'N/A'}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -382,59 +309,47 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">AMC Vendor</label>
                                         <div class="col-sm-4">
-                                            <select id="amc_vendor" name="amc_vendor" class="form-select">
-                                                <option value="">Select</option>
-                                                <option value="amc_imc">Acme Inc.(S00081)</option>
-                                            </select>
+                                            <p>{{ $asset->assetwarrantyInfos->amc_vendor ?? 'N/A'}}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Warranty
                                             Vendor</label>
                                         <div class="col-sm-4">
-                                            <select id="warranty_vendor" name="warranty_vendor" class="form-select">
-                                                <option value="">Select</option>
-                                                <option value="warranty_vendor">Acme Inc.(S00081)</option>
-                                            </select>
+                                                <p>{{ $asset->assetwarrantyInfos->warranty_vendor ?? 'N/A'}}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Insurance Start
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" name="insurance_start_date" type="date"
-                                                id="insurance_start_date" name="insurance_start_date" />
+                                            <p>{{ $asset->assetwarrantyInfos->insurance_start_date ?? 'N/A'}}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Insurance End
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="text" name="insurance_end_date"
-                                                id="insurance_end_date" name="insurance_end_date" />
+                                                <p>{{ $asset->assetwarrantyInfos->insurance_end_date ?? 'N/A'}}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">AMC Start
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" id="amc_start_date"
-                                                name="amc_start_date" />
+                                              <p>{{ $asset->assetwarrantyInfos->amc_start_date ?? 'N/A'}}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Warranty End
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" id="warranty_end_date"
-                                                name="warranty_end_date" />
+                                            <p>{{ $asset->assetwarrantyInfos->warranty_end_date ?? 'N/A'}}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">AMC End Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" name="amc_end_date"
-                                                id="amc_end_date" />
+                                            <p>{{ $asset->assetwarrantyInfos->amc_end_date ?? 'N/A'}}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Warranty Start
                                             Date</label>
                                         <div class="col-sm-4">
-                                            <input class="form-control" type="date" name="warranty_start_date"
-                                                id="warranty_start_date" />
+                                            <p>{{ $asset->assetwarrantyInfos->warranty_start_date ?? 'N/A'}}</p>
                                         </div>
                                     </div>
                                 </div>

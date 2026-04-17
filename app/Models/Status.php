@@ -17,6 +17,6 @@ class Status extends Model
 
     public function assets()
     {
-        return $this->hasMany(Asset::class, 'status_id');
+        return $this->hasMany(Asset::class,'status_id');
     }
 }

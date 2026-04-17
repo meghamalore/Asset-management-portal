@@ -8,6 +8,7 @@ use App\Http\Controllers\AssetController;
 use App\Http\Controllers\CustomeViewControlller;
 use App\Http\Controllers\AssetDisposalController;
 use App\Http\Controllers\HelpDeskController;
+use App\Http\Controllers\HelpDeskSettingController;
 
 Route::get('/', function () {return view('dashboard');})->name('dashboard');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
@@ -39,6 +40,12 @@ Route::get('/export-assets', [AssetController::class, 'exportAssets'])->name('as
 
 Route::get('/add-help-desk', [HelpDeskController::class, 'insert'])->name('add.help.desk');
 Route::get('/list-help-desk', [HelpDeskController::class, 'index'])->name('list.help.desk');
+
+Route::get('/add-ticket-status', [HelpDeskSettingController::class, 'insert'])->name('add-ticket-status');
+Route::get('/list-ticket-status', [HelpDeskSettingController::class, 'index_status'])->name('list.ticket.status');
+
+Route::get('/add-ticket-type', [HelpDeskSettingController::class, 'insert'])->name('add-ticket-type');
+Route::get('/list-ticket-type', [HelpDeskSettingController::class, 'index_type'])->name('list.ticket.type');
 
 Route::post('/api/assets/bulk-fetch', [AssetController::class, 'bulkFetch'])->name('assets.bulk-fetch');
 Route::post('/api/assets/bulk-update', [AssetController::class, 'bulkUpdate'])->name('assets.bulkUpdate');
