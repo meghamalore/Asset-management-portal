@@ -8,17 +8,18 @@
         </button>
     </div>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body"> 
             <div class="table-responsive">
-                <table id="assetTable" class="table table-bordered">
+                <table id="ticketTypeTable" class="table table-bordered">
                     <thead>
                         <!-- GROUP HEADER -->
                         <tr>
-                            <th rowspan="3"><input type="checkbox" id="selectAll"></th>
+                            {{-- <th rowspan="3"><input type="checkbox" id="selectAll"></th> --}}
                             <th rowspan="3">Actions</th>
 
-                            <th colspan="13">
+                            <th colspan="13" id="defaultToggle">
                                 Default Section
+                                <i class='bx bx-chevron-right toggle-icon'></i>
                             </th>
                         </tr>
 
@@ -40,17 +41,17 @@
 
                         <!-- FILTER -->
                         <tr>
-                            @for ($i = 0; $i < 13; $i++)
+                            @for ($i = 0; $i < 11; $i++)
                                 <th>
-                                <input type="text">
+                                    <input type="text">
                                 </th>
-                                @endfor
+                            @endfor
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr>
-                            <td><input type="checkbox"></td>
+                            {{-- <td><input type="checkbox"></td> --}}
                             <td>Actions</td>
 
                             <!-- 13 columns -->
@@ -65,14 +66,47 @@
                             <td>2025-01-02</td>
                             <td></td>
                             <td>2025-01-03</td>
-                            <td>User</td>
-                            <td></td>
                         </tr>
                     </tbody>
-
                 </table>
             </div>
         </div>
     </div>
 </div>
+@endsection
+@section('section-js')
+<script>
+        $(document).ready(function() {
+        
+            $('#defaultToggle').addClass('collapsed');
+        
+            var table = $('#ticketTypeTable').DataTable({
+                orderCellsTop: true,
+                autoWidth: false,   //  important
+                scrollX: true       //  optional but recommended
+            });
+        
+            //  ONLY THIS (no extra logic)
+            let defaultCols = table.columns('.default-extra').indexes().toArray();
+        
+            let defaultOpen = false;
+        
+            // DEFAULT
+            $('#defaultToggle').on('click', function() {
+        
+                let isVisible = table.column(defaultCols[0]).visible(); //  check current state
+        
+                table.columns(defaultCols).visible(!isVisible, false);
+        
+                table.columns.adjust().draw(false);
+        
+                $(this).toggleClass('collapsed', isVisible);
+        
+                $('.toggle-icon')
+                    .toggleClass('bx-chevron-right', !isVisible)
+                    .toggleClass('bx-chevron-left', isVisible);
+            });
+        
+        });
+    </script>
 @endsection

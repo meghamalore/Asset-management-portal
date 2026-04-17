@@ -14,7 +14,7 @@
                     <thead>
                         <!-- GROUP HEADER -->
                         <tr>
-                            <th rowspan="3"><input type="checkbox" id="selectAll"></th>
+                            {{-- <th rowspan="3"><input type="checkbox" id="selectAll"></th> --}}
                             <th rowspan="3">Actions</th>
 
                             <th colspan="13">
@@ -40,16 +40,17 @@
 
                         <!-- FILTER -->
                         <tr>
-                            @for ($i = 0; $i < 13; $i++)
+                            @for ($i = 0; $i < 11; $i++)
                                 <th>
                                 <input type="text">
                                 </th>
-                                @endfor
+                            @endfor
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr>
-                            <td><input type="checkbox"></td>
+                            {{-- <td><input type="checkbox"></td> --}}
                             <td>Actions</td>
 
                             <!-- 13 columns -->
@@ -64,8 +65,6 @@
                             <td>2025-01-02</td>
                             <td></td>
                             <td>2025-01-03</td>
-                            <td>User</td>
-                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -73,4 +72,6 @@
         </div>
     </div>
 </div>
+@endsection
+@section('section-js')
 @endsection
