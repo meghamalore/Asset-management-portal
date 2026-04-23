@@ -2,10 +2,12 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold mb-0">Ticket Status</h4>
-        <button type="button" class="btn btn-primary">
-            <i class="bx bx-plus"></i> Add
-        </button>
+        <h4 class="fw-bold mb-0">List of Ticket Status</h4>
+        {{-- <button type="button" class="btn btn-primary btn-sm"> --}}
+            <a href="{{ route('add.ticket.status') }}" class="btn btn-primary btn-sm">
+                <i class="bx bx-plus"></i> Add
+            </a>
+        {{-- </button> --}}
     </div>
     <div class="card">
         <div class="card-body"> 
@@ -14,7 +16,7 @@
                     <thead>
                         <!-- GROUP HEADER -->
                         <tr>
-                            <th rowspan="3"><input type="checkbox" id="selectAll"></th>
+                            {{-- <th rowspan="3"><input type="checkbox" id="selectAll"></th> --}}
                             <th rowspan="3">Actions</th>
 
                             <th colspan="13">
@@ -40,16 +42,17 @@
 
                         <!-- FILTER -->
                         <tr>
-                            @for ($i = 0; $i < 13; $i++)
+                            @for ($i = 0; $i < 11; $i++)
                                 <th>
                                 <input type="text">
                                 </th>
-                                @endfor
+                            @endfor
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr>
-                            <td><input type="checkbox"></td>
+                            {{-- <td><input type="checkbox"></td> --}}
                             <td>Actions</td>
 
                             <!-- 13 columns -->
@@ -64,8 +67,6 @@
                             <td>2025-01-02</td>
                             <td></td>
                             <td>2025-01-03</td>
-                            <td>User</td>
-                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -74,3 +75,4 @@
     </div>
 </div>
 @endsection
+

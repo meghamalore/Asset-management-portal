@@ -100,203 +100,203 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                <table id="assetTable" class="table table-bordered">
+                    <table id="assetTable" class="table table-bordered">
 
-                    <thead>
-                        <!-- GROUP HEADER -->
-                        <tr>
-                            <th rowspan="3"><input type="checkbox" id="selectAll"></th>
-                            <th rowspan="3">Actions</th>
+                        <thead>
+                            <!-- GROUP HEADER -->
+                            <tr>
+                                <th rowspan="3"><input type="checkbox" id="selectAll"></th>
+                                <th rowspan="3">Actions</th>
 
-                            <th colspan="14" id="defaultToggle">
-                                Default Section
-                                <i class='bx bx-chevron-right toggle-icon'></i>
-                            </th>
-
-                            <th colspan="6" id="additionalToggle">
-                                Additional Section
-                                <i class='bx bx-chevron-right toggle-icon-add'></i>
-                            </th>
-
-                            <th colspan="8" id="purchaseToggle">
-                                Purchase Section
-                                <i class='bx bx-chevron-right toggle-icon-purchase'></i>
-                            </th>
-
-                            <th colspan="7" id="financialToggle">
-                                Financial Section
-                                <i class='bx bx-chevron-right toggle-icon-financial'></i>
-                            </th>
-
-                            <th colspan="4" id="allottedToggle">
-                                Allotted Information
-                                <i class='bx bx-chevron-right toggle-icon-allotted'></i>
-                            </th>
-
-                            <th colspan="5" id="warrantyToggle">
-                                Warranty Information
-                                <i class='bx bx-chevron-right toggle-icon-warranty'></i>
-                            </th>
-
-                        </tr>
-
-                        <!-- COLUMN HEADER -->
-                        <tr>
-                            <th data-column="1">Asset Name</th>
-
-                            <th data-column="2" class="default-extra">Image</th>
-                            <th data-column="3" class="default-extra">Code</th>
-                            <th data-column="4" class="default-extra">Category</th>
-                            <th data-column="5" class="default-extra">Created</th>
-                            <th data-column="6" class="default-extra">Location</th>
-                            <th data-column="7" class="default-extra">Created By</th>
-                            <th data-column="8" class="default-extra">Status</th>
-                            <th data-column="9" class="default-extra">Scan Date</th>
-                            <th data-column="10" class="default-extra">Scan By</th>
-                            <th data-column="11" class="default-extra">Modified</th>
-                            <th data-column="12" class="default-extra">Modified By</th>
-                            <th data-column="13" class="default-extra">Parent</th>
-
-                            <th data-column="14" class="additional-extra">Brand</th>
-                            <th data-column="15" class="additional-extra">Model</th>
-                            <th data-column="16" class="additional-extra">Linked Asset</th>
-                            <th data-column="17" class="additional-extra">Description</th>
-                            <th data-column="18" class="additional-extra">Serial No</th>
-                            <th data-column="19" class="additional-extra">Upload Files</th>
-
-                            <th data-column="20" class="purchase-extra">Vendor Name</th>
-                            <th data-column="21" class="purchase-extra">PO Number</th>
-                            <th data-column="22" class="purchase-extra">Invoice Date</th>
-                            <th data-column="23" class="purchase-extra">Invoice No</th>
-                            <th data-column="24" class="purchase-extra">Purchase Date</th>
-                            <th data-column="25" class="purchase-extra">Purchase Price</th>
-                            <th data-column="26" class="purchase-extra">Self Owned / Partner</th>
-                            <th data-column="27" class="purchase-extra">Partner</th>
-
-                            <th data-column="28" class="financial-extra">Capitalization Price</th>
-                            <th data-column="29" class="financial-extra">End of Life</th>
-                            <th data-column="30" class="financial-extra">Capitalization Date</th>
-                            <th data-column="31" class="financial-extra">Depreciation %</th>
-                            <th data-column="32" class="financial-extra">Accumulated Depreciation</th>
-                            <th data-column="33" class="financial-extra">Scrap Value</th>
-                            <th data-column="34" class="financial-extra">Income Tax Dep%</th>
-
-
-
-                            <th data-column="35" class="allotted-extra">Department</th>
-                            <th data-column="36" class="allotted-extra">Transferred To</th>
-                            <th data-column="37" class="allotted-extra">Allotted Upto</th>
-                            <th data-column="38" class="allotted-extra">Remarks</th>
-
-                            <th data-column="39" class="warranty-extra">AMC Vendor</th>
-                            <th data-column="40" class="warranty-extra">Warranty Vendor</th>
-                            <th data-column="41" class="warranty-extra">Insurance Start Date</th>
-                            <th data-column="42" class="warranty-extra">Insurance End Date</th>
-                            <th data-column="43" class="warranty-extra">AMC Start Date</th>
-
-                            <th>Condition</th>
-                            <th>Model</th>
-                        </tr>
-
-                        <!-- FILTER -->
-                        <tr>
-                            @for ($i = 0; $i < 45; $i++) <th>
-                                <div class="filter-box">
-                                    <input type="text">
-                                    <i class='bx bx-filter filter-icon'></i>
-                                </div>
+                                <th colspan="14" id="defaultToggle">
+                                    Default Section
+                                    <i class='bx bx-chevron-right toggle-icon'></i>
                                 </th>
-                            @endfor
-                        </tr>
-                    </thead>
 
-                    <tbody>
-                        @foreach($asset_data as $asset_datas)
-                        <tr data-asset-id="{{ $asset_datas->id }}" data-asset-name="{{ $asset_datas->asset_name}}" data-asset-code="{{ $asset_datas->asset_code}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price}}">
+                                <th colspan="6" id="additionalToggle">
+                                    Additional Section
+                                    <i class='bx bx-chevron-right toggle-icon-add'></i>
+                                </th>
 
-                            <td>
-                                <input type="checkbox" class="asset-checkbox" value="{{ $asset_datas->id }}">
-                            </td>
+                                <th colspan="8" id="purchaseToggle">
+                                    Purchase Section
+                                    <i class='bx bx-chevron-right toggle-icon-purchase'></i>
+                                </th>
 
-                            <td class="text-center">
-                                <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
-                            </td>
+                                <th colspan="7" id="financialToggle">
+                                    Financial Section
+                                    <i class='bx bx-chevron-right toggle-icon-financial'></i>
+                                </th>
 
-                            <td data-column="1">{{ $asset_datas->asset_name}}</td>
+                                <th colspan="4" id="allottedToggle">
+                                    Allotted Information
+                                    <i class='bx bx-chevron-right toggle-icon-allotted'></i>
+                                </th>
 
-                            <!-- Default -->
-                            <td class="default-extra" data-column="2">
-                                <img src="{{ asset('storage/' . $asset_datas->asset_image) }}"  height="50" width="50" alt="Asset Image">
-                            </td>
-                            <td data-column="3" class="default-extra">{{ $asset_datas->asset_code}}</td>
-                            <td data-column="4" class="default-extra">{{ $asset_datas->category->name}}</td>
-                            <td data-column="5" class="default-extra">{{ $asset_datas->created_at}}</td>
-                            <td data-column="6" class="default-extra">HO</td>
-                            <td data-column="7" class="default-extra">Admin</td>
-                            <td data-column="8" class="default-extra">Active</td>
-                            <td data-column="9" class="default-extra">2025-01-02</td>
-                            <td data-column="10" class="default-extra">{{ $asset_datas->location->name ?? ''}}</td>
-                            <td data-column="11" class="default-extra">2025-01-03</td>
-                            <td data-column="12" class="default-extra">User</td>
-                            <td data-column="13" class="default-extra">{{ $asset_datas->brand}}</td>
+                                <th colspan="5" id="warrantyToggle">
+                                    Warranty Information
+                                    <i class='bx bx-chevron-right toggle-icon-warranty'></i>
+                                </th>
 
-                            <!-- Additional -->
-                            <td data-column="14" class="additional-extra">{{ $asset_datas->additionalInfo->brand}}</td>
-                            <td data-column="15" class="additional-extra">{{ $asset_datas->additionalInfo->model}}</td>
-                            <td data-column="16" class="additional-extra">Linked Asset</td>
-                            <td data-column="17" class="additional-extra">{{ $asset_datas->additionalInfo->description}}</td>
-                            <td data-column="18" class="additional-extra">{{ $asset_datas->additionalInfo->serial_no}}</td>
-                            <td data-column="19" class="additional-extra">Upload Files</td>
+                            </tr>
 
-                            <!-- Purchase -->
-                            <td data-column="20" class="purchase-extra">-</td>
-                            <td data-column="21" class="purchase-extra">{{ $asset_datas->purchaseInfo->asset_po_number}}</td>
-                            <td data-column="22" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_date}}</td>
-                            <td data-column="23" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_no}}</td>
-                            <td data-column="24" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_date}}</td>
-                            <td data-column="25" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_price}}</td>
-                            <td data-column="26" class="purchase-extra">
-                                <select>
-                                    <option>None</option>
-                                    <option>Yes</option>
-                                    <option>No</option>
-                                </select>
-                            </td>
-                            <td data-column="27" class="purchase-extra">Partner</td>
+                            <!-- COLUMN HEADER -->
+                            <tr>
+                                <th data-column="1">Asset Name</th>
+
+                                <th data-column="2" class="default-extra">Image</th>
+                                <th data-column="3" class="default-extra">Code</th>
+                                <th data-column="4" class="default-extra">Category</th>
+                                <th data-column="5" class="default-extra">Created</th>
+                                <th data-column="6" class="default-extra">Location</th>
+                                <th data-column="7" class="default-extra">Created By</th>
+                                <th data-column="8" class="default-extra">Status</th>
+                                <th data-column="9" class="default-extra">Scan Date</th>
+                                <th data-column="10" class="default-extra">Scan By</th>
+                                <th data-column="11" class="default-extra">Modified</th>
+                                <th data-column="12" class="default-extra">Modified By</th>
+                                <th data-column="13" class="default-extra">Parent</th>
+
+                                <th data-column="14" class="additional-extra">Brand</th>
+                                <th data-column="15" class="additional-extra">Model</th>
+                                <th data-column="16" class="additional-extra">Linked Asset</th>
+                                <th data-column="17" class="additional-extra">Description</th>
+                                <th data-column="18" class="additional-extra">Serial No</th>
+                                <th data-column="19" class="additional-extra">Upload Files</th>
+
+                                <th data-column="20" class="purchase-extra">Vendor Name</th>
+                                <th data-column="21" class="purchase-extra">PO Number</th>
+                                <th data-column="22" class="purchase-extra">Invoice Date</th>
+                                <th data-column="23" class="purchase-extra">Invoice No</th>
+                                <th data-column="24" class="purchase-extra">Purchase Date</th>
+                                <th data-column="25" class="purchase-extra">Purchase Price</th>
+                                <th data-column="26" class="purchase-extra">Self Owned / Partner</th>
+                                <th data-column="27" class="purchase-extra">Partner</th>
+
+                                <th data-column="28" class="financial-extra">Capitalization Price</th>
+                                <th data-column="29" class="financial-extra">End of Life</th>
+                                <th data-column="30" class="financial-extra">Capitalization Date</th>
+                                <th data-column="31" class="financial-extra">Depreciation %</th>
+                                <th data-column="32" class="financial-extra">Accumulated Depreciation</th>
+                                <th data-column="33" class="financial-extra">Scrap Value</th>
+                                <th data-column="34" class="financial-extra">Income Tax Dep%</th>
 
 
-                            {{-- //financial data --}}
-                            <td data-column="28" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_price}}</td>
-                            <td data-column="29" class="financial-extra">{{ $asset_datas->finacialInfos->end_of_life}}</td>
-                            <td data-column="30" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_date}}</td>
-                            <td data-column="31" class="financial-extra">{{ $asset_datas->finacialInfos->depreciation_percent}}</td>
-                            <td data-column="32" class="financial-extra">{{ $asset_datas->finacialInfos->accumulated_depreciation}}</td>
-                            <td data-column="33" class="financial-extra">{{ $asset_datas->finacialInfos->scrap_value}}</td>
-                            <td data-column="34" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent}}</td>
 
-                            {{-- //allotted data --}}
-                            <td data-column="35" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department ?? ''}}</td>
-                            <td data-column="36" class="allotted-extra">{{ $asset_datas->assetallotedInfos->transferred_to ?? ''}}</td>
-                            <td data-column="37" class="allotted-extra">{{ $asset_datas->assetallotedInfos->allotted_upto ?? ''}}</td>
-                            <td data-column="38" class="allotted-extra">{{ $asset_datas->assetallotedInfos->remark ?? ''}}t</td>
+                                <th data-column="35" class="allotted-extra">Department</th>
+                                <th data-column="36" class="allotted-extra">Transferred To</th>
+                                <th data-column="37" class="allotted-extra">Allotted Upto</th>
+                                <th data-column="38" class="allotted-extra">Remarks</th>
 
-                            {{--  // warranty data --}}
-                            <td data-column="39" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_vendor ?? ''}}</td>
-                            <td data-column="40" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->warranty_vendor  ?? ''}}</td>
-                            <td data-column="41" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_date ?? ''}}</td>
-                            <td data-column="42" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_end ?? ''}}</td>
-                            <td data-column="43" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_start_date ?? ''}}</td>
+                                <th data-column="39" class="warranty-extra">AMC Vendor</th>
+                                <th data-column="40" class="warranty-extra">Warranty Vendor</th>
+                                <th data-column="41" class="warranty-extra">Insurance Start Date</th>
+                                <th data-column="42" class="warranty-extra">Insurance End Date</th>
+                                <th data-column="43" class="warranty-extra">AMC Start Date</th>
 
-                            <!-- Existing -->
-                            <td>Good</td>
-                            <td>Dell</td>
+                                <th>Condition</th>
+                                <th>Model</th>
+                            </tr>
 
-                        </tr>
-                        @endforeach
-                    </tbody>
+                            <!-- FILTER -->
+                            <tr>
+                                @for ($i = 0; $i < 45; $i++) <th>
+                                    <div class="filter-box">
+                                        <input type="text">
+                                        <i class='bx bx-filter filter-icon'></i>
+                                    </div>
+                                    </th>
+                                @endfor
+                            </tr>
+                        </thead>
 
-                </table>
-            </div>
+                        <tbody>
+                            @foreach($asset_data as $asset_datas)
+                            <tr data-asset-id="{{ $asset_datas->id }}" data-asset-name="{{ $asset_datas->asset_name}}" data-asset-code="{{ $asset_datas->asset_code}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price}}">
+
+                                <td>
+                                    <input type="checkbox" class="asset-checkbox" value="{{ $asset_datas->id }}">
+                                </td>
+
+                                <td class="text-center">
+                                    <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
+                                </td>
+
+                                <td data-column="1">{{ $asset_datas->asset_name}}</td>
+
+                                <!-- Default -->
+                                <td class="default-extra" data-column="2">
+                                    <img src="{{ asset('storage/' . $asset_datas->asset_image) }}"  height="50" width="50" alt="Asset Image">
+                                </td>
+                                <td data-column="3" class="default-extra">{{ $asset_datas->asset_code}}</td>
+                                <td data-column="4" class="default-extra">{{ $asset_datas->category->name}}</td>
+                                <td data-column="5" class="default-extra">{{ $asset_datas->created_at}}</td>
+                                <td data-column="6" class="default-extra">HO</td>
+                                <td data-column="7" class="default-extra">Admin</td>
+                                <td data-column="8" class="default-extra">Active</td>
+                                <td data-column="9" class="default-extra">2025-01-02</td>
+                                <td data-column="10" class="default-extra">{{ $asset_datas->location->name ?? ''}}</td>
+                                <td data-column="11" class="default-extra">2025-01-03</td>
+                                <td data-column="12" class="default-extra">User</td>
+                                <td data-column="13" class="default-extra">{{ $asset_datas->brand}}</td>
+
+                                <!-- Additional -->
+                                <td data-column="14" class="additional-extra">{{ $asset_datas->additionalInfo->brand}}</td>
+                                <td data-column="15" class="additional-extra">{{ $asset_datas->additionalInfo->model}}</td>
+                                <td data-column="16" class="additional-extra">Linked Asset</td>
+                                <td data-column="17" class="additional-extra">{{ $asset_datas->additionalInfo->description}}</td>
+                                <td data-column="18" class="additional-extra">{{ $asset_datas->additionalInfo->serial_no}}</td>
+                                <td data-column="19" class="additional-extra">Upload Files</td>
+
+                                <!-- Purchase -->
+                                <td data-column="20" class="purchase-extra">-</td>
+                                <td data-column="21" class="purchase-extra">{{ $asset_datas->purchaseInfo->asset_po_number}}</td>
+                                <td data-column="22" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_date}}</td>
+                                <td data-column="23" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_no}}</td>
+                                <td data-column="24" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_date}}</td>
+                                <td data-column="25" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_price}}</td>
+                                <td data-column="26" class="purchase-extra">
+                                    <select>
+                                        <option>None</option>
+                                        <option>Yes</option>
+                                        <option>No</option>
+                                    </select>
+                                </td>
+                                <td data-column="27" class="purchase-extra">Partner</td>
+
+
+                                {{-- //financial data --}}
+                                <td data-column="28" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_price}}</td>
+                                <td data-column="29" class="financial-extra">{{ $asset_datas->finacialInfos->end_of_life}}</td>
+                                <td data-column="30" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_date}}</td>
+                                <td data-column="31" class="financial-extra">{{ $asset_datas->finacialInfos->depreciation_percent}}</td>
+                                <td data-column="32" class="financial-extra">{{ $asset_datas->finacialInfos->accumulated_depreciation}}</td>
+                                <td data-column="33" class="financial-extra">{{ $asset_datas->finacialInfos->scrap_value}}</td>
+                                <td data-column="34" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent}}</td>
+
+                                {{-- //allotted data --}}
+                                <td data-column="35" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department ?? ''}}</td>
+                                <td data-column="36" class="allotted-extra">{{ $asset_datas->assetallotedInfos->transferred_to ?? ''}}</td>
+                                <td data-column="37" class="allotted-extra">{{ $asset_datas->assetallotedInfos->allotted_upto ?? ''}}</td>
+                                <td data-column="38" class="allotted-extra">{{ $asset_datas->assetallotedInfos->remark ?? ''}}t</td>
+
+                                {{--  // warranty data --}}
+                                <td data-column="39" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_vendor ?? ''}}</td>
+                                <td data-column="40" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->warranty_vendor  ?? ''}}</td>
+                                <td data-column="41" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_date ?? ''}}</td>
+                                <td data-column="42" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->insurance_start_end ?? ''}}</td>
+                                <td data-column="43" class="warranty-extra">{{ $asset_datas->assetwarrantyInfos->amc_start_date ?? ''}}</td>
+
+                                <!-- Existing -->
+                                <td>Good</td>
+                                <td>Dell</td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
         </div>
         <!--/ Bordered Table -->
@@ -1316,7 +1316,6 @@
         </div>
     </div>
     
-
     <!-- Extra Large Update Category Modal -->
     <div class="modal fade" id="exLargeModalUpdateCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -1686,7 +1685,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Extra Large Update Asset Modal -->
     <div class="modal fade" id="exLargeModalMultiUpdateAsset" tabindex="-1" aria-hidden="true">
