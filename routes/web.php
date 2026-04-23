@@ -9,6 +9,8 @@ use App\Http\Controllers\CustomeViewControlller;
 use App\Http\Controllers\AssetDisposalController;
 use App\Http\Controllers\HelpDeskController;
 use App\Http\Controllers\HelpDeskSettingController;
+use App\Http\Controllers\TicketStatusController;
+use App\Http\Controllers\TicketTypeController;
 
 Route::get('/', function () {return view('dashboard');})->name('dashboard');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
@@ -50,6 +52,8 @@ Route::get('/list-ticket-type', [HelpDeskSettingController::class, 'index_type']
 Route::post('/api/assets/bulk-fetch', [AssetController::class, 'bulkFetch'])->name('assets.bulk-fetch');
 Route::post('/api/assets/bulk-update', [AssetController::class, 'bulkUpdate'])->name('assets.bulkUpdate');
 
+Route::get('/add-ticket-status', [TicketStatusController::class, 'add'])->name('add.ticket.status');
+Route::get('/add-ticket-type', [TicketTypeController::class, 'add'])->name('add.ticket.type');
 
 
 
