@@ -7,6 +7,27 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     @yield('section-js')
+    <script>
+        $('#logout_btn').click(function (e) {
+              e.preventDefault();
+              $.ajaxSetup({
+                          headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                          }
+                      });
+              $.ajax({
+                  url: "/logout",
+                  type: "POST",
+                  success: function (response) {
+                      if (response.status == 200) {
+                          window.location.href = "/login";
+                      }
+
+                  }
+              });
+
+        });
+    </script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js')}}"></script>
     <script src="{{ asset('assets/vendor/js/bootstrap.js')}}"></script>
     <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
