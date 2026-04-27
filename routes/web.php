@@ -11,9 +11,15 @@ use App\Http\Controllers\HelpDeskController;
 use App\Http\Controllers\HelpDeskSettingController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketTypeController;
+use App\Http\Controllers\LoginController;
 
+Route::get('/login', function () {return view('pages.auth.login');})->name('login');
 Route::get('/', function () {return view('dashboard');})->name('dashboard');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
+
+
+Route::post('/check-login', [LoginController::class, 'login'])->name('check_login');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); 
 
 Route::get('/add-asset-management', [CategoryController::class, 'insert'])->name('add.asset.management');
 Route::post('/insert-category', [CategoryController::class, 'store'])->name('categories.store');
