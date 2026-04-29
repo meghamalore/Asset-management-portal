@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('ticket_statuses', function (Blueprint $table) {
             $table->id();
+            
+            $table->foreignId('status_type_id')->nullable()->constrained('ticket_types')->onDelete('set null');
+ 
+            $table->integer('auto_close_hours')->nullable();
+
+            $table->string('sub_status')->nullable();
+
+            $table->boolean('is_default')->default(false);
+
+            $table->string('edit_based_on')->nullable(); // user_involved / user_role
+
+            $table->boolean('auto_checkout')->default(false);
+
+            $table->boolean('tat_count')->default(false);
             $table->timestamps();
         });
     }

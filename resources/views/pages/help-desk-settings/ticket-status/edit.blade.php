@@ -16,34 +16,35 @@
                         <h5 class="mb-0">Ticket Status</h5>
                     </div>
                     <div class="card-body">
-                        <form id="ticketStatusForm">
+                        <form id="editTicketStatusForm">
                             @csrf
                             <div class="row mb-3">
+                                <input type="hidden" value="{{ $ticket->id }}" id="ticket_id" name="ticket_id">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Status Type</label>
                                 <div class="col-sm-4">
                                     <select id="country" class="form-select" name="status_type_id">
                                         <option value="">Select</option>
-                                        <option value="1">Hold</option>
-                                        <option value="2">Assigned</option>
-                                        <option value="3">Open</option>
+                                        <option value="1" {{ $ticket->status_type_id == 1 ? 'selected' : '' }}>Hold</option>
+                                        <option value="2" {{ $ticket->status_type_id == 2 ? 'selected' : '' }}>Assigned</option>
+                                        <option value="3" {{ $ticket->status_type_id == 3 ? 'selected' : '' }}>Open</option>
                                     </select>
                                 </div>
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Sub Status</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control force-validate" type="text" name="ticket_sub_status" />
+                                    <input class="form-control force-validate" value="{{ $ticket->sub_status }}" type="text" name="ticket_sub_status"  />
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Hour(s) for Auto Closer</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control force-validate" type="text" name="auto_close_hours" />
+                                    <input class="form-control force-validate" value="{{ $ticket->auto_close_hours }}" type="text" name="auto_close_hours" />
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" >Is Default</label>
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch mb-2">
-                                        <input class="form-check-input force-validate" type="checkbox"
+                                        <input value="1" {{ $ticket->is_default ? 'checked' : '' }} class="form-check-input force-validate" type="checkbox"
                                             id="flexSwitchCheckDefault" name="is_default"/>
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
                                     </div>
@@ -52,8 +53,8 @@
                                 <div class="col-sm-4">
                                     <select id="country" class="form-select" name="edit_based_on">
                                         <option value="">Select</option>
-                                        <option value="user_involved">User Involved</option>
-                                        <option value="user_role">User Role</option>
+                                        <option value="user_involved" {{ $ticket->edit_based_on === 'user_involved' ? 'selected' : '' }}>User Involved</option>
+                                        <option value="user_role" {{ $ticket->edit_based_on === 'user_role' ? 'selected' : '' }}>User Role</option>
                                     </select>
                                 </div>
                             </div>
@@ -62,7 +63,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch mb-2">
                                         <input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="auto_checkout"/>
+                                            id="flexSwitchCheckDefault" name="auto_checkout" value ="1" {{ $ticket->auto_checkout ? 'checked' : '' }}/>
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
                                     </div>
                                 </div>
@@ -70,7 +71,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch mb-2">
                                         <input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="tat_count"/>
+                                            id="flexSwitchCheckDefault" name="tat_count" value ="1" {{ $ticket->tat_count ? 'checked' : '' }}/>
                                         <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
                                     </div>
                                 </div>
@@ -143,58 +144,9 @@
             });
         }
 
-        $('#ticketStatusForm').validate({
+        $('#editTicketStatusForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
-
-            rules: {
-                status_type_id: {
-                    required: true
-                },
-                ticket_sub_status: {
-                    required: true
-                },
-                auto_close_hours: {
-                    required: true,
-                    maxlength: 255
-                },
-                is_default: {
-                    required: true
-                },
-                edit_based_on: {
-                    required: true
-                },
-                auto_checkout: {
-                    required: true
-                },
-                tat_count: {
-                    required: true
-                },
-            },
-
-            messages: {
-                status_type_id: {
-                    required: "Please select ticket status type"
-                },
-                is_default: {
-                    required: "Please enter sub status",
-                },
-                ticket_sub_status: {
-                    required: "Please enter sub status",
-                },
-                auto_close_hours: {
-                    required: "Please enter auto close hours"
-                },
-                edit_based_on: {
-                    required: "Please select edit option"
-                },
-                auto_checkout: {
-                    required: "Please select edit option"
-                },
-                tat_count: {
-                    required: "Please select edit option"
-                }
-            },
 
             errorElement: 'span',
             errorClass: 'text-danger',
@@ -220,25 +172,23 @@
             submitHandler: function (form) {
 
                 let formData = new FormData(form);
+                let id = $('#ticket_id').val();
 
                 $.ajax({
-                    url: "{{ route('store-ticket-status') }}",
+                    url: "/ticket-status/" + id, 
                     type: "POST",
                     data: formData,
                     processData: false,
                     contentType: false,
 
                     beforeSend: function () {
-                        $('#ticketStatusForm button[type="submit"]').prop('disabled', true)
+                        $('#editTicketStatusForm button[type="submit"]').prop('disabled', true)
                             .html('<span class="spinner-border spinner-border-sm"></span> Saving...');
                     },
 
                     success: function (response) {
                         if (response.status) {
                             showToast(response.message, 'success');
-
-                            $('#ticketStatusForm')[0].reset();
-                            $('.select2').val(null).trigger('change');
                         } else {
                             showToast(response.message, 'error');
                         }
@@ -256,7 +206,7 @@
                     },
 
                     complete: function () {
-                        $('#ticketStatusForm button[type="submit"]').prop('disabled', false)
+                        $('#editTicketStatusForm button[type="submit"]').prop('disabled', false)
                             .html('Send');
                     }
                 });

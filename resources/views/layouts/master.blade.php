@@ -80,7 +80,7 @@
 
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="{{ route('list.ticket.status')}}" class="menu-link">
+                  <a href="{{ route('list-ticket-status')}}" class="menu-link">
                     <div data-i18n="Without menu">Ticket Status</div>
                   </a>
                 </li>

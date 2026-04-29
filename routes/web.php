@@ -50,7 +50,6 @@ Route::get('/add-help-desk', [HelpDeskController::class, 'insert'])->name('add.h
 Route::get('/list-help-desk', [HelpDeskController::class, 'index'])->name('list.help.desk');
 
 Route::get('/add-ticket-status', [HelpDeskSettingController::class, 'insert'])->name('add-ticket-status');
-Route::get('/list-ticket-status', [HelpDeskSettingController::class, 'index_status'])->name('list.ticket.status');
 
 Route::get('/add-ticket-type', [HelpDeskSettingController::class, 'insert'])->name('add-ticket-type');
 Route::get('/list-ticket-type', [HelpDeskSettingController::class, 'index_type'])->name('list.ticket.type');
@@ -59,7 +58,14 @@ Route::post('/api/assets/bulk-fetch', [AssetController::class, 'bulkFetch'])->na
 Route::post('/api/assets/bulk-update', [AssetController::class, 'bulkUpdate'])->name('assets.bulkUpdate');
 
 Route::get('/add-ticket-status', [TicketStatusController::class, 'add'])->name('add.ticket.status');
+Route::post('/store-ticket-status', [TicketStatusController::class, 'store'])->name('store-ticket-status');
+Route::get('/index-ticket-status', [TicketStatusController::class, 'index'])->name('list-ticket-status');
+Route::delete('/destroy-ticket-status/{id}', [TicketStatusController::class, 'destroy'])->name('ticket.status.destroy');
+Route::get('/edit-ticket-status/{id}', [TicketStatusController::class, 'edit'])->name('ticket.status.edit');
+Route::post('/ticket-status/{id}', [TicketStatusController::class, 'update'])->name('ticket.status.update');
+
 Route::get('/add-ticket-type', [TicketTypeController::class, 'add'])->name('add.ticket.type');
+Route::get('/index-ticket-type', [TicketTypeController::class, 'index'])->name('list-ticket-type');
 
 
 

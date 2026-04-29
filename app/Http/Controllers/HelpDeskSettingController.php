@@ -11,8 +11,8 @@ class HelpDeskSettingController extends Controller
         return view('pages.help-desk-settings.ticket-type.index');
     }
 
-    public function index_status()
-    {
-        return view('pages.help-desk-settings.ticket-status.index');
-    }
+    // public function index_status()
+    // {
+    //     return view('pages.help-desk-settings.ticket-status.index');
+    // }
 }
