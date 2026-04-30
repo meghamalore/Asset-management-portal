@@ -1,4 +1,11 @@
 @extends('layouts.master')
+@section('section-css')
+<style> 
+#toastContainer {
+    z-index: 9999 !important;
+}
+</style>
+@endsection
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -17,7 +24,7 @@
                         <!-- GROUP HEADER -->
                         <tr>
                             {{-- <th rowspan="3"><input type="checkbox" id="selectAll"></th> --}}
-                            <th rowspan="3">Actions</th>
+                            <th rowspan="2">Actions</th>
 
                             <th colspan="8">
                                 Default Section
@@ -38,13 +45,13 @@
                         </tr>
 
                         <!-- FILTER -->
-                        <tr>
+                        {{-- <tr>
                             @for ($i = 0; $i < 8; $i++)
                                 <th>
                                 <input type="text">
                                 </th>
                             @endfor
-                        </tr>
+                        </tr> --}}
                     </thead>
 
                     <tbody>
