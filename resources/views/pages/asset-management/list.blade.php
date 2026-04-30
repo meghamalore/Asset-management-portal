@@ -7,11 +7,11 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        
+
         .sorting {
             width: 13px !important;
         }
-    
+
         th.collapsed {
             background: #dfe6ee;
             color: #555;
@@ -21,8 +21,8 @@
         #toastContainer {
             z-index: 9999 !important;
         }
-        
-        
+
+
     </style>
 @endsection
 @section('content')
@@ -219,7 +219,7 @@
                                 </td>
 
                                 <td class="text-center">
-                                    <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
+                                    <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>
                                 </td>
 
                                 <td data-column="1">{{ $asset_datas->asset_name}}</td>
@@ -322,11 +322,11 @@
                             <div class="row mb-3 mx-2">
                                 <label class="col-sm-2 col-form-label" >View Name</label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="view_name" class="form-control force-validate" 
+                                    <input type="text" name="view_name" class="form-control force-validate"
                                         placeholder="" />
                                 </div>
                                 <label class="col-sm-2 col-form-label" >Columns</label>
-                                <div class="col-sm-4">    
+                                <div class="col-sm-4">
                                     <select id="link" class="select3 form-select force-validate" data-placeholder="Select Columns"  name="columns[]" multiple>
                                         <!-- <option value="">Select Views</option> -->
                                         @foreach ($column_master as $column_masters)
@@ -340,7 +340,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch">
                                         yes<input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="is_default" value="1"/>  
+                                            id="flexSwitchCheckDefault" name="is_default" value="1"/>
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +349,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch">
                                         yes<input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="is_private" value="1"/>  
+                                            id="flexSwitchCheckDefault" name="is_private" value="1"/>
                                     </div>
                                 </div>
                                  <label class="col-sm-2 col-form-label" >Role Name</label>
@@ -384,9 +384,9 @@
                 </div>
                 <div class="modal-body">
                     <p class="mb-3 text-center">
-                        Create a custom report, chart, or number & percentage widgets here. 
-                        The charts and widgets created here will be shown in the dashboards. 
-                        Edit a dashboard and add the widget to include it. 
+                        Create a custom report, chart, or number & percentage widgets here.
+                        The charts and widgets created here will be shown in the dashboards.
+                        Edit a dashboard and add the widget to include it.
                         Custom reports are available under the Reports menu → "Custom Reports".
                     </p>
                     <div class="row mb-3">
@@ -602,7 +602,7 @@
                                         <option value="">Select</option>
                                         <option value="lost">Lost</option>
                                         <option value="stolen">Stolen</option>
-                                        <option value="write_off">Write-off</option> 
+                                        <option value="write_off">Write-off</option>
                                     </select>
                             </div>
                         </div>
@@ -672,7 +672,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="scheduleActivityForm">
-                    
+
                     <div class="modal-body">
                         <div class="card mb-3">
                             <div class="row mb-3 mx-2">
@@ -881,7 +881,7 @@
                                                     <div class="row mb-3">
                                                         <label class="col-sm-2 col-form-label" >Asset Name</label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" class="form-control" 
+                                                            <input type="text" class="form-control"
                                                                 placeholder="" name="asset_name" id="asset_name"/>
                                                         </div>
                                                         <label class="col-sm-2 col-form-label" >Asset Image</label>
@@ -966,7 +966,7 @@
                                                     <div class="row mb-3">
                                                         <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" class="form-control" 
+                                                            <input type="text" class="form-control"
                                                                 placeholder="" name="cwip_invoice_id" id="cwip_invoice_id"/>
                                                         </div>
                                                     </div>
@@ -1143,7 +1143,7 @@
                                                                 id="capitalization_price"
                                                             />
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                     <label class="col-sm-2 col-form-label" >End Of Life</label>
                                                     <div class="col-sm-4">
                                                         <input class="form-control" type="date" id="end_of_life" name="end_of_life"/>
@@ -1315,7 +1315,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Extra Large Update Category Modal -->
     <div class="modal fade" id="exLargeModalUpdateCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -1344,7 +1344,7 @@
                                                 <input type="text" class="form-control" placeholder="Enter Category Name" name="parent_category_name">
                                                 <select class="form-select" name="selective_category_id">
                                                     <option value="">Select Categories</option>
-                                                    <option value=""></option> 
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             {{-- <div class="col-sm-4">
@@ -1381,7 +1381,7 @@
                                             </div>
                                             <label class="col-sm-2 col-form-label" >Category Code</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="category_code" name="category_code" 
+                                                <input type="text" class="form-control" id="category_code" name="category_code"
                                                     placeholder="Enter Category Code" />
                                             </div>
                                         </div>
@@ -1389,7 +1389,7 @@
                                             <label class="col-sm-2 col-form-label" >Default Transfer
                                                 Duration</label>
                                             <div class="col-sm-2">
-                                                <input type="text" class="form-control" 
+                                                <input type="text" class="form-control"
                                                     placeholder="" name="trafs_duration"/>
                                             </div>
                                             <div class="col-sm-2">
@@ -1698,7 +1698,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" tabindex="-1">
-                    
+
                     <!-- Unsaved Changes Alert -->
                     <div id="unsavedBadge" class="alert alert-warning alert-dismissible fade show mb-3" style="display: none;">
                         <span class="tf-icons bx bx-error-circle"></span>
@@ -1710,7 +1710,7 @@
                     <div class="card mb-3">
                         <div class="card-header py-2 d-flex justify-content-between align-items-center bg-light">
                             <div class="text-muted small fw-bold">
-                                <i class="bx bx-info-circle"></i> 
+                                <i class="bx bx-info-circle"></i>
                                 Click any cell to edit. Fields with dropdown/date support will show popup.
                             </div>
                             <div class="d-flex gap-2">
@@ -1804,7 +1804,7 @@
             allowClear: true,
             width: '100%'
         }).next('.select2-container').css('width', '100%');
-        
+
 
         $('#link_asset_schedule').select2({
             dropdownParent: $('#exLargeModalScheduleActivity'),
@@ -2092,10 +2092,10 @@
             if (window.assetTable && typeof window.assetTable.columns === 'function') {
                 return window.assetTable;
             }
- 
+
             // Recover gracefully if a stale/non-API object was assigned.
             window.assetTable = null;
- 
+
             if ($.fn.DataTable && $.fn.DataTable.isDataTable('#assetTable')) {
                 const api = $('#assetTable').DataTable();
                 if (api && typeof api.columns === 'function') {
@@ -2103,10 +2103,10 @@
                     return window.assetTable;
                 }
             }
- 
+
             return null;
         }
- 
+
         function updateGroupHeaderVisibility(visibleColumnIds) {
             const groups = [
                 { id: '#defaultToggle', cols: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
@@ -2117,17 +2117,17 @@
                 { id: '#warrantyToggle', cols: [39, 40, 41, 42, 43] },
                 { id: '#otherToggle', cols: [44, 45] }
             ];
- 
+
             groups.forEach(group => {
                 const count = group.cols.filter(col => visibleColumnIds.has(col)).length;
                 $(group.id).toggle(count > 0).attr('colspan', Math.max(count, 1));
             });
         }
- 
+
         function applyColumnVisibilityByIds(selectedColumns) {
             const table = getAssetTable();
             if (!table || typeof table.columns !== 'function') return;
- 
+
             const selectedColumnIds = new Set((selectedColumns || []).map(col => parseInt(col, 10)).filter(Boolean));
             // Keep checkbox + Actions always visible (avoid relying on hardcoded indices).
             const alwaysVisibleIndexes = new Set();
@@ -2142,13 +2142,13 @@
             alwaysVisibleIndexes.add(0);
             alwaysVisibleIndexes.add(1);
             const visibleColumnIds = new Set();
- 
+
             // Start with only fixed columns visible.
             const totalColumns = table.columns().indexes().toArray();
             totalColumns.forEach(index => {
                 table.column(index).visible(alwaysVisibleIndexes.has(index), false);
             });
- 
+
             function getColumnIndexByDataColumn(colId) {
                 let matchIndex = null;
                 table.columns().every(function (idx) {
@@ -2160,7 +2160,7 @@
                 });
                 return matchIndex;
             }
- 
+
             // Show selected mapped columns.
             selectedColumnIds.forEach(colId => {
                 const index = getColumnIndexByDataColumn(colId);
@@ -2169,43 +2169,43 @@
                     visibleColumnIds.add(colId);
                 }
             });
- 
+
             updateGroupHeaderVisibility(visibleColumnIds);
             table.columns.adjust().draw(false);
         }
- 
+
         function showAllColumns() {
             const table = getAssetTable();
             if (!table || typeof table.columns !== 'function') return;
- 
+
             table.columns().visible(true, false);
             const allColumnIds = new Set();
- 
+
             $('#assetTable thead tr:eq(1) th[data-column]').each(function () {
                 allColumnIds.add(parseInt($(this).data('column'), 10));
             });
- 
+
             updateGroupHeaderVisibility(allColumnIds);
             table.columns.adjust().draw(false);
         }
- 
+
         $(document).on('change', '#viewSelect', function () {
- 
+
             let viewId = $(this).val();
             let selectedText = $('#viewSelect option:selected').text().trim().toLowerCase();
- 
+
             if (!viewId) {
                 showAllColumns();
                 return;
             }
- 
+
             $.ajax({
                 url: "{{ url('custom-view') }}/" + viewId,
                 type: "GET",
- 
+
                 success: function (response) {
                     let selectedColumns = response.columns || [];
- 
+
                     // Force fixed behavior for requested views.
                     if (selectedText === 'assetname') {
                         // Asset-related set (default section)
@@ -2218,18 +2218,18 @@
                     } else if (selectedText === 'amcvendor') {
                         selectedColumns = [39, 40, 41, 42, 43];
                     }
- 
+
                     applyColumnVisibilityByIds(selectedColumns);
- 
+
                 },
- 
+
                 error: function () {
                     showToast('Failed to load view', 'error');
                 }
             });
- 
+
         });
- 
+
         // Apply selected view after page refresh/load.
         if ($('#viewSelect').val()) {
             $('#viewSelect').trigger('change');
@@ -2357,20 +2357,78 @@
         $('#updateBtn').on('click', function () {
 
             let checked = $('.asset-checkbox:checked'); //  define it
-           
+
             if (checked.length === 0) {
                 showToast('Please select at least one asset');
                 return;
             }
 
             if (checked.length > 1) {
-                new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset')).show();
+                // Trigger bulk update modal for multiple assets
+                triggerBulkUpdate();
                 return;
             }
 
             let id = checked.val(); //  now works
             loadAssetData(id);
         });
+
+        // Function to trigger bulk update
+        function triggerBulkUpdate() {
+            if (isSavingBulkUpdate) {
+                showToast('Please wait, previous save is still processing...', 'warning');
+                return;
+            }
+
+            let checked = $('.asset-checkbox:checked');
+            if (checked.length === 0) {
+                showToast('Please select at least one asset to update', 'warning');
+                return;
+            }
+            if (checked.length > BULK_UPDATE_MAX_ASSETS) {
+                showToast(`Maximum ${BULK_UPDATE_MAX_ASSETS} assets can be edited at once`, 'error');
+                return;
+            }
+
+            let assetIds = [];
+            checked.each(function() {
+                let row = $(this).closest('tr');
+                let assetId = row.data('asset-id') || row.find('td:eq(3)').text();
+                if (assetId) assetIds.push(assetId);
+            });
+
+            $('#bulkUpdateBody').html('<tr><td colspan="40" class="text-center py-4"><div class="spinner-border"></div><p class="mt-2">Loading assets...</p></td></tr>');
+
+            let modal = new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset'));
+            modal.show();
+
+            $.ajax({
+                url: "{{ route('assets.bulk-fetch') }}?_t=" + new Date().getTime(),
+                type: "POST",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    asset_ids: assetIds
+                },
+                success: function(response) {
+                    if (response.status && response.assets) {
+                        selectedAssetIds = assetIds;
+                        editedData = JSON.parse(JSON.stringify(response.assets));
+                        originalData = JSON.parse(JSON.stringify(response.assets));
+                        visibleFields = null; // Reset to show all columns
+                        $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
+                        renderBulkUpdateGrid();
+                        hasUnsavedChanges = false;
+                        $('#unsavedBadge').hide();
+                        $('#btnSaveBulkUpdate').prop('disabled', true);
+                    } else {
+                        showToast('Failed to load assets', 'error');
+                    }
+                },
+                error: function(xhr) {
+                    showToast('Error loading assets: ' + xhr.statusText, 'error');
+                }
+            });
+        }
 
         function loadAssetData(id) {
 
@@ -2385,7 +2443,7 @@
                     $('#asset_name').val(res.asset.asset_name);
                     $('#asset_code').val(res.asset.asset_code);
                     $('#cwip_invoice_id').val(res.asset.cwip_invoice_id);
-                    
+
                     $('#category_id').val(res.asset.category_id).trigger('change');
                     $('#sub_category_id').val(res.asset.sub_category_id).trigger('change');
 
@@ -2466,7 +2524,7 @@
                         $('#fileList').html('<small class="text-muted">No files uploaded</small>');
                     }
 
-                    
+
                     new bootstrap.Modal(document.getElementById('exLargeModalUpdateAsset')).show();
                 }
             });
@@ -2676,7 +2734,7 @@
 
                             $('#exLargeModalUpdateAsset').modal('hide');
 
-                            location.reload(); 
+                            location.reload();
 
                             $('#updateAssetForm')[0].reset();
 
@@ -2827,7 +2885,7 @@
             modal.show();
 
         });
-        
+
         // Function to apply global settings
 
         function applyGlobalSettings() {
@@ -2891,7 +2949,7 @@
             });
 
         }
-        
+
         // Asset Transfer Form Submission
 
         $('#assetTransferForm').validate({
@@ -3225,7 +3283,7 @@ let dropdownData = {
 $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (isSavingBulkUpdate) {
         showToast('Please wait, previous save is still processing...', 'warning');
         return;
@@ -3457,7 +3515,7 @@ $('#btnSaveBulkUpdate').on('click', function() {
         }
     });
 });
- 
+
     });
 </script>
 @endsection
