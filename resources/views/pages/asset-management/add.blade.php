@@ -185,7 +185,7 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" for="basic-default-company">Asset Code</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" name="asset_code" id="basic-default-company" />
+                                         <input type="text" class="form-control" name="asset_code" id="basic-default-company" readonly />
                                                     <small class="form-text">
                                                         Leave blank to auto-generate. System generated code
                                                         formats can be setup from Advanced settings
@@ -447,7 +447,7 @@
                                                     aria-label="Full Name"
                                                 />
                                             </div>
-                                        </div> 
+                                        </div>
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" name="end_of_life" type="date"  />
@@ -604,7 +604,7 @@
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="warranty_start_date" />
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -657,7 +657,7 @@
                                                 <select class="form-select" name="selective_category_id">
                                                     <option value="">Select Categories</option>
                                                     @foreach ($only_categories as $only_cat)
-                                                    <option value="{{ $only_cat->id }}">{{ $only_cat->name }}</option> 
+                                                    <option value="{{ $only_cat->id }}">{{ $only_cat->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -695,7 +695,7 @@
                                             </div>
                                             <label class="col-sm-2 col-form-label" >Category Code <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="category_code" name="category_code" 
+                                                <input type="text" class="form-control" id="category_code" name="category_code"
                                                     placeholder="Enter Category Code" />
                                             </div>
                                         </div>
@@ -703,7 +703,7 @@
                                             <label class="col-sm-2 col-form-label" >Default Transfer
                                                 Duration <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-2">
-                                                <input type="text" class="form-control" 
+                                                <input type="text" class="form-control"
                                                     placeholder="Enter Asset Name" name="trafs_duration"/>
                                             </div>
                                             <div class="col-sm-2">
@@ -1029,7 +1029,7 @@
                                             <select class="form-select" name="selective_location_id">
                                                 <option value="">Select Location</option>
                                                 @foreach ($locations as $location)
-                                                <option value="{{ $location->id }}">{{ $location->name }}</option> 
+                                                <option value="{{ $location->id }}">{{ $location->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -1037,12 +1037,12 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Sub Location <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" 
+                                            <input type="text" class="form-control"
                                                 placeholder="Enter Sub Location" id="local_location_name" name="local_location_name"/>
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Location Code <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" 
+                                            <input type="text" class="form-control"
                                                 placeholder="Enter Location Code" id="location_code" name="location_code" />
                                         </div>
                                     </div>
@@ -1057,9 +1057,9 @@
                                         </div>
                                         <label class="col-sm-2 col-form-label" >Default Coordinates <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control mb-1" 
+                                            <input type="text" class="form-control mb-1"
                                                 placeholder="Latitude" id="latitude" name="latitude"/>
-                                            <input type="text" class="form-control" 
+                                            <input type="text" class="form-control"
                                                 placeholder="Longitude" id="longitude" name="longitude"/>
                                         </div>
                                     </div>
@@ -1250,7 +1250,7 @@
                                                     <div class="dropdown-input" onclick="toggleDropdown()">
                                                         <span id="selectedText">Select Categories</span>
                                                         <span id="toggleIcon" class="toggle-line">|</span>
-                                                        
+
                                                     </div>
 
                                                     <!-- Icons -->
@@ -1529,7 +1529,7 @@
 
     // ✔ Apply
     function applySelection(event) {
-    if (event) event.stopPropagation(); 
+    if (event) event.stopPropagation();
 
     let container = document.getElementById('hiddenCategoryInputs');
     container.innerHTML = ''; // clear old inputs
@@ -1637,7 +1637,7 @@
             width: '100%',
             dropdownAutoWidth: true
         });
-        
+
         $('#addBtns').click(function () {
             let newSection = $('.addition:first').clone();
 
@@ -1943,7 +1943,7 @@
                         let errors = xhr.responseJSON.errors;
 
                         $.each(errors, function (field, messages) {
-                            showToast(messages[0], 'error'); // replaced toastr 
+                            showToast(messages[0], 'error'); // replaced toastr
                         });
 
                     } else {
@@ -2211,7 +2211,7 @@
 
         // For Status start
 
-        
+
         $('#addBtnadditionalStatusLocalization').click(function () {
             let newSection = $('.addition-status-localization:first').clone();
 
@@ -2238,7 +2238,7 @@
         $('#statusForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
-            
+
             rules: {
                 status_type: {
                     required: true
@@ -2339,7 +2339,7 @@
                         let errors = xhr.responseJSON.errors;
 
                         $.each(errors, function (field, messages) {
-                            showToast(messages[0], 'error'); // replaced toastr 
+                            showToast(messages[0], 'error'); // replaced toastr
                         });
 
                     } else {
@@ -2359,7 +2359,7 @@
             });
             }
         });
-        
+
         // For Status end
 
 
@@ -2424,6 +2424,15 @@
             }
         });
 
+        // BUG_009 - Insurance End Date validation - Add greaterThan method
+        $.validator.addMethod('greaterThan', function(value, element, params) {
+            if (!value) return true;
+            if (!$(params).val()) return true;
+            var startDate = new Date($(params).val());
+            var endDate = new Date(value);
+            return endDate >= startDate;
+        }, 'End date must be after start date');
+
         $('#assetForm').validate({
 
             ignore: ":hidden:not(.force-validate)",
@@ -2432,8 +2441,9 @@
                 // Asset Details
                 asset_name: {
                     required: true,
-                    minlength: 3
-                },
+                    minlength: 3,
+                    pattern: /^[A-Za-z0-9\s]+$/
+                }, // BUG_001 - Asset Name special characters validation
                 asset_code: {
                     maxlength: 20
                 },
@@ -2451,10 +2461,11 @@
                 },
                 sub_location_id: {
                     required: true
-                },   
-                cwip_invoice_id: {
-                    required: true
                 },
+                cwip_invoice_id: {
+                    required: true,
+                    pattern: /^[A-Za-z0-9\s\-]+$/
+                }, // BUG_003 - CWIP Invoice ID special characters validation
 
                 // Additional Info
                 condition: {
@@ -2473,7 +2484,7 @@
                 // Purchase Info
                 vendor_name: {
                     required: true
-                },
+                }, // BUG_004 - Vendor Name mandatory
                 invoice_date: {
                     required: true,
                     date: true
@@ -2489,9 +2500,10 @@
                     date: true
                 },
                 purchase_price: {
-                    required: true,
-                    number: true
-                },
+                    required: "Enter purchase price",
+                    number: "Enter Valid number",
+                    min: "price cannot be negative"
+                }, // BUG_005 - Purchase Price specific validation messages
 
                 // Financial
                 capitalization_price: {
@@ -2543,8 +2555,10 @@
                     date: true
                 },
                 insurance_end_date: {
-                    required: true
-                },
+                    required: true,
+                    date: true,
+                    greaterThan: '#insurance_start_date'
+                }, // BUG_009 - Insurance End Date validation
                 amc_start_date: {
                     required: true,
                     date: true
@@ -2598,7 +2612,7 @@
                 allotted_upto: "Select allotted date",
 
                 amc_vendor: "Select AMC vendor",
-                Warranty_vendor: "Select warranty vendor",
+                Warranty_vendor: "Select warranty vendor", // BUG_010 - Warranty Vendor correct message
                 insurance_start_date: "Select insurance start date",
                 insurance_end_date: "Enter insurance end date",
                 amc_start_date: "Select AMC start date",
@@ -2616,7 +2630,14 @@
 
             unhighlight: function (element) {
                 $(element).removeClass('is-invalid');
-            },
+                if ($(element).hasClass('select2')) {
+                    $(element).next('.select2-container').next('.text-danger').hide();
+                } else if ($(element).closest('.input-group').length) {
+                    $(element).closest('.input-group').next('.text-danger').hide();
+                } else {
+                    $(element).next('.text-danger').hide();
+                }
+            }, // BUG_007 & BUG_008 - Message clearing for Accumulated Depreciation and Department
 
             errorPlacement: function (error, element) {
                 if (element.hasClass('select2')) {
