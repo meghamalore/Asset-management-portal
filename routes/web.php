@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\StatusController;
@@ -14,13 +15,14 @@ use App\Http\Controllers\TicketTypeController;
 use App\Http\Controllers\LoginController;
 
 Route::get('/login', function () {return view('pages.auth.login');})->name('login');
-Route::get('/', function () {return view('dashboard');})->name('dashboard');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
 
 
 Route::post('/check-login', [LoginController::class, 'login'])->name('check_login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout'); 
 
+Route::middleware(['custom.auth'])->group(function () {
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::get('/add-asset-management', [CategoryController::class, 'insert'])->name('add.asset.management');
 Route::post('/insert-category', [CategoryController::class, 'store'])->name('categories.store');
 Route::get('/get-subcategories/{id}', [CategoryController::class, 'getSubCategories']);
@@ -83,6 +85,7 @@ Route::get('/edit-ticket-type/{id}', [TicketTypeController::class, 'edit'])->nam
 Route::get('/view-ticket-type/{id}', [TicketTypeController::class, 'view'])->name('ticket.type.view');
 Route::post('/ticket-type/{id}', [TicketTypeController::class, 'update'])->name('ticket.type.update');
 
+});
 
 
 
