@@ -67,11 +67,11 @@
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
 
-                                        <a href="#" class="text-primary" title="View">
+                                        <a href="{{ route('ticket.type.view', $ticket_types->id) }}" class="text-primary" title="View">
                                             <i class="bx bx-show"></i>
                                         </a>
 
-                                        <a href="#" class="text-warning" title="Edit">
+                                        <a href="{{ route('ticket.type.edit', $ticket_types->id) }}" class="text-warning" title="Edit">
                                             <i class="bx bx-edit"></i>
                                         </a>
 
@@ -231,7 +231,9 @@
 
                         if (response.status) {
                             showToast(response.message, 'success');
-
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
                         } else {
                             showToast(response.message, 'error');
                         }
