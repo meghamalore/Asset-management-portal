@@ -289,6 +289,9 @@
                     success: function (response) {
                         if (response.status) {
                             showToast(response.message, 'success');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
                         } else {
                             showToast(response.message, 'error');
                         }

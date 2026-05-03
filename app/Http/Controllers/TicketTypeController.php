@@ -109,6 +109,56 @@ class TicketTypeController extends Controller
     public function edit($id)
     {
         $ticket = TicketType::findOrFail($id);
-        return view('pages.help-desk-settings.ticket-status.edit', compact('ticket'));
+        $category = Category::select('id', 'name')->get();
+        $location = Location::select('id', 'name')->get();
+        return view('pages.help-desk-settings.ticket-type.edit', compact('ticket','category','location'));
+    }
+
+    public function view($id)
+    {
+        $ticket = TicketType::findOrFail($id);
+        $category = Category::select('id', 'name')->get();
+        $location = Location::select('id', 'name')->get();
+        return view('pages.help-desk-settings.ticket-type.view', compact('ticket','category','location'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $ticket = TicketType::findOrFail($id);
+
+        // Validation (adjust rules if needed)
+        $request->validate([
+            'ticket_type'     => 'required|string|max:255',
+            'category_id'     => 'required|exists:categories,id',
+            'expected_tat'    => 'required|numeric',
+            'activity_type'   => 'required',
+            'duration_type'   => 'required',
+            'location_id'     => 'required|exists:locations,id',
+            'role_type'       => 'required',
+            'reopen_allowed'  => 'required',
+        ]);
+
+        // Update data
+        $ticket->update([
+            'ticket_type'         => $request->ticket_type,
+            'category_id'         => $request->category_id,
+            'expected_tat'        => $request->expected_tat,
+            'activity_type'       => $request->activity_type,
+            'duration_type'       => $request->duration_type,
+            'reason'              => $request->reason,
+            'location_id'         => $request->location_id,
+            'role_type'           => $request->role_type,
+            'reopen_allowed'      => $request->reopen_allowed,
+
+            // ✅ Important: checkbox handling
+            'otp_required'        => $request->has('otp_required') ? 1 : 0,
+            'generate_email'      => $request->has('generate_email') ? 1 : 0,
+            'change_asset_status'=> $request->has('change_asset_status') ? 1 : 0,
+        ]);
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'Ticket Type updated successfully!'
+        ]);
     }
 }

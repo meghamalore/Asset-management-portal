@@ -61,7 +61,7 @@
                                     <div class="d-flex justify-content-center align-items-center gap-2">
 
                                         <!-- View -->
-                                        <a href="#" class="text-primary" title="View">
+                                        <a href="{{ route('ticket.status.view', $ticket->id) }}" class="text-primary" title="View">
                                             <i class="bx bx-show"></i>
                                         </a>
 

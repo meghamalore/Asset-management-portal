@@ -1031,7 +1031,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                            {{-- <label class="col-sm-2 col-form-label">Upload Files</label>
+                                             <label class="col-sm-2 col-form-label">Upload Files</label>
                                             <small class="form-text">Additional Documents (For Insurance / Maintenance / Replacements, etc.)</small>
                                             <div class="col-sm-4">
                                                 <label class="btn btn-sm btn-primary mb-0">
@@ -1048,7 +1048,7 @@
                                                 <!-- Container for multiple uploaded filenames -->
                                                 <div id="fileList" class="mt-2"></div>
                                                 <input type="file" id="fileUpload" name="files[]" multiple hidden>
-                                            </div> --}}
+                                            </div> 
                                         </div>
                                             </div>
                                         </div>
