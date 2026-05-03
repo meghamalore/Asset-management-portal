@@ -17,7 +17,7 @@
     <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
 
     <meta name="description" content="" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- <meta name="csrf-token" content="{{ csrf_token() }}"> -->
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
 
@@ -49,6 +49,7 @@
       #toastContainer {
           z-index: 9999 !important;
       }
+      
     </style>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
@@ -79,10 +80,11 @@
             </a>
           </div>
               <!-- /Logo -->
-              {{-- <h4 class="mb-2">Welcome to Sneat! </h4>
-              <p class="mb-4">Please sign-in to your account and start the adventure</p> --}}
-
+              <h4 class="mb-2">Welcome ! </h4>
+              <p class="mb-4">Please sign-in to your account.</p> 
+                @include('layouts.messages')
               <form id="login_form" class="mb-3">
+              @csrf
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
                   <input
@@ -111,13 +113,13 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <div class="form-check">
+                  <!-- <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="remember-me" />
                     <label class="form-check-label" for="remember-me"> Remember Me </label>
-                  </div>
+                  </div> -->
                 </div>
                 <div class="mb-3">
-                  <button type="submit" class="btn btn-primary d-grid w-100" >Sign in</button>
+                  <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center" >Sign in</button>
                 </div>
               </form>
 
@@ -207,53 +209,20 @@
             ignore: ":hidden:not(.force-validate)",
             
             rules: {
-                status_type: {
+                email: {
                     required: true
                 },
-                status_name: {
-                    required: true
-                },
-                next_status: {
-                    required: true
-                },
-                'categ_id[]': {
-                    required: true
-                },
-                hold_pause_activity: {
-                    required: true
-                },
-                // Localization
-                'localization_name[]': {
-                    required: true
-                },
-                'localization_lang[]': {
+                password: {
                     required: true
                 }
             },
 
             messages: {
-                status_type: {
-                    required: "Please select a status type."
+                email: {
+                    required: "Please Enter email"
                 },
-                status_name: {
-                    required: "Please enter the status name."
-                },
-                next_status: {
-                    required: "Please select the next status."
-                },
-                'categ_id[]': {
-                    required: "Please select at least one category."
-                },
-                hold_pause_activity: {
-                    required: "Please choose hold/pause activity."
-                },
-
-                // Localization
-                'localization_name[]': {
-                    required: "Please enter status name for all languages."
-                },
-                'localization_lang[]': {
-                    required: "Please select at least one language."
+                password: {
+                    required: "Please enter password"
                 }
             },
 
@@ -326,6 +295,10 @@
             });
             }
           });
+
+          setTimeout(function () {
+              $('.fade-message').fadeOut('slow');
+          }, 3000); // 3 seconds
 
       });
     </script>
