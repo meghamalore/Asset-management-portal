@@ -16,4 +16,9 @@ class TicketStatus extends Model
         'auto_checkout',
         'tat_count'
     ];
+
+    public function ticketStatus()
+    {
+        return $this->belongsTo(TicketStatus::class);
+    }
 }

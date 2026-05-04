@@ -66,6 +66,7 @@
                         <tr>
                             <th>Parent Ticket</th>
                             <th>Ticket Type</th>
+                            <th>Ticket Status</th>
                             <th>Location</th>
                             <th>Asset</th>
                             <th>Assigned To</th>
@@ -111,13 +112,14 @@
                             </td>
                             <td>{{ $ticket->ticket_number }}</td>
                             <td>{{ $ticket->ticketType->ticket_type ?? '-' }}</td>
+                            <td><span class="badge bg-label-success">{{ $ticket->ticketStatus->status ?? '-' }}</span></td>
                             <td>{{ $ticket->location->name ?? '-' }}</td>
                             <td>{{ $ticket->asset->asset_name ?? '-' }}</td>
-                            <td>{{ $ticket->assigned_to ?? '-' }}</td>
+                            <td><span class="badge bg-label-info">{{ $ticket->user->name ?? '-' }}</span></td>
                             <td>{{ $ticket->ticket_group ?? '-' }}</td>
                             <td>{{ $ticket->priority ?? '-' }}</td>
                             <td>{{ $ticket->reported_date ?? '-' }}</td>
-                            <td>{{ $ticket->reported_by ?? '-' }}</td>
+                            <td><span class="badge bg-label-primary">{{ auth()->user()->name ?? '-' }}</span></td>
                             <td>{{ $ticket->description ?? '-' }}</td>
                             <td>{{ $ticket->notify_reported_by ? 'Yes' : 'No' }}</td>
                         </tr>
