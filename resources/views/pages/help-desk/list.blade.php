@@ -35,6 +35,10 @@
 
                 <div class="d-flex justify-content-end align-items-center gap-2 mb-3">
 
+                    <button type="button" id="disposeTktBtn" class="btn btn-outline-primary">
+                        <span class="tf-icons bx bx-trash"></span>&nbsp; Discard Tickets
+                    </button>
+                
                     <a href="{{ route('ticket.export') }}" class="btn btn-success">
                         <i class="bx bx-export me-1"></i> Export Excel
                     </a>
@@ -235,6 +239,49 @@
                     $(this).remove();
                 });
             }
+
+            $('#disposeTktBtn').click(function () {
+                let ids = [];
+       
+                $('.rowCheckbox:checked').each(function () {
+                    ids.push($(this).val());
+                });
+
+                if (ids.length === 0) {
+                    alert('Please select at least one ticket');
+                    return;
+                }
+
+                if (!confirm('Are you sure you want to delete selected tickets?')) {
+                    return;
+                }
+
+                $.ajax({
+                    url: "{{ route('ticket.bulkDelete') }}",
+                    type: "POST",
+                    data: {
+                        ids: ids,
+                        _token: "{{ csrf_token() }}",
+                        _method: "DELETE"
+                    },
+                     success: function (response) {
+
+                        if (response.status) {
+                            showToast(response.message, 'success');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+
+                    error: function (xhr) {
+                        console.log(xhr);
+                        showToast(xhr.responseJSON?.message || 'Delete failed!', 'error');
+                    }
+                });
+            });
 
             // Row delete code
             $(document).on('click', '#deleteTicketBtn', function () {
