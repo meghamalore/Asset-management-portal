@@ -22,7 +22,63 @@
             z-index: 9999 !important;
         }
 
+        /* Bulk Update Grid - Editable Cells */
+        .editable-cell {
+            cursor: pointer;
+            position: relative;
+            min-width: 80px;
+        }
 
+        .editable-cell:hover {
+            background-color: #e8f4f8 !important;
+            outline: 1px solid #0d6efd;
+        }
+
+        .editable-cell:hover::after {
+            content: '✎';
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #0d6efd;
+            opacity: 0.7;
+        }
+
+        .editable-cell.editing {
+            padding: 0 !important;
+        }
+
+        .editable-cell .form-control,
+        .editable-cell .form-select {
+            border: none;
+            border-radius: 0;
+            background: #fff;
+        }
+
+        /* Row changed indicator */
+        .row-changed {
+            background-color: #fff3cd !important;
+        }
+
+        .row-changed .first-col,
+        .row-changed .second-col {
+            border-left: 3px solid #ffc107;
+        }
+
+        /* Bulk Update Table Styling */
+        .bulk-update-table th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f8f9fa;
+        }
+
+        .bulk-update-table td,
+        .bulk-update-table th {
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
     </style>
 @endsection
 @section('content')
@@ -1031,7 +1087,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                            {{-- <label class="col-sm-2 col-form-label">Upload Files</label>
+                                             <label class="col-sm-2 col-form-label">Upload Files</label>
                                             <small class="form-text">Additional Documents (For Insurance / Maintenance / Replacements, etc.)</small>
                                             <div class="col-sm-4">
                                                 <label class="btn btn-sm btn-primary mb-0">
@@ -1048,7 +1104,7 @@
                                                 <!-- Container for multiple uploaded filenames -->
                                                 <div id="fileList" class="mt-2"></div>
                                                 <input type="file" id="fileUpload" name="files[]" multiple hidden>
-                                            </div> --}}
+                                            </div>
                                         </div>
                                             </div>
                                         </div>
@@ -1791,6 +1847,7 @@
     </div>
 @endsection
 @section('section-js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -3235,8 +3292,8 @@ let visibleFields = null; // null = show all fields
 
 const FIELD_CONFIG = {
     'asset_name': { type: 'text', label: 'Asset Name', editable: true, required: true },
-    'sub_category': { type: 'text', label: 'Sub Category', editable: true },
-    'sub_location': { type: 'text', label: 'Sub Location', editable: true },
+    'sub_category': { type: 'dropdown', label: 'Sub Category', editable: true, source: 'subCategories', dependsOn: 'category' },
+    'sub_location': { type: 'dropdown', label: 'Sub Location', editable: true, source: 'subLocations', dependsOn: 'location' },
     'cwip_invoice_id': { type: 'text', label: 'CWIP Invoice ID', editable: true },
     'brand': { type: 'text', label: 'Brand', editable: true },
     'model': { type: 'text', label: 'Model', editable: true },
@@ -3276,7 +3333,10 @@ const FIELD_CONFIG = {
 
 let dropdownData = {
     locations: @json($location ?? []),
-    subLocations: @json($sub_location ?? [])
+    subLocations: @json($sub_location ?? []),
+    categories: @json($categories ?? []),
+    subCategories: @json($categories->flatMap->subCategories ?? collect()),
+    statuses: @json($status ?? [])
 };
 
 // Handle Update Asset button click
@@ -3395,6 +3455,139 @@ function renderBulkUpdateGrid() {
     });
     $('#bulkUpdateBody').html(html);
 }
+
+// Inline cell editing functionality
+$(document).on('click', '.editable-cell', function(e) {
+    e.stopPropagation();
+
+    const $cell = $(this);
+    if ($cell.hasClass('editing')) return; // Already editing
+
+    const field = $cell.data('field');
+    const rowIndex = $cell.closest('tr').data('row-index');
+    const currentValue = $cell.text();
+    const fieldConfig = FIELD_CONFIG[field];
+
+    $cell.addClass('editing');
+
+    // Determine input type based on field config
+    let inputType = 'text';
+    let inputHtml = '';
+
+    if (fieldConfig) {
+        if (fieldConfig.type === 'date') {
+            inputType = 'date';
+        } else if (fieldConfig.type === 'number') {
+            inputType = 'number';
+        } else if (fieldConfig.type === 'dropdown') {
+            // Create dropdown
+            let options = [];
+            if (fieldConfig.options) {
+                options = fieldConfig.options;
+            } else if (fieldConfig.source === 'locations' && dropdownData.locations) {
+                options = dropdownData.locations.map(l => l.name);
+            } else if (fieldConfig.source === 'categories' && dropdownData.categories) {
+                options = dropdownData.categories.map(c => c.name);
+            } else if (fieldConfig.source === 'statuses' && dropdownData.statuses) {
+                options = dropdownData.statuses.map(s => s.status_name);
+            } else if (fieldConfig.source === 'subCategories' && dropdownData.subCategories) {
+                // Get current category value for this row to filter sub-categories
+                const currentCategory = editedData[rowIndex]?.category || '';
+                const categoryObj = dropdownData.categories.find(c => c.name === currentCategory);
+                const categoryId = categoryObj ? categoryObj.id : null;
+
+                // Filter sub-categories by parent category
+                let filteredSubCategories = dropdownData.subCategories;
+                if (categoryId) {
+                    filteredSubCategories = dropdownData.subCategories.filter(sc => sc.category_id == categoryId);
+                }
+                options = filteredSubCategories.map(sc => sc.name);
+            } else if (fieldConfig.source === 'subLocations' && dropdownData.subLocations) {
+                // Get current location value for this row to filter sub-locations
+                const currentLocation = editedData[rowIndex]?.location || '';
+                const locationObj = dropdownData.locations.find(l => l.name === currentLocation);
+                const locationId = locationObj ? locationObj.id : null;
+
+                // Filter sub-locations by parent location
+                let filteredSubLocations = dropdownData.subLocations;
+                if (locationId) {
+                    filteredSubLocations = dropdownData.subLocations.filter(sl => sl.location_id == locationId);
+                }
+                options = filteredSubLocations.map(sl => sl.name);
+            }
+
+            inputHtml = `<select class="form-select form-select-sm" style="min-width:120px;">`;
+            inputHtml += `<option value="">-- Select --</option>`;
+            options.forEach(opt => {
+                const selected = opt === currentValue ? 'selected' : '';
+                inputHtml += `<option value="${opt}" ${selected}>${opt}</option>`;
+            });
+            inputHtml += `</select>`;
+        }
+    }
+
+    // Create input if not dropdown
+    if (!inputHtml) {
+        inputHtml = `<input type="${inputType}" class="form-control form-control-sm" value="${currentValue}" style="min-width:100px;">`;
+    }
+
+    $cell.html(inputHtml);
+    const $input = $cell.find('input, select');
+    $input.focus().select();
+
+    // Handle save on blur or enter key
+    const saveValue = function() {
+        const newValue = $input.val();
+        $cell.removeClass('editing').text(newValue);
+
+        // Update the data model
+        if (editedData[rowIndex]) {
+            const oldValue = editedData[rowIndex][field];
+            editedData[rowIndex][field] = newValue;
+
+            // If category changed, clear sub_category (cascading effect)
+            if (field === 'category' && newValue !== oldValue) {
+                const oldSubCategory = editedData[rowIndex]['sub_category'];
+                if (oldSubCategory) {
+                    editedData[rowIndex]['sub_category'] = '';
+                    // Find and update the sub_category cell in the row
+                    const $row = $cell.closest('tr');
+                    $row.find('td[data-field="sub_category"]').text('').addClass('row-changed');
+                }
+            }
+
+            // If location changed, clear sub_location (cascading effect)
+            if (field === 'location' && newValue !== oldValue) {
+                const oldSubLocation = editedData[rowIndex]['sub_location'];
+                if (oldSubLocation) {
+                    editedData[rowIndex]['sub_location'] = '';
+                    // Find and update the sub_location cell in the row
+                    const $row = $cell.closest('tr');
+                    $row.find('td[data-field="sub_location"]').text('').addClass('row-changed');
+                }
+            }
+
+            // Mark as changed if value changed
+            if (newValue !== oldValue) {
+                hasUnsavedChanges = true;
+                $('#unsavedBadge').show();
+                $('#btnSaveBulkUpdate').prop('disabled', false);
+                $cell.closest('tr').addClass('row-changed');
+            }
+        }
+    };
+
+    $input.on('blur', saveValue);
+    $input.on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            saveValue();
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            $cell.removeClass('editing').text(currentValue);
+        }
+    });
+});
 
 // Field selection popup
 $('#btnSelectFields').on('click', function() {
@@ -3615,12 +3808,53 @@ function parseCSV(content) {
     return data;
 }
 
-// Parse Excel content (basic implementation)
+// Parse Excel content using SheetJS library
 function parseExcelContent(content) {
-    // This is a simplified implementation
-    // For full Excel support, you would need a library like SheetJS
-    showToast('Excel (.xlsx, .xls) files require CSV format. Please convert to CSV and try again.', 'warning');
-    return [];
+    try {
+        // Convert ArrayBuffer to Uint8Array for SheetJS
+        const data = new Uint8Array(content);
+
+        // Parse the workbook
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        // Get the first worksheet
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+
+        // Convert worksheet to JSON with headers
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        if (jsonData.length < 2) {
+            showToast('Excel file appears to be empty or has no data rows', 'warning');
+            return [];
+        }
+
+        // Extract headers (first row)
+        const headers = jsonData[0].map(h => String(h || '').trim());
+
+        // Convert remaining rows to objects
+        const result = [];
+        for (let i = 1; i < jsonData.length; i++) {
+            const row = jsonData[i];
+            if (row.length === 0 || row.every(cell => !cell)) continue; // Skip empty rows
+
+            const record = {};
+            headers.forEach((header, index) => {
+                // Convert header to snake_case for consistency
+                const fieldName = header.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '_');
+                record[fieldName] = row[index] !== undefined ? String(row[index]).trim() : '';
+                // Also store with original header name for matching
+                record[header] = row[index] !== undefined ? String(row[index]).trim() : '';
+            });
+            result.push(record);
+        }
+
+        return result;
+    } catch (error) {
+        console.error('Excel parsing error:', error);
+        showToast('Error parsing Excel file: ' + error.message, 'error');
+        return [];
+    }
 }
 
 // Update bulk update grid with uploaded data
@@ -3719,75 +3953,90 @@ window.applyFieldSelection = function() {
 // Save button
 $('#btnSaveBulkUpdate').on('click', function() {
     $(this).blur();
-    $('#exLargeModalMultiUpdateAsset .modal-body').focus();
 
-    let changes = [];
-    editedData.forEach((asset, index) => {
-        let assetChanges = {};
-        Object.keys(asset).forEach(field => {
-            let oldVal = originalData[index][field];
-            let newVal = asset[field];
-            if (newVal !== oldVal) {
-                assetChanges[field] = { old: oldVal, new: newVal };
-            }
-        });
-        if (Object.keys(assetChanges).length > 0) {
-            changes.push({ asset_id: asset.id || asset.asset_code, changes: assetChanges });
-        }
-    });
-
-    if (changes.length === 0) {
-        showToast('No changes to save', 'info');
-        return;
+    // First, commit any active cell edit by triggering blur on any focused input
+    const $activeInput = $('.editable-cell.editing input, .editable-cell.editing select');
+    if ($activeInput.length > 0) {
+        $activeInput.trigger('blur');
     }
 
-    isSavingBulkUpdate = true;
-    $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', true);
-    $('#btnSaveBulkUpdate').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+    // Small delay to ensure the blur handler completes before comparing
+    setTimeout(() => {
+        let changes = [];
+        editedData.forEach((asset, index) => {
+            let assetChanges = {};
+            Object.keys(asset).forEach(field => {
+                let oldVal = originalData[index] ? originalData[index][field] : undefined;
+                let newVal = asset[field];
+                // Handle null/undefined comparison
+                oldVal = oldVal === null || oldVal === undefined ? '' : String(oldVal);
+                newVal = newVal === null || newVal === undefined ? '' : String(newVal);
+                if (newVal !== oldVal) {
+                    assetChanges[field] = { old: originalData[index][field], new: asset[field] };
+                }
+            });
+            if (Object.keys(assetChanges).length > 0) {
+                changes.push({ asset_id: asset.id || asset.asset_code, changes: assetChanges });
+            }
+        });
 
-    $.ajax({
-        url: "{{ route('assets.bulkUpdate') }}",
-        type: "POST",
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            changes: changes
-        },
-        success: function(response) {
-            if (response.status) {
-                showToast(response.message, 'success');
-                hasUnsavedChanges = false;
-                $('#unsavedBadge').hide();
-                $('#btnSaveBulkUpdate').prop('disabled', true).html('Save Changes');
-                $('.row-changed').removeClass('row-changed');
-                originalData = JSON.parse(JSON.stringify(editedData));
+        console.log('Changes to save:', changes);
+        console.log('editedData:', editedData);
+        console.log('originalData:', originalData);
 
-                setTimeout(function() {
-                    let modalEl = document.getElementById('exLargeModalMultiUpdateAsset');
-                    let modal = bootstrap.Modal.getInstance(modalEl);
-                    if (modal) modal.hide();
+        if (changes.length === 0) {
+            showToast('No changes to save', 'info');
+            return;
+        }
+
+        isSavingBulkUpdate = true;
+        $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', true);
+        $('#btnSaveBulkUpdate').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+
+        $.ajax({
+            url: "{{ route('assets.bulkUpdate') }}",
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                changes: changes
+            },
+            success: function(response) {
+                if (response.status) {
+                    showToast(response.message, 'success');
+                    hasUnsavedChanges = false;
+                    $('#unsavedBadge').hide();
+                    $('#btnSaveBulkUpdate').prop('disabled', true).html('Save Changes');
+                    $('.row-changed').removeClass('row-changed');
+                    originalData = JSON.parse(JSON.stringify(editedData));
+
                     setTimeout(function() {
-                        $('.modal-backdrop').remove();
-                        $('body').removeClass('modal-open');
-                    }, 350);
-                }, 1500);
+                        let modalEl = document.getElementById('exLargeModalMultiUpdateAsset');
+                        let modal = bootstrap.Modal.getInstance(modalEl);
+                        if (modal) modal.hide();
+                        setTimeout(function() {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                        }, 350);
+                    }, 1500);
 
-                setTimeout(function() {
-                    location.reload();
-                }, 2000);
-            } else {
-                showToast(response.message || 'Failed to save', 'error');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    showToast(response.message || 'Failed to save', 'error');
+                    $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
+                    isSavingBulkUpdate = false;
+                    $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                showToast('Save failed: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
                 $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
                 isSavingBulkUpdate = false;
                 $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
             }
-        },
-        error: function(xhr) {
-            showToast('Save failed: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
-            $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
-            isSavingBulkUpdate = false;
-            $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
-        }
-    });
+        });
+    }, 100); // Small delay to ensure blur completes
 });
 
     });
