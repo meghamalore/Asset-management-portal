@@ -3319,10 +3319,13 @@ $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', func
             asset_ids: assetIds
         },
         success: function(response) {
+            console.log('Bulk fetch response:', response);
             if (response.status && response.assets) {
+                console.log('Assets loaded:', response.assets);
                 selectedAssetIds = assetIds;
                 editedData = JSON.parse(JSON.stringify(response.assets));
                 originalData = JSON.parse(JSON.stringify(response.assets));
+                console.log('editedData set:', editedData);
                 visibleFields = null; // Reset to show all columns
                 $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
                 renderBulkUpdateGrid();
@@ -3330,6 +3333,7 @@ $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', func
                 $('#unsavedBadge').hide();
                 $('#btnSaveBulkUpdate').prop('disabled', true);
             } else {
+                console.log('Failed to load assets - response:', response);
                 showToast('Failed to load assets', 'error');
             }
         },
@@ -3341,6 +3345,7 @@ $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', func
 
 // Render the grid
 function renderBulkUpdateGrid() {
+    console.log('renderBulkUpdateGrid called - editedData:', editedData);
     const allFields = [
         { key: 'asset_name', label: 'Asset Name', required: true },
         { key: 'category', label: 'Category' },
@@ -3434,6 +3439,275 @@ $('#btnSelectFields').on('click', function() {
     $('body').append(html);
     $('#fieldSelectionPopup').fadeIn(150);
 });
+
+// Download Excel functionality
+$('#btnDownloadExcel').on('click', function() {
+    console.log('Download clicked - editedData length:', editedData.length);
+    console.log('Download clicked - editedData:', editedData);
+
+    if (editedData.length === 0) {
+        showToast('No data to download - Please load assets first', 'warning');
+        return;
+    }
+
+    // Create CSV content
+    let csvContent = '';
+
+    // Headers - Include ALL available fields
+    const headers = [
+        'Asset Code', 'Asset Name', 'Category', 'Sub Category', 'Location', 'Sub Location', 'Status', 'CWIP Invoice Id',
+        'Condition', 'Brand', 'Model', 'Description', 'Serial No',
+        'Vendor Name', 'PO Number', 'Invoice Date', 'Invoice No', 'Purchase Date', 'Purchase Price',
+        'Capitalization Price', 'End Of Life', 'Capitalization Date', 'Depreciation %', 'Accumulated Depreciation', 'Scrap Value',
+        'Department', 'Transferred To', 'Allotted Upto', 'Remarks',
+        'AMC Vendor', 'Warranty Vendor', 'Insurance Start Date', 'Insurance End Date', 'AMC Start Date', 'AMC End Date', 'Warranty Start Date', 'Warranty End Date'
+    ];
+    csvContent += headers.join(',') + '\n';
+
+    // Data rows - Include ALL available data
+    editedData.forEach((asset, index) => {
+        console.log(`Processing asset ${index}:`, asset);
+        const row = [
+            asset.asset_code || '',
+            asset.asset_name || '',
+            asset.category || '',
+            asset.sub_category || '',
+            asset.location || '',
+            asset.sub_location || '',
+            asset.status || '',
+            asset.cwip_invoice_id || '',
+            asset.condition || '',
+            asset.brand || '',
+            asset.model || '',
+            asset.description || '',
+            asset.serial_no || '',
+            asset.vendor_name || '',
+            asset.asset_po_number || '',
+            asset.invoice_date || '',
+            asset.invoice_no || '',
+            asset.purchase_date || '',
+            asset.purchase_price || '',
+            asset.capitalization_price || '',
+            asset.end_of_life || '',
+            asset.capitalization_date || '',
+            asset.depreciation_percent || '',
+            asset.accumulated_depreciation || '',
+            asset.scrap_value || '',
+            asset.department || '',
+            asset.transferred_to || '',
+            asset.allotted_upto || '',
+            asset.remarks || '',
+            asset.amc_vendor || '',
+            asset.warranty_vendor || '',
+            asset.insurance_start_date || '',
+            asset.insurance_end_date || '',
+            asset.amc_start_date || '',
+            asset.amc_end_date || '',
+            asset.warranty_start_date || '',
+            asset.warranty_end_date || ''
+        ];
+        console.log(`Row ${index}:`, row);
+        const csvRow = row.map(field => `"${field}"`).join(',') + '\n';
+        console.log(`CSV Row ${index}:`, csvRow);
+        csvContent += csvRow;
+    });
+    console.log('Final CSV Content:', csvContent);
+
+    // Create download link using Blob
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `bulk_update_assets_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast('Excel file downloaded successfully', 'success');
+});
+
+// Upload Excel functionality
+$('#excelUploadInput').on('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.name.match(/\.(xlsx|xls|csv)$/)) {
+        showToast('Please select a valid Excel file (.xlsx, .xls, .csv)', 'error');
+        $(this).val('');
+        return;
+    }
+
+    showToast('Processing uploaded file...', 'info');
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            let parsedData = [];
+
+            if (file.name.endsWith('.csv')) {
+                parsedData = parseCSV(content);
+            } else {
+                // For Excel files, we'll use a basic approach
+                parsedData = parseExcelContent(content);
+            }
+
+            if (parsedData.length > 0) {
+                updateBulkUpdateGridWithUploadedData(parsedData);
+                showToast(`Successfully loaded ${parsedData.length} records from Excel file`, 'success');
+            } else {
+                showToast('No valid data found in the uploaded file', 'error');
+            }
+        } catch (error) {
+            showToast('Error parsing file: ' + error.message, 'error');
+        }
+
+        $(this).val('');
+    };
+
+    reader.onerror = function() {
+        showToast('Error reading file', 'error');
+        $(this).val('');
+    };
+
+    if (file.name.endsWith('.csv')) {
+        reader.readAsText(file);
+    } else {
+        reader.readAsArrayBuffer(file);
+    }
+});
+
+// Parse CSV content
+function parseCSV(content) {
+    const lines = content.split('\n').filter(line => line.trim());
+    if (lines.length < 2) return [];
+
+    // Detect delimiter (comma, tab, or multiple spaces)
+    const firstLine = lines[0];
+    let delimiter = ',';
+
+    if (firstLine.includes('\t')) {
+        delimiter = '\t';
+    } else if (firstLine.match(/\s{2,}/)) {
+        delimiter = /\s{2,}/; // Multiple spaces
+    } else if (!firstLine.includes(',') && firstLine.includes(' ')) {
+        delimiter = ' '; // Single space
+    }
+
+    const headers = firstLine.split(delimiter).map(h => h.trim().replace(/"/g, ''));
+    const data = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(delimiter).map(v => v.trim().replace(/"/g, ''));
+        if (values.length >= headers.length) {
+            const record = {};
+            headers.forEach((header, index) => {
+                const fieldName = header.toLowerCase().replace(/\s+/g, '_');
+                record[fieldName] = values[index] || '';
+            });
+            data.push(record);
+        }
+    }
+
+    return data;
+}
+
+// Parse Excel content (basic implementation)
+function parseExcelContent(content) {
+    // This is a simplified implementation
+    // For full Excel support, you would need a library like SheetJS
+    showToast('Excel (.xlsx, .xls) files require CSV format. Please convert to CSV and try again.', 'warning');
+    return [];
+}
+
+// Update bulk update grid with uploaded data
+function updateBulkUpdateGridWithUploadedData(uploadData) {
+    if (!editedData || editedData.length === 0) {
+        showToast('Please load assets first before uploading Excel data', 'error');
+        return;
+    }
+
+    // Map uploaded data to existing assets
+    uploadData.forEach(uploadRecord => {
+        const assetCode = uploadRecord.asset_code || uploadRecord['asset_code'] || uploadRecord['Asset Cod'] || '';
+        const assetName = uploadRecord.asset_name || uploadRecord['asset_name'] || uploadRecord['Asset Nan'] || '';
+
+        // Find matching asset by code or name
+        const existingAssetIndex = editedData.findIndex(asset =>
+            asset.asset_code === assetCode || asset.asset_name === assetName
+        );
+
+        if (existingAssetIndex >= 0) {
+            // Update existing asset with uploaded data
+            const asset = editedData[existingAssetIndex];
+
+            // Update fields that exist in the uploaded data (using actual field names)
+            if (uploadRecord.category || uploadRecord['category'] || uploadRecord['Category']) asset.category = uploadRecord.category || uploadRecord['category'] || uploadRecord['Category'];
+            if (uploadRecord.sub_category || uploadRecord['sub_category'] || uploadRecord['Sub Category']) asset.sub_category = uploadRecord.sub_category || uploadRecord['sub_category'] || uploadRecord['Sub Category'];
+            if (uploadRecord.location || uploadRecord['location'] || uploadRecord['Location']) asset.location = uploadRecord.location || uploadRecord['location'] || uploadRecord['Location'];
+            if (uploadRecord.sub_location || uploadRecord['sub_location'] || uploadRecord['Sub Location']) asset.sub_location = uploadRecord.sub_location || uploadRecord['sub_location'] || uploadRecord['Sub Location'];
+            if (uploadRecord.status || uploadRecord['status'] || uploadRecord['Status']) asset.status = uploadRecord.status || uploadRecord['status'] || uploadRecord['Status'];
+            if (uploadRecord.cwip_invoice_id || uploadRecord['cwip_invoice_id'] || uploadRecord['CWIP Invoice Id']) asset.cwip_invoice_id = uploadRecord.cwip_invoice_id || uploadRecord['cwip_invoice_id'] || uploadRecord['CWIP Invoice Id'];
+            if (uploadRecord.condition || uploadRecord['condition'] || uploadRecord['Condition']) asset.condition = uploadRecord.condition || uploadRecord['condition'] || uploadRecord['Condition'];
+            if (uploadRecord.brand || uploadRecord['brand'] || uploadRecord['Brand']) asset.brand = uploadRecord.brand || uploadRecord['brand'] || uploadRecord['Brand'];
+            if (uploadRecord.model || uploadRecord['model'] || uploadRecord['Model']) asset.model = uploadRecord.model || uploadRecord['model'] || uploadRecord['Model'];
+            if (uploadRecord.description || uploadRecord['description'] || uploadRecord['Description']) asset.description = uploadRecord.description || uploadRecord['description'] || uploadRecord['Description'];
+            if (uploadRecord.serial_no || uploadRecord['serial_no'] || uploadRecord['Serial No']) asset.serial_no = uploadRecord.serial_no || uploadRecord['serial_no'] || uploadRecord['Serial No'];
+            if (uploadRecord.vendor_name || uploadRecord['vendor_name'] || uploadRecord['Vendor Name']) asset.vendor_name = uploadRecord.vendor_name || uploadRecord['vendor_name'] || uploadRecord['Vendor Name'];
+            if (uploadRecord.asset_po_number || uploadRecord['po_number'] || uploadRecord['PO Number']) asset.asset_po_number = uploadRecord.asset_po_number || uploadRecord['po_number'] || uploadRecord['PO Number'];
+            if (uploadRecord.invoice_date || uploadRecord['invoice_date'] || uploadRecord['Invoice Date']) asset.invoice_date = uploadRecord.invoice_date || uploadRecord['invoice_date'] || uploadRecord['Invoice Date'];
+            if (uploadRecord.invoice_no || uploadRecord['invoice_no'] || uploadRecord['Invoice No']) asset.invoice_no = uploadRecord.invoice_no || uploadRecord['invoice_no'] || uploadRecord['Invoice No'];
+            if (uploadRecord.purchase_date || uploadRecord['purchase_date'] || uploadRecord['Purchase Date']) asset.purchase_date = uploadRecord.purchase_date || uploadRecord['purchase_date'] || uploadRecord['Purchase Date'];
+            if (uploadRecord.purchase_price || uploadRecord['purchase_price'] || uploadRecord['Purchase Price']) asset.purchase_price = uploadRecord.purchase_price || uploadRecord['purchase_price'] || uploadRecord['Purchase Price'];
+            if (uploadRecord.capitalization_price || uploadRecord['capitalization_price'] || uploadRecord['Capitalization Price']) asset.capitalization_price = uploadRecord.capitalization_price || uploadRecord['capitalization_price'] || uploadRecord['Capitalization Price'];
+            if (uploadRecord.end_of_life || uploadRecord['end_of_life'] || uploadRecord['End Of Life']) asset.end_of_life = uploadRecord.end_of_life || uploadRecord['end_of_life'] || uploadRecord['End Of Life'];
+            if (uploadRecord.capitalization_date || uploadRecord['capitalization_date'] || uploadRecord['Capitalization Date']) asset.capitalization_date = uploadRecord.capitalization_date || uploadRecord['capitalization_date'] || uploadRecord['Capitalization Date'];
+            if (uploadRecord.depreciation_percent || uploadRecord['depreciation_percent'] || uploadRecord['Depreciation %']) asset.depreciation_percent = uploadRecord.depreciation_percent || uploadRecord['depreciation_percent'] || uploadRecord['Depreciation %'];
+            if (uploadRecord.accumulated_depreciation || uploadRecord['accumulated_depreciation'] || uploadRecord['Accumulated Depreciation']) asset.accumulated_depreciation = uploadRecord.accumulated_depreciation || uploadRecord['accumulated_depreciation'] || uploadRecord['Accumulated Depreciation'];
+            if (uploadRecord.scrap_value || uploadRecord['scrap_value'] || uploadRecord['Scrap Value']) asset.scrap_value = uploadRecord.scrap_value || uploadRecord['scrap_value'] || uploadRecord['Scrap Value'];
+            if (uploadRecord.department || uploadRecord['department'] || uploadRecord['Department']) asset.department = uploadRecord.department || uploadRecord['department'] || uploadRecord['Department'];
+            if (uploadRecord.transferred_to || uploadRecord['transferred_to'] || uploadRecord['Transferred To']) asset.transferred_to = uploadRecord.transferred_to || uploadRecord['transferred_to'] || uploadRecord['Transferred To'];
+            if (uploadRecord.allotted_upto || uploadRecord['allotted_upto'] || uploadRecord['Allotted Upto']) asset.allotted_upto = uploadRecord.allotted_upto || uploadRecord['allotted_upto'] || uploadRecord['Allotted Upto'];
+            if (uploadRecord.remarks || uploadRecord['remarks'] || uploadRecord['Remarks']) asset.remarks = uploadRecord.remarks || uploadRecord['remarks'] || uploadRecord['Remarks'];
+            if (uploadRecord.amc_vendor || uploadRecord['amc_vendor'] || uploadRecord['AMC Vendor']) asset.amc_vendor = uploadRecord.amc_vendor || uploadRecord['amc_vendor'] || uploadRecord['AMC Vendor'];
+            if (uploadRecord.warranty_vendor || uploadRecord['warranty_vendor'] || uploadRecord['Warranty Vendor']) asset.warranty_vendor = uploadRecord.warranty_vendor || uploadRecord['warranty_vendor'] || uploadRecord['Warranty Vendor'];
+            if (uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'] || uploadRecord['Insurance Start Date']) asset.insurance_start_date = uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'] || uploadRecord['Insurance Start Date'];
+            if (uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'] || uploadRecord['Insurance End Date']) asset.insurance_end_date = uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'] || uploadRecord['Insurance End Date'];
+            if (uploadRecord.amc_start_date || uploadRecord['amc_start_date'] || uploadRecord['AMC Start Date']) asset.amc_start_date = uploadRecord.amc_start_date || uploadRecord['amc_start_date'] || uploadRecord['AMC Start Date'];
+            if (uploadRecord.amc_end_date || uploadRecord['amc_end_date'] || uploadRecord['AMC End Date']) asset.amc_end_date = uploadRecord.amc_end_date || uploadRecord['amc_end_date'] || uploadRecord['AMC End Date'];
+            if (uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'] || uploadRecord['Warranty Start Date']) asset.warranty_start_date = uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'] || uploadRecord['Warranty Start Date'];
+            if (uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'] || uploadRecord['Warranty End Date']) asset.warranty_end_date = uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'] || uploadRecord['Warranty End Date'];
+            if (uploadRecord.allotted_upto || uploadRecord['allotted_upto']) asset.allotted_upto = uploadRecord.allotted_upto || uploadRecord['allotted_upto'];
+            if (uploadRecord.remarks || uploadRecord['remarks']) asset.remarks = uploadRecord.remarks || uploadRecord['remarks'];
+            if (uploadRecord.insurance_start_date || uploadRecord['insurance_start_date']) asset.insurance_start_date = uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'];
+            if (uploadRecord.insurance_end_date || uploadRecord['insurance_end_date']) asset.insurance_end_date = uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'];
+            if (uploadRecord.warranty_start_date || uploadRecord['warranty_start_date']) asset.warranty_start_date = uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'];
+            if (uploadRecord.warranty_end_date || uploadRecord['warranty_end_date']) asset.warranty_end_date = uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'];
+
+            // Mark as changed
+            hasUnsavedChanges = true;
+            $('#unsavedBadge').show();
+            $('#btnSaveBulkUpdate').prop('disabled', false);
+        }
+    });
+
+    // Re-render the grid with updated data
+    renderBulkUpdateGrid();
+
+    // Show summary of changes
+    const updatedCount = uploadData.filter(record => {
+        const assetCode = record.asset_code || record['asset_code'] || record['Asset Cod'] || '';
+        const assetName = record.asset_name || record['asset_name'] || record['Asset Nan'] || '';
+        return editedData.some(asset =>
+            asset.asset_code === assetCode || asset.asset_name === assetName
+        );
+    }).length;
+
+    showToast(`Updated ${updatedCount} assets with uploaded data`, 'success');
+}
 
 window.applyFieldSelection = function() {
     visibleFields = $('.field-checkbox:checked').map(function() { return $(this).val(); }).get();

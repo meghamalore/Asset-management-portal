@@ -2500,9 +2500,9 @@
                     date: true
                 },
                 purchase_price: {
-                    required: "Enter purchase price",
-                    number: "Enter Valid number",
-                    min: "price cannot be negative"
+                    required: true,
+                    number: true,
+                    min: 0
                 }, // BUG_005 - Purchase Price specific validation messages
 
                 // Financial
@@ -2597,7 +2597,11 @@
                 invoice_date: "Select invoice date",
                 invoice_no: "Enter invoice number",
                 purchase_date: "Select purchase date",
-                purchase_price: "Enter valid price",
+                purchase_price: {
+                    required: "Enter purchase price",
+                    number: "Enter Valid number",
+                    min: "Price cannot be negative"
+                },
                 po_number: "Enter Po Number",
 
                 capitalization_price: "Enter capitalization price",
