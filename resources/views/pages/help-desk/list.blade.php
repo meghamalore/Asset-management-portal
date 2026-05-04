@@ -378,8 +378,9 @@
                         ids: ids
                     },
                     success: function (res) {
-
                         let html = '';
+                        let authUserId = "{{ auth()->id() }}";
+                        let authUserName = "{{ auth()->user()->name }}";
 
                         res.tickets.forEach(function (t) {
 
@@ -426,10 +427,15 @@
 
                                 <!-- Assigned To -->
                                 <td>
-                                    <input type="text" 
-                                        name="assigned_to[${t.id}]" 
-                                        class="form-control" 
-                                        value="${t.assigned_to ?? ''}">
+                                    <select name="assigned_to[${t.id}]" class="form-select">
+                                        <option value="">Select</option>
+                                        ${res.user.map(u => `
+                                            <option value="${u.id}" 
+                                                ${t.assigned_to == u.id ? 'selected' : ''}>
+                                                ${u.name}
+                                            </option>
+                                        `).join('')}
+                                    </select>
                                 </td>
 
                                 <!-- Ticket Group -->
@@ -467,10 +473,11 @@
 
                                 <!-- Reported By -->
                                 <td>
-                                    <input type="text" 
-                                        name="reported_by[${t.id}]" 
-                                        class="form-control" 
-                                        value="${t.reported_by ?? ''}">
+                                    <select name="reported_by[${t.id}]" class="form-select" disabled>
+                                        <option value="${authUserId}" selected>
+                                            ${authUserName}
+                                        </option>
+                                    </select>
                                 </td>
 
                                 <!-- Description -->
