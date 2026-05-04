@@ -111,7 +111,14 @@
                                 <div class="col-sm-4">
                                     <select class="form-select" name="assigned_to">
                                         <option value="">Select</option>
-                                        <option value="1" {{ $ticket->assigned_to == 1 ? 'selected' : '' }}>user 1</option>
+                                        @foreach($users as $user)
+                                            @if($user->id != auth()->id())
+                                                <option value="{{ $user->id }}"
+                                                    {{ $ticket->assigned_to == $user->id ? 'selected' : '' }}>
+                                                    {{ $user->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -147,12 +154,16 @@
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Reported By</label>
-                                <div class="col-sm-4">
+                                 <div class="col-sm-4">
                                     <select class="form-select" name="reported_by">
-                                        <option value="">Select</option>
-                                        <option value="1" {{ $ticket->reported_by == 1 ? 'selected' : '' }}>user1</option>
+                                        {{-- <option value="">Select</option> --}}
+                                        <option value="{{ auth()->id() }}"
+                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
+                                            {{ auth()->user()->name }}
+                                        </option>
                                     </select>
                                 </div>
+                                
                             </div>
 
                             <div class="row mb-3">

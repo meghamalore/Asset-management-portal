@@ -9,6 +9,7 @@ use App\Models\TicketType;
 use App\Models\TicketStatus;
 use App\Models\Department;
 use App\Models\Ticket;
+use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TicketExport;
 
@@ -21,12 +22,17 @@ class HelpDeskController extends Controller
         $ticket_type = TicketType::select('id','ticket_type')->get();
         $ticket_status = TicketStatus::select('id','status')->get();
         $department = Department::select('id','name','code')->where('status',1)->get();
-        return view('pages.help-desk.add',compact('asset','location','ticket_type','ticket_status','department'));
+        $user = User::select('id','name')->get();
+        return view('pages.help-desk.add',compact('asset','location','ticket_type','ticket_status','department','user'));
     }
 
     public function index()
     {
-        $ticket_data = Ticket::with(['ticketType', 'location', 'asset'])->get();
+        $ticket_data = Ticket::with(['ticketType', 'location', 'asset'])
+        ->when(auth()->user()->role != 'admin', function ($query) {
+            $query->where('assigned_to', auth()->id());
+        })
+        ->get();
         return view('pages.help-desk.list' , compact('ticket_data'));
     }
 
@@ -38,7 +44,8 @@ class HelpDeskController extends Controller
         $ticket_type = TicketType::select('id','ticket_type')->get();
         $ticket_status = TicketStatus::select('id','status')->get();
         $department = Department::select('id','name','code')->where('status',1)->get();
-        return view('pages.help-desk.edit', compact('ticket','asset','location','ticket_type','department','ticket_status'));
+        $users = User::select('id','name')->get();
+        return view('pages.help-desk.edit', compact('ticket','asset','location','ticket_type','department','ticket_status','users'));
     }
 
      public function view($id)

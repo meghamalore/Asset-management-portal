@@ -95,7 +95,14 @@
                                 <div class="col-sm-4">
                                     <select class="form-select" name="assigned_to">
                                         <option value="">Select</option>
-                                        <option value="1">user 1</option>
+                                        @foreach ($user as $users)
+                                            @if($users->id != auth()->id())
+                                                <option value="{{ $users->id }}"
+                                                    {{ old('assigned_to', $ticket->assigned_to ?? '') == $users->id ? 'selected' : '' }}>
+                                                    {{ $users->name }}
+                                                </option>
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -127,10 +134,13 @@
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Reported By</label>
-                                <div class="col-sm-4">
+                                 <div class="col-sm-4">
                                     <select class="form-select" name="reported_by">
                                         <option value="">Select</option>
-                                        <option value="1">user1</option>
+                                        <option value="{{ auth()->id() }}"
+                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
+                                            {{ auth()->user()->name }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>
