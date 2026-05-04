@@ -16,6 +16,7 @@ use App\Models\CustomeView;
 use App\Models\Location;
 use App\Models\SubLocation;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\ScheduleActivity;
 use App\Models\ScheduleActivityAssetsLink;
 use App\Models\Status;
@@ -205,7 +206,7 @@ class AssetController extends Controller
         $column_master = ColumnMaster::select('id','column_name')->get();
         $views = CustomeView::select('id','view_name')->get();
         $location = Location::select('id','name')->get();
-        $sub_location = SubLocation::select('id','name')->get();
+        $sub_location = SubLocation::select('id','name','location_id')->get();
         $status = Status::select('id','status_name')->get();
         $asset_list = Asset::select('id','asset_name','asset_code')->get();
 
@@ -593,6 +594,7 @@ class AssetController extends Controller
             ])
             ->whereIn('asset_code', $assetIds)
             ->orWhereIn('id', $assetIds)
+            ->orderBy('id', 'asc')
             ->get();
 
             if ($assets->isEmpty()) {
@@ -747,6 +749,14 @@ class AssetController extends Controller
                             }
                             break;
 
+                        case 'sub_category':
+                            $subCategory = SubCategory::where('name', $newValue)->first();
+                            if ($subCategory) {
+                                $asset->sub_category_id = $subCategory->id;
+                                $hasAnyChanges = true;
+                            }
+                            break;
+
                         case 'location':
                             $location = Location::where('name', $newValue)->first();
                             if ($location) {
@@ -760,11 +770,18 @@ class AssetController extends Controller
                         case 'model':
                         case 'description':
                         case 'serial_no':
-                        case 'sub_location':
                             $additionalInfo = $asset->additionalInfo ?? $asset->additionalInfo()->firstOrNew([]);
                             $additionalInfo->{$field} = $newValue;
                             $additionalInfo->save();
                             $hasAnyChanges = true;
+                            break;
+
+                        case 'sub_location':
+                            $subLocation = SubLocation::where('name', $newValue)->first();
+                            if ($subLocation) {
+                                $asset->sub_location_id = $subLocation->id;
+                                $hasAnyChanges = true;
+                            }
                             break;
 
                         case 'vendor_name':
