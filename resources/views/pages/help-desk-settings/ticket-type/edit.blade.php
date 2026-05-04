@@ -13,124 +13,140 @@
             <div class="col-xxl">
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
-                        <h5 class="mb-0">Add Ticket Type</h5>
+                        <h5 class="mb-0">Edit Ticket Type</h5>
                     </div>
                     <div class="card-body">
                         <form id="ticketTypeForm">
                             @csrf
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Type</label>
+                                <label class="col-sm-2 col-form-label">Ticket Type</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control force-validate" type="text" name="ticket_type" />
+                                <input type="hidden" value="{{ $ticket->id }}" id="ticket_type_id" name="ticket_type_id">
+                                    <input class="form-control force-validate" type="text" name="ticket_type"
+                                        value="{{ $ticket->ticket_type ?? '' }}" />
                                 </div>
                             </div>
+
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Category</label>
+                                <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-4">
-                                    <select  class="form-select" name="category_id">
+                                    <select class="form-select" name="category_id">
                                         <option value="">Select</option>
                                         @foreach ($category as $categories)
-                                            <option value="{{ $categories->id }}">{{ $categories->name }}</option>
+                                            <option value="{{ $categories->id }}"
+                                                {{ ($ticket->category_id ?? '') == $categories->id ? 'selected' : '' }}>
+                                                {{ $categories->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Expected TAT</label>
+
+                                <label class="col-sm-2 col-form-label">Expected TAT</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control force-validate" type="text" name="expected_tat" />
+                                    <input class="form-control force-validate" type="text" name="expected_tat"
+                                        value="{{ $ticket->expected_tat ?? '' }}" />
                                 </div>
                             </div>
+
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Activity Type</label>
+                                <label class="col-sm-2 col-form-label">Activity Type</label>
                                 <div class="col-sm-4">
-                                    <select  class="form-select" name="activity_type">
+                                    <select class="form-select" name="activity_type">
                                         <option value="">Select</option>
-                                        <option value="calibration">Calibration</option>
-                                        <option value="inspection">Inspection</option>
-                                        <option value="warranty_expiry">Warranty Expiry</option>
+                                        <option value="calibration" {{ ($ticket->activity_type ?? '') == 'calibration' ? 'selected' : '' }}>Calibration</option>
+                                        <option value="inspection" {{ ($ticket->activity_type ?? '') == 'inspection' ? 'selected' : '' }}>Inspection</option>
+                                        <option value="warranty_expiry" {{ ($ticket->activity_type ?? '') == 'warranty_expiry' ? 'selected' : '' }}>Warranty Expiry</option>
                                     </select>
                                 </div>
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Type Duration</label>
+
+                                <label class="col-sm-2 col-form-label">Ticket Type Duration</label>
                                 <div class="col-sm-4">
-                                    <select  class="form-select" name="duration_type">
+                                    <select class="form-select" name="duration_type">
                                         <option value="">Select</option>
-                                        <option value="day">Days</option>
-                                        <option value="hours">Hours</option>
-                                        <option value="minutes">Minutes</option>
+                                        <option value="day" {{ ($ticket->duration_type ?? '') == 'day' ? 'selected' : '' }}>Days</option>
+                                        <option value="hours" {{ ($ticket->duration_type ?? '') == 'hours' ? 'selected' : '' }}>Hours</option>
+                                        <option value="minutes" {{ ($ticket->duration_type ?? '') == 'minutes' ? 'selected' : '' }}>Minutes</option>
                                     </select>
                                 </div>
                             </div>
+
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Reason</label>
+                                <label class="col-sm-2 col-form-label">Reason</label>
                                 <div class="col-sm-4">
-                                    <textarea name="reason" id="basic-default-message" class="form-control"></textarea>
+                                    <textarea name="reason" class="form-control">{{ $ticket->reason ?? '' }}</textarea>
                                 </div>
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Location</label>
+
+                                <label class="col-sm-2 col-form-label">Location</label>
                                 <div class="col-sm-4">
-                                    <select  class="form-select" name="location_id">
+                                    <select class="form-select" name="location_id">
                                         <option value="">Select</option>
                                         @foreach ($location as $locations)
-                                        <option value="{{ $locations->id }}">{{ $locations->name }}</option>
+                                            <option value="{{ $locations->id }}"
+                                                {{ ($ticket->location_id ?? '') == $locations->id ? 'selected' : '' }}>
+                                                {{ $locations->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Role</label>
-                                <div class="col-sm-4">
-                                    <select  class="form-select" name="role_type">
-                                        <option value="">Select</option>
-                                        <option value="user_involved">User Involved</option>
-                                        <option value="user_role">User Role</option>
-                                    </select>
-                                </div>
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Re-Open Allowed Till</label>
-                                <div class="col-sm-4">
-                                    <select  class="form-select" name="reopen_allowed">
-                                        <option value="">Select</option>
-                                        <option value="24">24 Hours</option>
-                                        <option value="48">48 Hours</option>
-                                        <option value="72">72 Hours</option>
-                                        <option value="custom">Custom</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" >OTP Required</label>
-                                <div class="col-sm-4">
-                                    <div class="form-check form-switch mb-2">
-                                        <input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="otp_required"/>
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
-                                    </div>
-                                </div>
-                                <label class="col-sm-2 col-form-label" >Generate Forwarding Email</label>
-                                <div class="col-sm-4">
-                                    <div class="form-check form-switch mb-2">
-                                        <input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="generate_email"/>
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" >Change Asset Status if Ticket is Raised with This Ticket Type</label>
-                                <div class="col-sm-4">
-                                    <div class="form-check form-switch mb-2">
-                                        <input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="change_asset_status"/>
-                                        <label class="form-check-label" for="flexSwitchCheckDefault">Yes</label>
-                                    </div>
-                                </div>
-                            </div>
-                             <div class="row mt-4">
-                                <div class="col-12 text-center">
-                                    <button type="reset" class="btn btn-danger">
-                                        Cancel
-                                    </button>
 
-                                    <button type="submit" class="btn btn-primary">
-                                        Save
-                                    </button>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Role</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="role_type">
+                                        <option value="">Select</option>
+                                        <option value="user_involved" {{ ($ticket->role_type ?? '') == 'user_involved' ? 'selected' : '' }}>User Involved</option>
+                                        <option value="user_role" {{ ($ticket->role_type ?? '') == 'user_role' ? 'selected' : '' }}>User Role</option>
+                                    </select>
+                                </div>
+
+                                <label class="col-sm-2 col-form-label">Re-Open Allowed Till</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="reopen_allowed">
+                                        <option value="">Select</option>
+                                        <option value="24" {{ ($ticket->reopen_allowed ?? '') == '24' ? 'selected' : '' }}>24 Hours</option>
+                                        <option value="48" {{ ($ticket->reopen_allowed ?? '') == '48' ? 'selected' : '' }}>48 Hours</option>
+                                        <option value="72" {{ ($ticket->reopen_allowed ?? '') == '72' ? 'selected' : '' }}>72 Hours</option>
+                                        <option value="custom" {{ ($ticket->reopen_allowed ?? '') == 'custom' ? 'selected' : '' }}>Custom</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">OTP Required</label>
+                                <div class="col-sm-4">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" name="otp_required"
+                                            {{ ($ticket->otp_required ?? 0) ? 'checked' : '' }}>
+                                        <label class="form-check-label">Yes</label>
+                                    </div>
+                                </div>
+
+                                <label class="col-sm-2 col-form-label">Generate Forwarding Email</label>
+                                <div class="col-sm-4">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" name="generate_email"
+                                            {{ ($ticket->generate_email ?? 0) ? 'checked' : '' }}>
+                                        <label class="form-check-label">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Change Asset Status</label>
+                                <div class="col-sm-4">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" name="change_asset_status"
+                                            {{ ($ticket->change_asset_status ?? 0) ? 'checked' : '' }}>
+                                        <label class="form-check-label">Yes</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12 text-center">
+                                    <button type="reset" class="btn btn-danger">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
                                 </div>
                             </div>
                         </form>
@@ -193,72 +209,6 @@
 
             ignore: ":hidden:not(.force-validate)",
 
-            rules: {
-                ticket_type: {
-                    required: true,
-                    minlength: 3
-                },
-                category_id: {
-                    required: true
-                },
-                expected_tat: {
-                    required: true,
-                    digits: true
-                },
-                activity_type: {
-                    required: true
-                },
-                duration_type: {
-                    required: true
-                },
-                reason: {
-                    required: true,
-                    minlength: 5
-                },
-                location_id: {
-                    required: true
-                },
-                role_type: {
-                    required: true
-                },
-                reopen_allowed: {
-                    required: true
-                }
-            },
-
-            messages: {
-                ticket_type: {
-                    required: "Ticket Type is required",
-                    minlength: "Ticket Type must be at least 3 characters"
-                },
-                category_id: {
-                    required: "Please select Category"
-                },
-                expected_tat: {
-                    required: "Expected TAT is required",
-                    digits: "Only numbers allowed"
-                },
-                activity_type: {
-                    required: "Please select Activity Type"
-                },
-                duration_type: {
-                    required: "Please select Duration Type"
-                },
-                reason: {
-                    required: "Reason is required",
-                    minlength: "Reason must be at least 5 characters"
-                },
-                location_id: {
-                    required: "Please select Location"
-                },
-                role_type: {
-                    required: "Please select Role"
-                },
-                reopen_allowed: {
-                    required: "Please select Re-open duration"
-                }
-            },
-
             errorElement: 'span',
             errorClass: 'text-danger',
 
@@ -270,12 +220,23 @@
                 $(element).removeClass('is-invalid');
             },
 
+            errorPlacement: function (error, element) {
+                if (element.hasClass('select2')) {
+                    error.insertAfter(element.next('.select2-container'));
+                } else if (element.closest('.input-group').length) {
+                    error.insertAfter(element.closest('.input-group'));
+                }else {
+                    error.insertAfter(element);
+                }
+            },
+
             submitHandler: function (form) {
 
                 let formData = new FormData(form);
+                let id = $('#ticket_type_id').val();
 
                 $.ajax({
-                    url: "{{ route('store.ticket.type') }}",
+                    url: "/ticket-type/" + id, 
                     type: "POST",
                     data: formData,
                     processData: false,

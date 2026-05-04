@@ -5,19 +5,207 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Asset;
 use App\Models\Location;
-
+use App\Models\TicketType;
+use App\Models\Department;
+use App\Models\Ticket;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TicketExport;
 
 class HelpDeskController extends Controller
 {
     public function insert()
     {
-        $asset = Asset::select('id','asset_name')->get();
+        $asset = Asset::select('id','asset_name','asset_code')->get();
         $location = Location::select('id','name')->get();
-        return view('pages.help-desk.add',compact('asset','location'));
+        $ticket_type = TicketType::select('id','ticket_type')->get();
+        $department = Department::select('id','name','code')->where('status',1)->get();
+        return view('pages.help-desk.add',compact('asset','location','ticket_type','department'));
     }
 
     public function index()
     {
-        return view('pages.help-desk.list');
+        $ticket_data = Ticket::with(['ticketType', 'location', 'asset'])->get();
+        return view('pages.help-desk.list' , compact('ticket_data'));
+    }
+
+    public function edit($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $asset = Asset::select('id','asset_name')->get();
+        $location = Location::select('id','name')->get();
+        $ticket_type = TicketType::select('id','ticket_type')->get();
+        $department = Department::select('id','name','code')->where('status',1)->get();
+        return view('pages.help-desk.edit', compact('ticket','asset','location','ticket_type','department'));
+    }
+
+     public function view($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        return view('pages.help-desk.view', compact('ticket'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'ticket_type_id' => 'required',
+            'customer_name'  => 'required',
+            'location_id'    => 'required',
+        ]);
+
+        Ticket::create([
+            'ticket_number' => 'TKT-' . now()->format('Ymd') . rand(100, 999),
+            'ticket_type_id'     => $request->ticket_type_id,
+            'customer_name'      => $request->customer_name,
+            'location_id'        => $request->location_id,
+            'asset_id'           => $request->asset_id,
+            'department_id'      => $request->department_id,
+            'assigned_to'        => $request->assigned_to,
+            'ticket_group'       => $request->ticket_group,
+            'priority'           => $request->priority,
+            'reported_date'      => $request->reported_date,
+            'reported_by'        => $request->reported_by,
+            'description'        => $request->description,
+            'notify_reported_by' => $request->has('notify_reported_by') ? 1 : 0,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Ticket Created Successfully'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $ticket = Ticket::find($id);
+
+        if (!$ticket) {
+            return redirect()->back()->with('error', 'Record not found');
+        }
+
+        $ticket->delete();
+
+        return response()->json([
+                'status' => true,
+                'message' => 'Ticket deleted successfully'
+            ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'ticket_type_id' => 'required',
+            'customer_name'  => 'required',
+            'location_id'    => 'required',
+        ]);
+
+        $ticket = Ticket::findOrFail($id);
+
+        $ticket->update([
+            // ❌ Do NOT regenerate ticket_number on update
+            // 'ticket_number' => ...
+
+            'ticket_type_id'     => $request->ticket_type_id,
+            'customer_name'      => $request->customer_name,
+            'location_id'        => $request->location_id,
+            'asset_id'           => $request->asset_id,
+            'department_id'      => $request->department_id,
+            'assigned_to'        => $request->assigned_to,
+            'ticket_group'       => $request->ticket_group,
+            'priority'           => $request->priority,
+            'reported_date'      => $request->reported_date,
+            'reported_by'        => $request->reported_by,
+            'description'        => $request->description,
+            'notify_reported_by' => $request->has('notify_reported_by') ? 1 : 0,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Ticket Updated Successfully'
+        ]);
+    }
+
+    public function exportTicket(Request $request)
+    {
+        $ticket = Ticket::with(['ticketType', 'location', 'asset'])->get();
+        return Excel::download(new TicketExport($ticket), 'ticket.xlsx');
+    }
+
+    public function multipleRecordsFetch(Request $request)
+    {
+        $tickets = Ticket::whereIn('id', $request->ids)->get();
+        $ticketTypes = TicketType::all();
+        $locations = Location::all();
+        $asset = Asset::select('id','asset_name')->get();
+
+        return response()->json([
+            'tickets' => $tickets,
+            'ticket_types' => $ticketTypes,
+            'locations' => $locations,
+            'asset' => $asset,
+        ]);
+    }
+
+
+    public function multipleRecordsUpdate(Request $request)
+    {
+        // ✅ Validate request
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:tickets,id',
+        ]);
+
+        $ids = $request->ids;
+
+        // ❗ Safety check
+        if (empty($ids)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'No records selected'
+            ]);
+        }
+
+        foreach ($ids as $index => $id) {
+
+            $ticket = Ticket::find($id); // safe (no crash)
+
+            if (!$ticket) {
+                continue; // skip invalid ID
+            }
+
+            $ticket->update([
+                'ticket_type_id' => $request->ticket_type_id[$index] ?? $ticket->ticket_type_id,
+                'customer_name'  => $request->customer_name[$index] ?? $ticket->customer_name,
+                'location_id'    => $request->location_id[$index] ?? $ticket->location_id,
+                'asset_id'       => $request->asset_id[$index] ?? $ticket->asset_id,
+                'department_id'  => $request->department_id[$index] ?? $ticket->department_id,
+                'assigned_to'    => $request->assigned_to[$index] ?? $ticket->assigned_to,
+                'ticket_group'   => $request->ticket_group[$index] ?? $ticket->ticket_group,
+                'priority'       => $request->priority[$index] ?? $ticket->priority,
+                'reported_date'  => $request->reported_date[$index] ?? $ticket->reported_date,
+                'reported_by'    => $request->reported_by[$index] ?? $ticket->reported_by,
+                'description'    => $request->description[$index] ?? $ticket->description,
+
+                // ✅ checkbox per ticket
+                'notify_reported_by' => isset($request->notify_reported_by[$id]) ? 1 : 0,
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Records updated successfully!'
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+        if (!empty($ids)) {
+            Ticket::whereIn('id', $ids)->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tickets deleted successfully'
+        ]);
     }
 }

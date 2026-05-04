@@ -1105,6 +1105,7 @@
                                                 <div id="fileList" class="mt-2"></div>
                                                 <input type="file" id="fileUpload" name="files[]" multiple hidden>
                                             </div>
+                                            </div> 
                                         </div>
                                             </div>
                                         </div>

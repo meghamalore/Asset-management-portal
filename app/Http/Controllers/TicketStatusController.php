@@ -18,6 +18,12 @@ class TicketStatusController extends Controller
         return view('pages.help-desk-settings.ticket-status.edit', compact('ticket'));
     }
 
+     public function view($id)
+    {
+        $ticket = TicketStatus::findOrFail($id);
+        return view('pages.help-desk-settings.ticket-status.view', compact('ticket'));
+    }
+
     public function store(Request $request)
     {
         try {

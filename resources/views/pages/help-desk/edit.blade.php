@@ -18,10 +18,13 @@
                     <div class="card-body">
                         <form id="ticketForm">
                             @csrf
+
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Parent Ticket</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="text" name="ticket_number" readonly />
+                                <input type="hidden" value="{{ $ticket->id }}" id="ticket_id" name="ticket_id">
+                                    <input class="form-control" type="text" name="ticket_number"
+                                        value="{{ $ticket->ticket_number }}" readonly />
                                 </div>
                             </div>
 
@@ -31,7 +34,10 @@
                                     <select class="form-select" name="ticket_type_id">
                                         <option value="">Select</option>
                                         @foreach($ticket_type as $ticket_types)
-                                            <option value="{{ $ticket_types->id }}">{{ $ticket_types->ticket_type }}</option>
+                                            <option value="{{ $ticket_types->id }}"
+                                                {{ $ticket->ticket_type_id == $ticket_types->id ? 'selected' : '' }}>
+                                                {{ $ticket_types->ticket_type }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -40,7 +46,8 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Customer Name</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="text" name="customer_name"/>
+                                    <input class="form-control" type="text" name="customer_name"
+                                        value="{{ $ticket->customer_name }}" />
                                 </div>
                             </div>
 
@@ -50,7 +57,10 @@
                                     <select class="form-select" name="location_id">
                                         <option value="">Select Location</option>
                                         @foreach($location as $locations)
-                                            <option value="{{$locations->id}}">{{ $locations->name }}</option> 
+                                            <option value="{{$locations->id}}"
+                                                {{ $ticket->location_id == $locations->id ? 'selected' : '' }}>
+                                                {{ $locations->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -60,7 +70,10 @@
                                     <select class="form-select" name="asset_id">
                                         <option value="">Select Asset</option>
                                         @foreach($asset as $assets)
-                                            <option value="{{$assets->id}}">{{ $assets->asset_code }} ( {{$assets->asset_name}} )</option> 
+                                            <option value="{{$assets->id}}"
+                                                {{ $ticket->asset_id == $assets->id ? 'selected' : '' }}>
+                                                {{ $assets->asset_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -72,7 +85,8 @@
                                     <select class="form-select" name="department_id">
                                         <option value="">Select</option>
                                         @foreach($department as $departments)
-                                            <option value="{{$departments->id}}">
+                                            <option value="{{$departments->id}}"
+                                                {{ $ticket->department_id == $departments->id ? 'selected' : '' }}>
                                                 {{$departments->name}} ({{$departments->code}})
                                             </option>
                                         @endforeach
@@ -85,7 +99,7 @@
                                 <div class="col-sm-4">
                                     <select class="form-select" name="assigned_to">
                                         <option value="">Select</option>
-                                        <option value="1">user 1</option>
+                                        <option value="1" {{ $ticket->assigned_to == 1 ? 'selected' : '' }}>user 1</option>
                                     </select>
                                 </div>
 
@@ -93,7 +107,10 @@
                                 <div class="col-sm-4">
                                     <select class="form-select" name="ticket_group">
                                         <option value="">Select</option>
-                                        <option value="maintanance_group">Maintainance Group</option>
+                                        <option value="maintanance_group"
+                                            {{ $ticket->ticket_group == 'maintanance_group' ? 'selected' : '' }}>
+                                            Maintainance Group
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -103,9 +120,9 @@
                                 <div class="col-sm-4">
                                     <select class="form-select" name="priority">
                                         <option value="">Select</option>
-                                        <option value="low">Low</option>
-                                        <option value="medium">Medium</option>
-                                        <option value="high">High</option>
+                                        <option value="low" {{ $ticket->priority == 'low' ? 'selected' : '' }}>Low</option>
+                                        <option value="medium" {{ $ticket->priority == 'medium' ? 'selected' : '' }}>Medium</option>
+                                        <option value="high" {{ $ticket->priority == 'high' ? 'selected' : '' }}>High</option>
                                     </select>
                                 </div>
                             </div>
@@ -113,14 +130,15 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Reported Date</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="date" name="reported_date" />
+                                    <input class="form-control" type="date" name="reported_date"
+                                        value="{{ $ticket->reported_date }}" />
                                 </div>
 
                                 <label class="col-sm-2 col-form-label">Reported By</label>
                                 <div class="col-sm-4">
                                     <select class="form-select" name="reported_by">
                                         <option value="">Select</option>
-                                        <option value="1">user1</option>
+                                        <option value="1" {{ $ticket->reported_by == 1 ? 'selected' : '' }}>user1</option>
                                     </select>
                                 </div>
                             </div>
@@ -128,7 +146,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Description</label>
                                 <div class="col-sm-4">
-                                    <textarea class="form-control" name="description"></textarea>
+                                    <textarea class="form-control" name="description">{{ $ticket->description }}</textarea>
                                 </div>
                             </div>
 
@@ -136,7 +154,8 @@
                                 <label class="col-sm-2 col-form-label">Notify Reported By</label>
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" name="notify_reported_by" value="1">
+                                        <input class="form-check-input" type="checkbox" name="notify_reported_by" value="1"
+                                            {{ $ticket->notify_reported_by ? 'checked' : '' }}>
                                         <label class="form-check-label">Yes</label>
                                     </div>
                                 </div>
@@ -144,7 +163,7 @@
 
                             <div class="row justify-content-end">
                                 <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </div>
                         </form>
@@ -207,84 +226,6 @@
 
             ignore: ":hidden:not(.force-validate)",
 
-            rules: {
-                    ticket_type_id: {
-                        required: true
-                    },
-                    customer_name: {
-                        required: true,
-                        minlength: 3
-                    },
-                    location_id: {
-                        required: true
-                    },
-                    asset_id: {
-                        required: true
-                    },
-                    department_id: {
-                        required: true
-                    },
-                    assigned_to: {
-                        required: true
-                    },
-                    priority: {
-                        required: true
-                    },
-                    ticket_group: {
-                        required: true
-                    },
-                    reported_date: {
-                        required: true,
-                        date: true
-                    },
-                    reported_by: {
-                        required: true
-                    },
-                    description: {
-                        required: true,
-                        minlength: 5
-                    }
-            },
-
-            messages: {
-                ticket_type_id: {
-                    required: "Please select ticket type"
-                },
-                customer_name: {
-                    required: "Customer name is required",
-                    minlength: "Minimum 3 characters required"
-                },
-                location_id: {
-                    required: "Please select location"
-                },
-                asset_id: {
-                    required: "Please select asset"
-                },
-                department_id: {
-                    required: "Please select department"
-                },
-                assigned_to: {
-                    required: "Please select assigned user"
-                },
-                priority: {
-                    required: "Please select priority"
-                },
-                ticket_group: {
-                    required: "Please select ticket group"
-                },
-                reported_date: {
-                    required: "Please select reported date",
-                    date: "Enter valid date"
-                },
-                reported_by: {
-                    required: "Please select reporter"
-                },
-                description: {
-                    required: "Description is required",
-                    minlength: "Minimum 5 characters required"
-                }
-            },
-
             errorElement: 'span',
             errorClass: 'text-danger',
 
@@ -309,9 +250,10 @@
             submitHandler: function (form) {
 
                 let formData = new FormData(form);
+                let id = $('#ticket_id').val();
 
                 $.ajax({
-                    url: "{{ route('store.help.desk') }}",
+                    url: "/ticket/" + id, 
                     type: "POST",
                     data: formData,
                     processData: false,
@@ -325,9 +267,9 @@
                     success: function (response) {
                         if (response.status) {
                             showToast(response.message, 'success');
-
-                            $('#ticketForm')[0].reset();
-                            $('.select2').val(null).trigger('change');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1500);
                         } else {
                             showToast(response.message, 'error');
                         }
