@@ -240,6 +240,8 @@
                 });
             }
 
+            // Multiple Row delete code
+
             $('#disposeTktBtn').click(function () {
                 let ids = [];
        
@@ -248,7 +250,7 @@
                 });
 
                 if (ids.length === 0) {
-                    alert('Please select at least one ticket');
+                    showToast('Please select at least one asset');
                     return;
                 }
 
@@ -264,7 +266,7 @@
                         _token: "{{ csrf_token() }}",
                         _method: "DELETE"
                     },
-                     success: function (response) {
+                    success: function (response) {
 
                         if (response.status) {
                             showToast(response.message, 'success');
@@ -362,7 +364,7 @@
                 });
 
                 if (ids.length === 0) {
-                    alert('Select at least one record');
+                    showToast('Please select at least one record');
                     return;
                 }
 
@@ -389,7 +391,7 @@
 
                                 <!-- Ticket Type -->
                                 <td>
-                                    <select name="ticket_type_id[]" class="form-select">
+                                    <select name="ticket_type_id[${t.id}]" class="form-select">
                                         ${res.ticket_types.map(type => `
                                             <option value="${type.id}" ${t.ticket_type_id == type.id ? 'selected' : ''}>
                                                 ${type.ticket_type}
@@ -400,7 +402,7 @@
 
                                 <!-- Location -->
                                 <td>
-                                    <select name="location_id[]" class="form-select">
+                                    <select name="location_id[${t.id}]" class="form-select">
                                         ${res.locations.map(loc => `
                                             <option value="${loc.id}" ${t.location_id == loc.id ? 'selected' : ''}>
                                                 ${loc.name}
@@ -411,7 +413,7 @@
 
                                 <!-- Asset -->
                                 <td>
-                                    <select name="asset_id[]" class="form-select">
+                                    <select name="asset_id[${t.id}]" class="form-select">
                                         ${res.asset.map(a => `
                                             <option value="${a.id}" ${t.asset_id == a.id ? 'selected' : ''}>
                                                 ${a.asset_name}
@@ -422,28 +424,31 @@
 
                                 <!-- Assigned To -->
                                 <td>
-                                    <input type="text" name="assigned_to[]" 
+                                    <input type="text" 
+                                        name="assigned_to[${t.id}]" 
                                         class="form-control" 
                                         value="${t.assigned_to ?? ''}">
                                 </td>
 
                                 <!-- Ticket Group -->
                                 <td>
-                                    <input type="text" name="ticket_group[]" 
+                                    <input type="text" 
+                                        name="ticket_group[${t.id}]" 
                                         class="form-control" 
                                         value="${t.ticket_group ?? ''}">
                                 </td>
 
                                 <!-- Customer Name -->
                                 <td>
-                                    <input type="text" name="customer_name[]" 
+                                    <input type="text" 
+                                        name="customer_name[${t.id}]" 
                                         class="form-control" 
                                         value="${t.customer_name ?? ''}">
                                 </td>
 
                                 <!-- Priority -->
                                 <td>
-                                    <select name="priority[]" class="form-select">
+                                    <select name="priority[${t.id}]" class="form-select">
                                         <option value="low" ${t.priority=='low'?'selected':''}>Low</option>
                                         <option value="medium" ${t.priority=='medium'?'selected':''}>Medium</option>
                                         <option value="high" ${t.priority=='high'?'selected':''}>High</option>
@@ -452,28 +457,33 @@
 
                                 <!-- Reported Date -->
                                 <td>
-                                    <input type="date" name="reported_date[]" 
+                                    <input type="date" 
+                                        name="reported_date[${t.id}]" 
                                         class="form-control" 
                                         value="${t.reported_date ?? ''}">
                                 </td>
 
                                 <!-- Reported By -->
                                 <td>
-                                    <input type="text" name="reported_by[]" 
+                                    <input type="text" 
+                                        name="reported_by[${t.id}]" 
                                         class="form-control" 
                                         value="${t.reported_by ?? ''}">
                                 </td>
 
                                 <!-- Description -->
                                 <td>
-                                    <input type="text" name="description[]" 
+                                    <input type="text" 
+                                        name="description[${t.id}]" 
                                         class="form-control" 
                                         value="${t.description ?? ''}">
                                 </td>
 
                                 <!-- Notify -->
                                 <td class="text-center">
-                                    <input type="checkbox" name="notify_reported_by[${t.id}]" value="1"
+                                    <input type="checkbox" 
+                                        name="notify_reported_by[${t.id}]" 
+                                        value="1"
                                         ${t.notify_reported_by ? 'checked' : ''}>
                                 </td>
                             </tr>
@@ -489,17 +499,27 @@
 
 
             $('#bulkEditForm').validate({
+                ignore: ":hidden:not(.force-validate)",
+
+                errorElement: 'span',
+                errorClass: 'text-danger',
+
+                highlight: function (element) {
+                    $(element).addClass('is-invalid');
+                },
+
+                unhighlight: function (element) {
+                    $(element).removeClass('is-invalid');
+                },
+
                 submitHandler: function (form) {
 
                     let formData = new FormData(form);
 
-                    // ✅ DEBUG (check IDs coming or not)
-                    // console.log(formData.getAll('ids[]'));
-
                     let btn = $('#bulkEditForm button[type="submit"]');
 
                     $.ajax({
-                        url: '/ticket/multiple-records-update',
+                        url: '/multiple-records-update',
                         type: 'POST',
                         data: formData,
                         processData: false,
@@ -510,29 +530,21 @@
                             btn.html(`<span class="spinner-border spinner-border-sm me-2"></span> Updating...`);
                         },
 
-                        success: function (res) {
-                            if (res.status) {
-                                showToast(res.message, 'success');
-                                location.reload();
+                        success: function (response) {
+
+                            if (response.status) {
+                                showToast(response.message, 'success');
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
                             } else {
-                                showToast(res.message, 'error');
+                                showToast(response.message, 'error');
                             }
                         },
 
                         error: function (xhr) {
-                            if (xhr.status === 422) {
-                                let errors = xhr.responseJSON.errors;
-                                $.each(errors, function (field, messages) {
-                                    showToast(messages[0], 'error');
-                                });
-                            } else {
-                                showToast(xhr.responseJSON?.message || 'Something went wrong!', 'error');
-                            }
-                        },
-
-                        complete: function () {
-                            btn.prop('disabled', false);
-                            btn.html('Update Records');
+                            console.log(xhr);
+                            showToast(xhr.responseJSON?.message || ' failed!', 'error');
                         }
                     });
                 }

@@ -34,9 +34,9 @@
                         <!-- COLUMN HEADER -->
                         <tr>
                             <!-- These 13 + 2 rowspan = 15 total -->
-                            <th>Status Type</th>
+                            <th>Status</th>
                             <th>Auto Close Hours</th>
-                            <th>Sub Status</th>
+                            {{-- <th>Sub Status</th> --}}
                             <th>Is Default</th>
                             <th>Edit Based On </th>
                             <th>Auto Checkout </th>
@@ -75,9 +75,9 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td>{{ $ticket->status_type_id == 1 ? 'hold' : ($ticket->status_type_id == 2 ? 'assigned' : ($ticket->status_type_id == 3 ? 'open' : '-')) }}</td>
+                                {{-- <td>{{ $ticket->status_type_id == 1 ? 'hold' : ($ticket->status_type_id == 2 ? 'assigned' : ($ticket->status_type_id == 3 ? 'open' : '-')) }}</td> --}}
+                                <td>{{ $ticket->status ?? '-' }}</td>
                                 <td>{{ $ticket->auto_close_hours ?? '-' }}</td>
-                                <td>{{ $ticket->sub_status ?? '-' }}</td>
                                 <td>{{ $ticket->is_default ? 'Yes' : 'No' }}</td>
                                 <td>{{ $ticket->edit_based_on ?? '-' }}</td>
                                 <td>{{ $ticket->auto_checkout ? 'Yes' : 'No' }}</td>

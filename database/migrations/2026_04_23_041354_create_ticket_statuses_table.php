@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('ticket_statuses', function (Blueprint $table) {
             $table->id();
             
-            $table->foreignId('status_type_id')->nullable()->constrained('ticket_types')->onDelete('set null');
- 
+            $table->string('status')->nullable();
+            
             $table->integer('auto_close_hours')->nullable();
-
-            $table->string('sub_status')->nullable();
 
             $table->boolean('is_default')->default(false);
 

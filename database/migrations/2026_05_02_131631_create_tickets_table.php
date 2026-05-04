@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_ticket')->nullable();
 
             $table->foreignId('ticket_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('ticket_status_id')->constrained()->onDelete('cascade');
             $table->string('customer_name');
 
             $table->foreignId('location_id')->constrained()->onDelete('cascade');

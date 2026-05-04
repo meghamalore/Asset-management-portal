@@ -35,6 +35,16 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                <label class="col-sm-2 col-form-label">Ticket Status</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="status_id">
+                                        <option value="">Select</option>
+                                        @foreach($ticket_status as $status)
+                                            <option value="{{ $status->id }}">{{ $status->status }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="row mb-3">
