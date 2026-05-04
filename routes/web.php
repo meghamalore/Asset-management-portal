@@ -14,6 +14,7 @@ use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketTypeController;
 use App\Http\Controllers\LoginController;
 
+Route::get('/', function () {return view('pages.auth.login');})->name('login');
 Route::get('/login', function () {return view('pages.auth.login');})->name('login');
 // Route::view('/list-asset-management', 'pages.asset-management.list')->name('list.asset.management');
 
@@ -56,6 +57,7 @@ Route::get('/edit-ticket/{id}', [HelpDeskController::class, 'edit'])->name('tick
 Route::get('/view-ticket/{id}', [HelpDeskController::class, 'view'])->name('ticket.view');
 Route::post('/ticket/{id}', [HelpDeskController::class, 'update'])->name('ticket.update');
 Route::get('/export-ticket', [HelpDeskController::class, 'exportTicket'])->name('ticket.export');
+Route::delete('/ticket/bulk-delete', [HelpDeskController::class, 'bulkDelete'])->name('ticket.bulkDelete');
 
 Route::get('/ticket/multiple-records-fetch', [HelpDeskController::class, 'multipleRecordsFetch']);
 Route::post('/ticket/multiple-records-update', [HelpDeskController::class, 'multipleRecordsUpdate']);

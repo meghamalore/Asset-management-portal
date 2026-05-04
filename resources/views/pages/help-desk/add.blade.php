@@ -60,7 +60,7 @@
                                     <select class="form-select" name="asset_id">
                                         <option value="">Select Asset</option>
                                         @foreach($asset as $assets)
-                                            <option value="{{$assets->id}}">{{ $assets->asset_name }}</option> 
+                                            <option value="{{$assets->id}}">{{ $assets->asset_code }} ( {{$assets->asset_name}} )</option> 
                                         @endforeach
                                     </select>
                                 </div>

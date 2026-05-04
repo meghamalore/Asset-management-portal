@@ -15,7 +15,7 @@ class HelpDeskController extends Controller
 {
     public function insert()
     {
-        $asset = Asset::select('id','asset_name')->get();
+        $asset = Asset::select('id','asset_name','asset_code')->get();
         $location = Location::select('id','name')->get();
         $ticket_type = TicketType::select('id','ticket_type')->get();
         $department = Department::select('id','name','code')->where('status',1)->get();
@@ -193,6 +193,19 @@ class HelpDeskController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Records updated successfully!'
+        ]);
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids;
+        if (!empty($ids)) {
+            Ticket::whereIn('id', $ids)->delete();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tickets deleted successfully'
         ]);
     }
 }
