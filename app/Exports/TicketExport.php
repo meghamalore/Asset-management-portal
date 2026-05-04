@@ -48,11 +48,11 @@ class TicketExport implements FromCollection, WithHeadings, WithMapping
             $ticket->ticketType->ticket_type ?? '-',
             $ticket->location->name ?? '-',
             $ticket->asset->asset_name ?? '-',
-            $ticket->assigned_to ?? '-',
+            $ticket->user->name ?? '-',
             $ticket->ticket_group ?? '-',
             ucfirst($ticket->priority ?? '-'),
             $ticket->reported_date ?? '-',
-            $ticket->reported_by ?? '-',
+            auth()->user()->name ?? '-' ,
             $ticket->description ?? '-',
             $ticket->notify_reported_by ? 'Yes' : 'No',
         ];

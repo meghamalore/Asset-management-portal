@@ -138,7 +138,7 @@ class HelpDeskController extends Controller
 
     public function exportTicket(Request $request)
     {
-        $ticket = Ticket::with(['ticketType', 'location', 'asset'])->get();
+        $ticket = Ticket::with(['ticketType', 'location', 'asset','user'])->get();
         return Excel::download(new TicketExport($ticket), 'ticket.xlsx');
     }
 
@@ -148,12 +148,15 @@ class HelpDeskController extends Controller
         $ticketTypes = TicketType::all();
         $locations = Location::all();
         $asset = Asset::select('id','asset_name')->get();
+        $user = User::select('id','name')->get();
+
 
         return response()->json([
             'tickets' => $tickets,
             'ticket_types' => $ticketTypes,
             'locations' => $locations,
             'asset' => $asset,
+            'user' => $user,
         ]);
     }
 
