@@ -132,7 +132,7 @@
                         data-bs-target="#exLargeModalAddGenerateSticker">
                         <span class="tf-icons bx bx-barcode"></span>&nbsp; Generated Stickers
                     </button>
-                </div>
+                </div> 
                 <div class="col-md-2">
                     <button type="button" class="btn btn-outline-primary"  id="assetTrasfBtn">
                         <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer

@@ -41,6 +41,18 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <label class="col-sm-2 col-form-label">Ticket Status</label>
+                                <div class="col-sm-4">
+                                    <select class="form-select" name="status_id">
+                                        <option value="">Select</option>
+                                        @foreach($ticket_status as $status)
+                                            <option value="{{ $status->id }}" 
+                                                {{ $ticket->ticket_status_id == $status->id ? 'selected' : '' }}>
+                                                {{ $status->status }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="row mb-3">
@@ -72,7 +84,7 @@
                                         @foreach($asset as $assets)
                                             <option value="{{$assets->id}}"
                                                 {{ $ticket->asset_id == $assets->id ? 'selected' : '' }}>
-                                                {{ $assets->asset_name }}
+                                                {{ $assets->asset_code }} ( {{ $assets->asset_name }} )
                                             </option>
                                         @endforeach
                                     </select>

@@ -12,6 +12,7 @@ class Ticket extends Model
         'ticket_number',
         'parent_ticket',
         'ticket_type_id',
+        'ticket_status_id',
         'customer_name',
         'location_id',
         'asset_id',

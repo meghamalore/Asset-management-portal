@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Asset;
 use App\Models\Location;
 use App\Models\TicketType;
+use App\Models\TicketStatus;
 use App\Models\Department;
 use App\Models\Ticket;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,8 +19,9 @@ class HelpDeskController extends Controller
         $asset = Asset::select('id','asset_name','asset_code')->get();
         $location = Location::select('id','name')->get();
         $ticket_type = TicketType::select('id','ticket_type')->get();
+        $ticket_status = TicketStatus::select('id','status')->get();
         $department = Department::select('id','name','code')->where('status',1)->get();
-        return view('pages.help-desk.add',compact('asset','location','ticket_type','department'));
+        return view('pages.help-desk.add',compact('asset','location','ticket_type','ticket_status','department'));
     }
 
     public function index()
@@ -31,11 +33,12 @@ class HelpDeskController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
-        $asset = Asset::select('id','asset_name')->get();
+        $asset = Asset::select('id','asset_name','asset_code')->get();
         $location = Location::select('id','name')->get();
         $ticket_type = TicketType::select('id','ticket_type')->get();
+        $ticket_status = TicketStatus::select('id','status')->get();
         $department = Department::select('id','name','code')->where('status',1)->get();
-        return view('pages.help-desk.edit', compact('ticket','asset','location','ticket_type','department'));
+        return view('pages.help-desk.edit', compact('ticket','asset','location','ticket_type','department','ticket_status'));
     }
 
      public function view($id)
@@ -55,6 +58,7 @@ class HelpDeskController extends Controller
         Ticket::create([
             'ticket_number' => 'TKT-' . now()->format('Ymd') . rand(100, 999),
             'ticket_type_id'     => $request->ticket_type_id,
+        'ticket_status_id'       => $request->status_id,
             'customer_name'      => $request->customer_name,
             'location_id'        => $request->location_id,
             'asset_id'           => $request->asset_id,
@@ -105,6 +109,7 @@ class HelpDeskController extends Controller
             // 'ticket_number' => ...
 
             'ticket_type_id'     => $request->ticket_type_id,
+            'ticket_status_id'     => $request->status_id,
             'customer_name'      => $request->customer_name,
             'location_id'        => $request->location_id,
             'asset_id'           => $request->asset_id,
@@ -145,55 +150,51 @@ class HelpDeskController extends Controller
         ]);
     }
 
-
     public function multipleRecordsUpdate(Request $request)
     {
-        // ✅ Validate request
         $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'exists:tickets,id',
         ]);
 
-        $ids = $request->ids;
+        try {
 
-        // ❗ Safety check
-        if (empty($ids)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No records selected'
-            ]);
-        }
+            $tickets = Ticket::whereIn('id', $request->ids)->get();
 
-        foreach ($ids as $index => $id) {
+            foreach ($tickets as $ticket) {
 
-            $ticket = Ticket::find($id); // safe (no crash)
+                $id = $ticket->id;
 
-            if (!$ticket) {
-                continue; // skip invalid ID
+                $ticket->update([
+                    'ticket_type_id' => $request->ticket_type_id[$id] ?? $ticket->ticket_type_id,
+                    'customer_name'  => $request->customer_name[$id] ?? $ticket->customer_name,
+                    'location_id'    => $request->location_id[$id] ?? $ticket->location_id,
+                    'asset_id'       => $request->asset_id[$id] ?? $ticket->asset_id,
+                    'department_id'  => $request->department_id[$id] ?? $ticket->department_id,
+                    'assigned_to'    => $request->assigned_to[$id] ?? $ticket->assigned_to,
+                    'ticket_group'   => $request->ticket_group[$id] ?? $ticket->ticket_group,
+                    'priority'       => $request->priority[$id] ?? $ticket->priority,
+                    'reported_date'  => $request->reported_date[$id] ?? $ticket->reported_date,
+                    'reported_by'    => $request->reported_by[$id] ?? $ticket->reported_by,
+                    'description'    => $request->description[$id] ?? $ticket->description,
+
+                    // checkbox fix
+                    'notify_reported_by' => isset($request->notify_reported_by[$id]) ? 1 : 0,
+                ]);
             }
 
-            $ticket->update([
-                'ticket_type_id' => $request->ticket_type_id[$index] ?? $ticket->ticket_type_id,
-                'customer_name'  => $request->customer_name[$index] ?? $ticket->customer_name,
-                'location_id'    => $request->location_id[$index] ?? $ticket->location_id,
-                'asset_id'       => $request->asset_id[$index] ?? $ticket->asset_id,
-                'department_id'  => $request->department_id[$index] ?? $ticket->department_id,
-                'assigned_to'    => $request->assigned_to[$index] ?? $ticket->assigned_to,
-                'ticket_group'   => $request->ticket_group[$index] ?? $ticket->ticket_group,
-                'priority'       => $request->priority[$index] ?? $ticket->priority,
-                'reported_date'  => $request->reported_date[$index] ?? $ticket->reported_date,
-                'reported_by'    => $request->reported_by[$index] ?? $ticket->reported_by,
-                'description'    => $request->description[$index] ?? $ticket->description,
-
-                // ✅ checkbox per ticket
-                'notify_reported_by' => isset($request->notify_reported_by[$id]) ? 1 : 0,
+            return response()->json([
+                'status' => true,
+                'message' => 'Records updated successfully!'
             ]);
-        }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Records updated successfully!'
-        ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function bulkDelete(Request $request)

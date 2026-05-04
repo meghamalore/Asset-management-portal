@@ -19,16 +19,7 @@
                         <form id="ticketStatusForm">
                             @csrf
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Status Type</label>
-                                <div class="col-sm-4">
-                                    <select id="country" class="form-select" name="status_type_id">
-                                        <option value="">Select</option>
-                                        <option value="1">Hold</option>
-                                        <option value="2">Assigned</option>
-                                        <option value="3">Open</option>
-                                    </select>
-                                </div>
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Sub Status</label>
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Status</label>
                                 <div class="col-sm-4">
                                     <input class="form-control force-validate" type="text" name="ticket_sub_status" />
                                 </div>
@@ -148,9 +139,6 @@
             ignore: ":hidden:not(.force-validate)",
 
             rules: {
-                status_type_id: {
-                    required: true
-                },
                 ticket_sub_status: {
                     required: true
                 },
@@ -173,9 +161,6 @@
             },
 
             messages: {
-                status_type_id: {
-                    required: "Please select ticket status type"
-                },
                 is_default: {
                     required: "Please enter sub status",
                 },

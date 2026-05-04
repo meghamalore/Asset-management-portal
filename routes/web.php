@@ -59,8 +59,8 @@ Route::post('/ticket/{id}', [HelpDeskController::class, 'update'])->name('ticket
 Route::get('/export-ticket', [HelpDeskController::class, 'exportTicket'])->name('ticket.export');
 Route::delete('/ticket/bulk-delete', [HelpDeskController::class, 'bulkDelete'])->name('ticket.bulkDelete');
 
+Route::post('/multiple-records-update', [HelpDeskController::class, 'multipleRecordsUpdate']);
 Route::get('/ticket/multiple-records-fetch', [HelpDeskController::class, 'multipleRecordsFetch']);
-Route::post('/ticket/multiple-records-update', [HelpDeskController::class, 'multipleRecordsUpdate']);
 
 
 Route::get('/add-ticket-status', [HelpDeskSettingController::class, 'insert'])->name('add-ticket-status');

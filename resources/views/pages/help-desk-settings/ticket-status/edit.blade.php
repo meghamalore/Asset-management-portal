@@ -20,7 +20,7 @@
                             @csrf
                             <div class="row mb-3">
                                 <input type="hidden" value="{{ $ticket->id }}" id="ticket_id" name="ticket_id">
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Status Type</label>
+                                {{-- <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Status Type</label>
                                 <div class="col-sm-4">
                                     <select id="country" class="form-select" name="status_type_id">
                                         <option value="">Select</option>
@@ -28,10 +28,10 @@
                                         <option value="2" {{ $ticket->status_type_id == 2 ? 'selected' : '' }}>Assigned</option>
                                         <option value="3" {{ $ticket->status_type_id == 3 ? 'selected' : '' }}>Open</option>
                                     </select>
-                                </div>
-                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Sub Status</label>
+                                </div> --}}
+                                <label class="col-sm-2 col-form-label" for="basic-default-name">Ticket Status</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control force-validate" value="{{ $ticket->sub_status }}" type="text" name="ticket_sub_status"  />
+                                    <input class="form-control force-validate" value="{{ $ticket->status }}" type="text" name="ticket_sub_status"  />
                                 </div>
                             </div>
                             <div class="row mb-3">
