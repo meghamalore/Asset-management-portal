@@ -28,7 +28,7 @@ class HelpDeskController extends Controller
 
     public function index()
     {
-        $ticket_data = Ticket::with(['ticketType', 'location', 'asset'])
+        $ticket_data = Ticket::with(['ticketType','ticketStatus','location', 'asset','user'])
         ->when(auth()->user()->role != 'admin', function ($query) {
             $query->where('assigned_to', auth()->id());
         })

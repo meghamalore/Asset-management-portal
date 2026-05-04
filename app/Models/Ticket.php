@@ -31,6 +31,11 @@ class Ticket extends Model
         return $this->belongsTo(TicketType::class);
     }
 
+    public function ticketStatus()
+    {
+        return $this->belongsTo(TicketStatus::class);
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class);
@@ -39,6 +44,11 @@ class Ticket extends Model
     public function asset()
     {
         return $this->belongsTo(Asset::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
 }
