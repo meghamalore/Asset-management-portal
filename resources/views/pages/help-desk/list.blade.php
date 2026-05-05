@@ -119,7 +119,7 @@
                             <td>{{ $ticket->ticket_group ?? '-' }}</td>
                             <td>{{ $ticket->priority ?? '-' }}</td>
                             <td>{{ $ticket->reported_date ?? '-' }}</td>
-                            <td><span class="badge bg-label-primary">{{ auth()->user()->name ?? '-' }}</span></td>
+                            <td><span class="badge bg-label-primary">{{ $ticket->reportedByUser->name ?? '-' }}</span></td>
                             <td>{{ $ticket->description ?? '-' }}</td>
                             <td>{{ $ticket->notify_reported_by ? 'Yes' : 'No' }}</td>
                         </tr>

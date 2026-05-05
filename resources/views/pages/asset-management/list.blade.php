@@ -212,7 +212,7 @@
 
                         <tbody>
                             @foreach($asset_data as $asset_datas)
-                            <tr data-asset-id="{{ $asset_datas->id }}" data-asset-name="{{ $asset_datas->asset_name}}" data-asset-code="{{ $asset_datas->asset_code}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price}}">
+                            <tr data-asset-id="{{ $asset_datas->id }}" data-asset-name="{{ $asset_datas->asset_name ?? '' }}" data-asset-code="{{ $asset_datas->asset_code ?? ''}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price ?? ''}}">
 
                                 <td>
                                     <input type="checkbox" class="asset-checkbox" value="{{ $asset_datas->id }}">
@@ -222,15 +222,15 @@
                                     <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
                                 </td>
 
-                                <td data-column="1">{{ $asset_datas->asset_name}}</td>
+                                <td data-column="1">{{ $asset_datas->asset_name ?? ''}}</td>
 
                                 <!-- Default -->
                                 <td class="default-extra" data-column="2">
                                     <img src="{{ asset('storage/' . $asset_datas->asset_image) }}"  height="50" width="50" alt="Asset Image">
                                 </td>
-                                <td data-column="3" class="default-extra">{{ $asset_datas->asset_code}}</td>
-                                <td data-column="4" class="default-extra">{{ $asset_datas->category->name}}</td>
-                                <td data-column="5" class="default-extra">{{ $asset_datas->created_at}}</td>
+                                <td data-column="3" class="default-extra">{{ $asset_datas->asset_code ?? ''}}</td>
+                                <td data-column="4" class="default-extra">{{ $asset_datas->category->name ?? ''}}</td>
+                                <td data-column="5" class="default-extra">{{ $asset_datas->created_at ?? ''}}</td>
                                 <td data-column="6" class="default-extra">HO</td>
                                 <td data-column="7" class="default-extra">Admin</td>
                                 <td data-column="8" class="default-extra">Active</td>
@@ -238,23 +238,23 @@
                                 <td data-column="10" class="default-extra">{{ $asset_datas->location->name ?? ''}}</td>
                                 <td data-column="11" class="default-extra">2025-01-03</td>
                                 <td data-column="12" class="default-extra">User</td>
-                                <td data-column="13" class="default-extra">{{ $asset_datas->brand}}</td>
+                                <td data-column="13" class="default-extra">{{ $asset_datas->brand ?? ''}}</td>
 
                                 <!-- Additional -->
-                                <td data-column="14" class="additional-extra">{{ $asset_datas->additionalInfo->brand}}</td>
-                                <td data-column="15" class="additional-extra">{{ $asset_datas->additionalInfo->model}}</td>
+                                <td data-column="14" class="additional-extra">{{ $asset_datas->additionalInfo->brand ?? ''}}</td>
+                                <td data-column="15" class="additional-extra">{{ $asset_datas->additionalInfo->model ?? ''}}</td>
                                 <td data-column="16" class="additional-extra">Linked Asset</td>
-                                <td data-column="17" class="additional-extra">{{ $asset_datas->additionalInfo->description}}</td>
-                                <td data-column="18" class="additional-extra">{{ $asset_datas->additionalInfo->serial_no}}</td>
+                                <td data-column="17" class="additional-extra">{{ $asset_datas->additionalInfo->description ?? ''}}</td>
+                                <td data-column="18" class="additional-extra">{{ $asset_datas->additionalInfo->serial_no ?? ''}}</td>
                                 <td data-column="19" class="additional-extra">Upload Files</td>
 
                                 <!-- Purchase -->
                                 <td data-column="20" class="purchase-extra">-</td>
-                                <td data-column="21" class="purchase-extra">{{ $asset_datas->purchaseInfo->asset_po_number}}</td>
-                                <td data-column="22" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_date}}</td>
-                                <td data-column="23" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_no}}</td>
-                                <td data-column="24" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_date}}</td>
-                                <td data-column="25" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_price}}</td>
+                                <td data-column="21" class="purchase-extra">{{ $asset_datas->purchaseInfo->asset_po_number ?? ''}}</td>
+                                <td data-column="22" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_date ?? ''}}</td>
+                                <td data-column="23" class="purchase-extra">{{ $asset_datas->purchaseInfo->invoice_no ?? ''}}</td>
+                                <td data-column="24" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_date ?? ''}}</td>
+                                <td data-column="25" class="purchase-extra">{{ $asset_datas->purchaseInfo->purchase_price ?? ''}}</td>
                                 <td data-column="26" class="purchase-extra">
                                     <select>
                                         <option>None</option>
@@ -266,13 +266,13 @@
 
 
                                 {{-- //financial data --}}
-                                <td data-column="28" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_price}}</td>
-                                <td data-column="29" class="financial-extra">{{ $asset_datas->finacialInfos->end_of_life}}</td>
-                                <td data-column="30" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_date}}</td>
-                                <td data-column="31" class="financial-extra">{{ $asset_datas->finacialInfos->depreciation_percent}}</td>
-                                <td data-column="32" class="financial-extra">{{ $asset_datas->finacialInfos->accumulated_depreciation}}</td>
-                                <td data-column="33" class="financial-extra">{{ $asset_datas->finacialInfos->scrap_value}}</td>
-                                <td data-column="34" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent}}</td>
+                                <td data-column="28" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_price ?? ''}}</td>
+                                <td data-column="29" class="financial-extra">{{ $asset_datas->finacialInfos->end_of_life ?? ''}}</td>
+                                <td data-column="30" class="financial-extra">{{ $asset_datas->finacialInfos->capitalization_date ?? ''}}</td>
+                                <td data-column="31" class="financial-extra">{{ $asset_datas->finacialInfos->depreciation_percent ?? ''}}</td>
+                                <td data-column="32" class="financial-extra">{{ $asset_datas->finacialInfos->accumulated_depreciation ?? ''}}</td>
+                                <td data-column="33" class="financial-extra">{{ $asset_datas->finacialInfos->scrap_value ?? ''}}</td>
+                                <td data-column="34" class="financial-extra">{{ $asset_datas->finacialInfos->income_tax_depreciation_percent ?? ''}}</td>
 
                                 {{-- //allotted data --}}
                                 <td data-column="35" class="allotted-extra">{{ $asset_datas->assetallotedInfos->department ?? ''}}</td>

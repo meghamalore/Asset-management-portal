@@ -28,11 +28,12 @@ class HelpDeskController extends Controller
 
     public function index()
     {
-        $ticket_data = Ticket::with(['ticketType','ticketStatus','location', 'asset','user'])
+        $ticket_data = Ticket::with(['ticketType','ticketStatus','location', 'asset','user','reportedByUser'])
         ->when(auth()->user()->role != 'admin', function ($query) {
             $query->where('assigned_to', auth()->id());
         })
         ->get();
+        // dd($ticket_data);
         return view('pages.help-desk.list' , compact('ticket_data'));
     }
 
@@ -74,7 +75,7 @@ class HelpDeskController extends Controller
             'ticket_group'       => $request->ticket_group,
             'priority'           => $request->priority,
             'reported_date'      => $request->reported_date,
-            'reported_by'        => $request->reported_by,
+            'reported_by'        => auth()->id(),
             'description'        => $request->description,
             'notify_reported_by' => $request->has('notify_reported_by') ? 1 : 0,
         ]);
