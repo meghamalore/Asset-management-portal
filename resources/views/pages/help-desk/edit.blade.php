@@ -109,7 +109,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Assigned To</label>
                                 <div class="col-sm-4">
-                                    <select class="form-select" name="assigned_to">
+                                    <select class="form-select" name="assigned_to" {{ in_array(auth()->user()->role, ['User','employee']) ? 'disabled' : '' }}>
                                         <option value="">Select</option>
                                         @foreach($users as $user)
                                             @if($user->id != auth()->id())
@@ -129,6 +129,10 @@
                                         <option value="maintanance_group"
                                             {{ $ticket->ticket_group == 'maintanance_group' ? 'selected' : '' }}>
                                             Maintainance Group
+                                        </option>
+                                        <option value="it_helpdesk"
+                                            {{ $ticket->ticket_group == 'it_helpdesk' ? 'selected' : '' }}>
+                                            IT Helpdesk
                                         </option>
                                     </select>
                                 </div>
