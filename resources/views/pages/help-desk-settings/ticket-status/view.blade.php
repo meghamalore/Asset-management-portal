@@ -11,7 +11,7 @@
 
                 <div class="card-body">
 
-                    <div class="row mb-3">
+                    {{-- <div class="row mb-3">
                         <label class="col-sm-3 fw-bold">Ticket Status Type:</label>
                         <div class="col-sm-9">
                             @if($ticket->status_type_id == 1)
@@ -24,12 +24,12 @@
                                 -
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="row mb-3">
-                        <label class="col-sm-3 fw-bold">Ticket Sub Status:</label>
+                        <label class="col-sm-3 fw-bold">Ticket Status:</label>
                         <div class="col-sm-9">
-                            {{ $ticket->sub_status ?? '-' }}
+                            {{ $ticket->status ?? '-' }}
                         </div>
                     </div>
 

@@ -111,6 +111,7 @@
                                     <select class="form-select" name="ticket_group">
                                         <option value="">Select</option>
                                         <option value="maintanance_group">Maintainance Group</option>
+                                        <option value="it_helpdesk">IT Helpdesk</option>
                                     </select>
                                 </div>
                             </div>
@@ -161,10 +162,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row mt-4">
+                                <div class="col-12 text-center">
+                                    <button type="reset" class="btn btn-danger">
+                                        Cancel
+                                    </button>
 
-                            <div class="row justify-content-end">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">
+                                        Save
+                                    </button>
                                 </div>
                             </div>
                         </form>
