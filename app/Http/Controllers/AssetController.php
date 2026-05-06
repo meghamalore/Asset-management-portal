@@ -14,6 +14,7 @@ use App\Models\AssetFiles;
 use App\Models\ColumnMaster;
 use App\Models\CustomeView;
 use App\Models\Location;
+use App\Models\User;
 use App\Models\SubLocation;
 use App\Models\Category;
 use App\Models\SubCategory;
@@ -209,8 +210,9 @@ class AssetController extends Controller
         $sub_location = SubLocation::select('id','name','location_id')->get();
         $status = Status::select('id','status_name')->get();
         $asset_list = Asset::select('id','asset_name','asset_code')->get();
+        $users = User::select('id','name')->get();
 
-        return view('pages.asset-management.list',compact('asset_data','column_master','views','location','sub_location','categories','status','asset_list'));
+        return view('pages.asset-management.list',compact('asset_data','column_master','views','location','sub_location','categories','status','asset_list','users'));
     }
 
     public function getAssetDetails($id)

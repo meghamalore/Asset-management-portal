@@ -34,18 +34,18 @@
         <div class="card-body">
 
                 <div class="d-flex justify-content-end align-items-center gap-2 mb-3">
-
+                    @if(auth()->user()->role === 'admin')
                     <button type="button" id="disposeTktBtn" class="btn btn-outline-primary">
                         <span class="tf-icons bx bx-trash"></span>&nbsp; Discard Tickets
                     </button>
-                
-                    <a href="{{ route('ticket.export') }}" class="btn btn-success">
-                        <i class="bx bx-export me-1"></i> Export Excel
-                    </a>
 
                     <button id="bulkEditBtn" class="btn btn-primary">
                         <i class="bx bx-edit-alt me-1"></i> Edit Tickets
                     </button>
+                    @endif
+                    <a href="{{ route('ticket.export') }}" class="btn btn-success">
+                        <i class="bx bx-export me-1"></i> Export Excel
+                    </a>
 
                 </div>
 
@@ -54,7 +54,7 @@
                     <thead>
                         <!-- GROUP HEADER -->
                         <tr>
-                            <th rowspan="2"><input type="checkbox" id="selectAll" ></th>
+                            @if(auth()->user()->role === 'admin')<th rowspan="2"><input type="checkbox" id="selectAll" ></th>@endif
                             <th rowspan="2">Actions</th>
 
                             <th colspan="11">
@@ -91,7 +91,7 @@
                     <tbody>
                         @foreach($ticket_data as $ticket)
                         <tr>
-                            <td><input type="checkbox" class="rowCheckbox" value="{{ $ticket->id }}"></td>
+                            @if(auth()->user()->role === 'admin')<td><input type="checkbox" class="rowCheckbox" value="{{ $ticket->id }}"></td>@endif
                             <td class="text-center">
                                 <div class="d-flex justify-content-center align-items-center gap-2">
 
@@ -99,6 +99,7 @@
                                     <a href="{{ route('ticket.view', $ticket->id) }}" class="text-primary" title="View">
                                         <i class="bx bx-show"></i>
                                     </a>
+                                    @if(auth()->user()->role === 'admin')
                                     <!-- Edit -->
                                     <a href="{{ route('ticket.edit', $ticket->id) }}" class="text-warning" title="Edit">
                                         <i class="bx bx-edit"></i>
@@ -108,6 +109,7 @@
                                         title="Delete" id="deleteTicketBtn" data-id ="{{$ticket->id}}">
                                         <i class="bx bx-trash"></i>
                                     </button>
+                                    @endif
                                 </div>
                             </td>
                             <td>{{ $ticket->ticket_number }}</td>

@@ -592,11 +592,11 @@
                             <div class="row mb-3 mx-2">
                                 <label class="col-sm-2 col-form-label">Transfer To</label>
                                 <div class="col-sm-4">
-                                    <select id="globalTransferTo" class="form-select global-transfer-to">
+                                    <select id="globalTransferTo" class="form-select global-transfer-to" name="transferred_to">
                                         <option value="">Select User</option>
-                                        <option value="James Smith">James Smith</option>
-                                        <option value="Jennifer Miller">Jennifer Miller</option>
-                                        <option value="Robert Johnson">Robert Johnson</option>
+                                        @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

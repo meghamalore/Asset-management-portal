@@ -72,6 +72,7 @@
             </li>
 
             <!-- Help Desk Settings-->
+            @if(auth()->user()->role === 'admin')
             <li class="menu-item {{ request()->routeIs('list-ticket-status') || request()->routeIs('list.ticket.type') || request()->routeIs('add.ticket.type') || request()->routeIs('add.ticket.status')? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-cog"></i>
@@ -91,6 +92,7 @@
                 </li>
               </ul>
             </li>
+            @endif
           </ul>
         </aside>
         <!-- / Menu -->

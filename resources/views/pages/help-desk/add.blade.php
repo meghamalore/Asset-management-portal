@@ -48,9 +48,19 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Customer Name</label>
+                                {{-- <label class="col-sm-2 col-form-label">Customer Name</label>
                                 <div class="col-sm-4">
                                     <input class="form-control" type="text" name="customer_name"/>
+                                </div> --}}
+                                <label class="col-sm-2 col-form-label">User Name</label>
+                                 <div class="col-sm-4">
+                                    <select class="form-select" name="reported_by">
+                                        <option value="">Select</option>
+                                        <option value="{{ auth()->id() }}"
+                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
+                                            {{ auth()->user()->name }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -132,17 +142,6 @@
                                 <label class="col-sm-2 col-form-label">Reported Date</label>
                                 <div class="col-sm-4">
                                     <input class="form-control" type="date" name="reported_date" />
-                                </div>
-
-                                <label class="col-sm-2 col-form-label">Reported By</label>
-                                 <div class="col-sm-4">
-                                    <select class="form-select" name="reported_by">
-                                        <option value="">Select</option>
-                                        <option value="{{ auth()->id() }}"
-                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
-                                            {{ auth()->user()->name }}
-                                        </option>
-                                    </select>
                                 </div>
                             </div>
 
@@ -237,10 +236,10 @@
                     ticket_type_id: {
                         required: true
                     },
-                    customer_name: {
-                        required: true,
-                        minlength: 3
-                    },
+                    // customer_name: {
+                    //     required: true,
+                    //     minlength: 3
+                    // },
                     location_id: {
                         required: true
                     },
@@ -276,10 +275,10 @@
                 ticket_type_id: {
                     required: "Please select ticket type"
                 },
-                customer_name: {
-                    required: "Customer name is required",
-                    minlength: "Minimum 3 characters required"
-                },
+                // customer_name: {
+                //     required: "Customer name is required",
+                //     minlength: "Minimum 3 characters required"
+                // },
                 location_id: {
                     required: "Please select location"
                 },
