@@ -56,31 +56,15 @@
                             </div>
 
                             <div class="row mb-3">
-                                {{-- <label class="col-sm-2 col-form-label">Customer Name</label>
+                            <label class="col-sm-2 col-form-label">User Name</label>
                                 <div class="col-sm-4">
-                                    <input class="form-control" type="text" name="customer_name"
-                                        value="{{ $ticket->customer_name }}" />
-                                </div> --}}
-                                 {{-- <label class="col-sm-2 col-form-label">Reported By</label> --}}
-                                 {{-- <div class="col-sm-4"> --}}
-                                  {{--  <select class="form-select" name="reported_by">
-                                        
-                                        <option value="{{ auth()->id() }}"
-                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
-                                            {{ auth()->user()->name }}
-                                        </option>
-                                    </select> --}}
-                                    <label class="col-sm-2 col-form-label">User Name</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-select" name="reported_by">
-                                            {{-- <option value="">Select</option> --}}
-                                            <option value="{{ auth()->id() }}"
-                                                {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
-                                                {{ auth()->user()->name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                {{-- </div>  --}}
+                                    
+                                    <!-- Hidden field (actual value submitted) -->
+                                    <input type="hidden" name="reported_by" value="{{ auth()->id() }}">
+                                    <!-- Display only -->
+                                    <input type="text" class="form-control" value="{{ auth()->user()->name }}" readonly>
+
+                                </div>
                             </div>
 
                             <div class="row mb-3">
@@ -127,7 +111,7 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Assigned To</label>
+                                {{-- <label class="col-sm-2 col-form-label">Assigned To</label>
                                 <div class="col-sm-4">
                                     <select class="form-select" name="assigned_to" {{ in_array(auth()->user()->role, ['User','employee']) ? 'disabled' : '' }}>
                                         <option value="">Select</option>
@@ -140,7 +124,7 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
 
                                 <label class="col-sm-2 col-form-label">Ticket Group</label>
                                 <div class="col-sm-4">

@@ -33,4 +33,6 @@ class AssetTransfer extends Model
     {
         return $this->belongsTo(Asset::class);
     }
+
+    
 }

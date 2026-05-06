@@ -70,6 +70,10 @@ class Asset extends Model
         return $this->hasOne(AssetWarrantyInfos::class, 'asset_id');
     }
 
+    public function assetTransfers()
+    {
+        return $this->hasMany(AssetTransfer::class, 'asset_id');
+    }
     // public function linkedAssets()
     // {
     //     return $this->belongsToMany(AssetLinks::class,'asset_id');

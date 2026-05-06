@@ -17,7 +17,13 @@ class HelpDeskController extends Controller
 {
     public function insert()
     {
-        $asset = Asset::select('id','asset_name','asset_code')->get();
+        $asset = Asset::select('id','asset_name','asset_code')
+        ->when(auth()->user()->role != 'admin', function ($query) {
+            $query->whereHas('assetTransfers', function ($q) {
+                $q->where('transferred_to', auth()->id());
+            });
+        })
+        ->get();
         $location = Location::select('id','name')->get();
         $ticket_type = TicketType::select('id','ticket_type')->get();
         $ticket_status = TicketStatus::select('id','status')->get();
@@ -40,7 +46,13 @@ class HelpDeskController extends Controller
     public function edit($id)
     {
         $ticket = Ticket::findOrFail($id);
-        $asset = Asset::select('id','asset_name','asset_code')->get();
+        $asset = Asset::select('id','asset_name','asset_code')
+        ->when(auth()->user()->role != 'admin', function ($query) {
+            $query->whereHas('assetTransfers', function ($q) {
+                $q->where('transferred_to', auth()->id());
+            });
+        })
+        ->get();
         $location = Location::select('id','name')->get();
         $ticket_type = TicketType::select('id','ticket_type')->get();
         $ticket_status = TicketStatus::select('id','status')->get();
@@ -57,21 +69,21 @@ class HelpDeskController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'ticket_type_id' => 'required',
-            'customer_name'  => 'required',
-            'location_id'    => 'required',
-        ]);
+        // $request->validate([
+        //     'ticket_type_id' => 'required',
+        //     'customer_name'  => 'required',
+        //     'location_id'    => 'required',
+        // ]);
 
         Ticket::create([
             'ticket_number' => 'TKT-' . now()->format('Ymd') . rand(100, 999),
             'ticket_type_id'     => $request->ticket_type_id,
-            'ticket_status_id'       => $request->status_id,
-            // 'customer_name'      => $request->customer_name,
+        'ticket_status_id'       => $request->status_id,
+            'customer_name'      => $request->customer_name,
             'location_id'        => $request->location_id,
             'asset_id'           => $request->asset_id,
             'department_id'      => $request->department_id,
-            'assigned_to'        => $request->assigned_to,
+            'assigned_to'        => auth()->id(),
             'ticket_group'       => $request->ticket_group,
             'priority'           => $request->priority,
             'reported_date'      => $request->reported_date,
@@ -104,11 +116,12 @@ class HelpDeskController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'ticket_type_id' => 'required',
-            // 'customer_name'  => 'required',
-            'location_id'    => 'required',
-        ]);
+
+        // $request->validate([
+        //     'ticket_type_id' => 'required',
+        //     'customer_name'  => 'required',
+        //     'location_id'    => 'required',
+        // ]);
 
         $ticket = Ticket::findOrFail($id);
 
@@ -118,11 +131,11 @@ class HelpDeskController extends Controller
 
             'ticket_type_id'     => $request->ticket_type_id,
             'ticket_status_id'     => $request->status_id,
-            'customer_name'      => $request->customer_name,
+            // 'customer_name'      => $request->customer_name,
             'location_id'        => $request->location_id,
             'asset_id'           => $request->asset_id,
             'department_id'      => $request->department_id,
-            'assigned_to'        => $request->assigned_to,
+            'assigned_to'        => auth()->id(),
             'ticket_group'       => $request->ticket_group,
             'priority'           => $request->priority,
             'reported_date'      => $request->reported_date,

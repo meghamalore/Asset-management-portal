@@ -476,7 +476,7 @@ class AssetController extends Controller
                         'from_sub_location_id' => $oldSubLocationId,
                         'to_sub_location_id' => $assetData['sub_location_id'] ?? null,
                         'transfer_status' => $assetData['transfer_status'] ?? null,
-                        'transferred_to' => $newTransferredTo,
+                        'transferred_to' => $request->transferred_to,
                         'allotted_upto' => $newAllottedUpto,
                         'transfer_cc' => $request->transfer_cc ?? null,
                         'remarks' => $newRemarks,

@@ -73,7 +73,7 @@
                             <th>Ticket Group</th>
                             <th>Priority</th>
                             <th>Reported Date</th>
-                            <th>Reported By</th>
+                            {{-- <th>Reported By</th> --}}
                             <th>Description</th>
                             <th>Notify Reported By</th>
                         </tr>
@@ -99,12 +99,12 @@
                                     <a href="{{ route('ticket.view', $ticket->id) }}" class="text-primary" title="View">
                                         <i class="bx bx-show"></i>
                                     </a>
-                                    @if(auth()->user()->role === 'admin')
                                     <!-- Edit -->
                                     <a href="{{ route('ticket.edit', $ticket->id) }}" class="text-warning" title="Edit">
                                         <i class="bx bx-edit"></i>
                                     </a>
                                     <!-- Delete -->
+                                    @if(auth()->user()->role === 'admin')
                                     <button type="submit" class="btn p-0 border-0 text-danger"
                                         title="Delete" id="deleteTicketBtn" data-id ="{{$ticket->id}}">
                                         <i class="bx bx-trash"></i>
@@ -121,7 +121,7 @@
                             <td>{{ $ticket->ticket_group ?? '-' }}</td>
                             <td>{{ $ticket->priority ?? '-' }}</td>
                             <td>{{ $ticket->reported_date ?? '-' }}</td>
-                            <td><span class="badge bg-label-primary">{{ $ticket->reportedByUser->name ?? '-' }}</span></td>
+                            {{-- <td><span class="badge bg-label-primary">{{ $ticket->reportedByUser->name ?? '-' }}</span></td> --}}
                             <td>{{ $ticket->description ?? '-' }}</td>
                             <td>{{ $ticket->notify_reported_by ? 'Yes' : 'No' }}</td>
                         </tr>
