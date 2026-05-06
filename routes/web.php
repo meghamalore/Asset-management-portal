@@ -13,6 +13,7 @@ use App\Http\Controllers\HelpDeskSettingController;
 use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketTypeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ImportDataController;
 
 Route::get('/', function () {return view('pages.auth.login');})->name('login');
 Route::get('/login', function () {return view('pages.auth.login');})->name('login');
@@ -87,6 +88,10 @@ Route::get('/edit-ticket-type/{id}', [TicketTypeController::class, 'edit'])->nam
 Route::get('/view-ticket-type/{id}', [TicketTypeController::class, 'view'])->name('ticket.type.view');
 Route::post('/ticket-type/{id}', [TicketTypeController::class, 'update'])->name('ticket.type.update');
 
+Route::get('/import-asset', [ImportDataController::class, 'add'])->name('import-asset');
+Route::get('/template-download', [ImportDataController::class, 'downloadTemplate'])->name('assets.sample.download');
+Route::post('/asset/import', [ImportDataController::class, 'import'])->name('asset.import');
+Route::get('/asset/download-latest', [ImportDataController::class, 'downloadLatest'])->name('asset.download.latest');
 });
 
 
