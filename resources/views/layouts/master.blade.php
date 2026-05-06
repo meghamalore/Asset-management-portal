@@ -93,6 +93,27 @@
               </ul>
             </li>
             @endif
+
+            <!-- Import Data-->
+            <li class="menu-item {{ request()->routeIs('list-ticket-status') || request()->routeIs('list.ticket.type') || request()->routeIs('add.ticket.type') || request()->routeIs('add.ticket.status')? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bx-import"></i>
+                <div data-i18n="Layouts">Import Data</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{{ route('list-ticket-status')}}" class="menu-link">
+                    <div data-i18n="Without menu">Assets</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ route('list.ticket.type')}}" class="menu-link">
+                    <div data-i18n="Without navbar">Tickets</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </aside>
         <!-- / Menu -->

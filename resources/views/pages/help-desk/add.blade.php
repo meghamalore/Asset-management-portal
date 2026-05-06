@@ -53,15 +53,18 @@
                                     <input class="form-control" type="text" name="customer_name"/>
                                 </div> --}}
                                 <label class="col-sm-2 col-form-label">User Name</label>
-                                 <div class="col-sm-4">
-                                    <select class="form-select" name="reported_by">
-                                        <option value="">Select</option>
-                                        <option value="{{ auth()->id() }}"
-                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
-                                            {{ auth()->user()->name }}
-                                        </option>
-                                    </select>
-                                </div>
+                                    <div class="col-sm-4">
+
+                                        <!-- Hidden field (submitted value) -->
+                                        <input type="hidden" name="reported_by" value="{{ auth()->id() }}">
+
+                                        <!-- Display field -->
+                                        <input type="text" 
+                                            class="form-control" 
+                                            value="{{ auth()->user()->name }}" 
+                                            readonly>
+
+                                    </div>
                             </div>
 
                             <div class="row mb-3">
