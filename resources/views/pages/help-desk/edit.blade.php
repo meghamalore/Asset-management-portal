@@ -56,11 +56,31 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Customer Name</label>
+                                {{-- <label class="col-sm-2 col-form-label">Customer Name</label>
                                 <div class="col-sm-4">
                                     <input class="form-control" type="text" name="customer_name"
                                         value="{{ $ticket->customer_name }}" />
-                                </div>
+                                </div> --}}
+                                 {{-- <label class="col-sm-2 col-form-label">Reported By</label> --}}
+                                 {{-- <div class="col-sm-4"> --}}
+                                  {{--  <select class="form-select" name="reported_by">
+                                        
+                                        <option value="{{ auth()->id() }}"
+                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
+                                            {{ auth()->user()->name }}
+                                        </option>
+                                    </select> --}}
+                                    <label class="col-sm-2 col-form-label">User Name</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select" name="reported_by">
+                                            {{-- <option value="">Select</option> --}}
+                                            <option value="{{ auth()->id() }}"
+                                                {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
+                                                {{ auth()->user()->name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                {{-- </div>  --}}
                             </div>
 
                             <div class="row mb-3">
@@ -157,16 +177,7 @@
                                         value="{{ $ticket->reported_date }}" />
                                 </div>
 
-                                <label class="col-sm-2 col-form-label">Reported By</label>
-                                 <div class="col-sm-4">
-                                    <select class="form-select" name="reported_by">
-                                        {{-- <option value="">Select</option> --}}
-                                        <option value="{{ auth()->id() }}"
-                                            {{ old('reported_by', $ticket->reported_by ?? auth()->id()) == auth()->id() ? 'selected' : '' }}>
-                                            {{ auth()->user()->name }}
-                                        </option>
-                                    </select>
-                                </div>
+                                
                                 
                             </div>
 
@@ -188,9 +199,15 @@
                                 </div>
                             </div>
 
-                            <div class="row justify-content-end">
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="row mt-4">
+                                <div class="col-12 text-center">
+                                    <button type="reset" class="btn btn-danger">
+                                        Cancel
+                                    </button>
+
+                                    <button type="submit" class="btn btn-primary">
+                                        Update
+                                    </button>
                                 </div>
                             </div>
                         </form>

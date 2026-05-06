@@ -66,8 +66,8 @@ class HelpDeskController extends Controller
         Ticket::create([
             'ticket_number' => 'TKT-' . now()->format('Ymd') . rand(100, 999),
             'ticket_type_id'     => $request->ticket_type_id,
-        'ticket_status_id'       => $request->status_id,
-            'customer_name'      => $request->customer_name,
+            'ticket_status_id'       => $request->status_id,
+            // 'customer_name'      => $request->customer_name,
             'location_id'        => $request->location_id,
             'asset_id'           => $request->asset_id,
             'department_id'      => $request->department_id,
@@ -106,7 +106,7 @@ class HelpDeskController extends Controller
     {
         $request->validate([
             'ticket_type_id' => 'required',
-            'customer_name'  => 'required',
+            // 'customer_name'  => 'required',
             'location_id'    => 'required',
         ]);
 
