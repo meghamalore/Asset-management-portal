@@ -37,11 +37,13 @@
               </a>
 
               <ul class="menu-sub">
+            @if(auth()->user()->role === 'admin')
                 <li class="menu-item">
                   <a href="{{ route("add.asset.management")  }}" class="menu-link">
                     <div data-i18n="Without menu">Add Asset</div>
                   </a>
                 </li>
+            @endif
                 <li class="menu-item">
                   <a href="{{ route("list.asset.management")  }}" class="menu-link">
                     <div data-i18n="Without navbar">Asset List</div>
@@ -95,7 +97,7 @@
             @endif
 
             <!-- Import Data-->
-            <li class="menu-item {{ request()->routeIs('list-ticket-status') || request()->routeIs('list.ticket.type') || request()->routeIs('add.ticket.type') || request()->routeIs('add.ticket.status')? 'active open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('import-asset') || request()->routeIs('import-ticket') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-import"></i>
                 <div data-i18n="Layouts">Import Data</div>
@@ -108,7 +110,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="{{ route('list.ticket.type')}}" class="menu-link">
+                  <a href="{{ route('import-ticket')}}" class="menu-link">
                     <div data-i18n="Without navbar">Tickets</div>
                   </a>
                 </li>

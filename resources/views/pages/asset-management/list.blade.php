@@ -70,6 +70,7 @@
                     </div>
                 </div>
             </div>
+            @if(auth()->user()->role === 'admin')
             <div class="row mb-3 mx-auto">
                 <div class="col-md-2">
                     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
@@ -98,6 +99,7 @@
                     </button>
                 </div>
             </div>
+            @endif
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="assetTable" class="table table-bordered">
@@ -105,7 +107,9 @@
                         <thead>
                             <!-- GROUP HEADER -->
                             <tr>
+                                @if(auth()->user()->role === 'admin')
                                 <th rowspan="3"><input type="checkbox" id="selectAll"></th>
+                                @endif
                                 <th rowspan="3">Actions</th>
 
                                 <th colspan="14" id="defaultToggle">
@@ -213,11 +217,11 @@
                         <tbody>
                             @foreach($asset_data as $asset_datas)
                             <tr data-asset-id="{{ $asset_datas->id }}" data-asset-name="{{ $asset_datas->asset_name ?? '' }}" data-asset-code="{{ $asset_datas->asset_code ?? ''}}"  data-location-id="{{ $asset_datas->location->id ?? '' }}" data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price ?? ''}}">
-
+                                @if(auth()->user()->role === 'admin')
                                 <td>
                                     <input type="checkbox" class="asset-checkbox" value="{{ $asset_datas->id }}">
                                 </td>
-
+                                @endif
                                 <td class="text-center">
                                     <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
                                 </td>

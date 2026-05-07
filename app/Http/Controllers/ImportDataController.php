@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Imports\AssetImport;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Maatwebsite\Excel\Validators\ValidationException;
 use Illuminate\Http\Request;
 
 class ImportDataController extends Controller
@@ -17,33 +18,65 @@ class ImportDataController extends Controller
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,csv,xls'
-            ]);
-            
-            $file = $request->file('file');
-            
-            // ✅ Generate unique file name
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            
-        // ✅ Save in public/uploads/imports
+        ]);
+
+        $file = $request->file('file');
+
+        // Unique file name
+        $fileName = time() . '_' . $file->getClientOriginalName();
+
+        // Save file
         $file->move(public_path('uploads/imports'), $fileName);
-        
-        // ✅ Full path for import
+
+        // Full path
         $filePath = public_path('uploads/imports/' . $fileName);
-        
-        // ✅ Import
-        $import = new AssetImport();
-        Excel::import($import, $filePath);
 
-        // ✅ Handle errors
-        $failures = $import->failures();
+        // Read Excel Data
+        $data = Excel::toCollection(null, $filePath);
 
-        if ($failures->isNotEmpty()) {
-            return back()->with([
-                'import_errors' => $failures
-            ]);
+        // Check sheet exists
+        if (!isset($data[0])) {
+
+            return redirect()->route('import-asset')->with('error_msg', 'Excel sheet is empty');
         }
 
-        return back()->with('success_msg', 'Assets Imported Successfully');
+        // Check rows after header
+        if (count($data[0]) <= 1) {
+
+            return redirect()->route('import-asset')->with('error_msg', 'No data found');
+        }
+
+        // Import object
+        $import = new AssetImport();
+
+        // Import excel
+        Excel::import($import, $filePath);
+
+        // Validation Failures
+        $failures = [];
+
+        if ($import->failures()->isNotEmpty()) {
+
+            foreach ($import->failures() as $failure) {
+
+                $failures[] = [
+
+                    'row' => $failure->row(),
+
+                    'attribute' => $failure->attribute(),
+
+                    'errors' => implode(', ', $failure->errors()),
+
+                ];
+            }
+
+            return redirect()->route('import-asset')->with('error_msg', 'Validation errors found')->with('failures', $failures);
+        }
+
+        
+        return redirect()->route('import-asset')->with('success_msg', 'Assets Imported Successfully');
+
+    
     }
 
     public function downloadTemplate()
@@ -74,5 +107,10 @@ class ImportDataController extends Controller
         })->first();
 
         return response()->download($latestFile);
+    }
+
+    public function addTicket()
+    {
+        return view('pages.import-data.import-tickets');
     }
 }

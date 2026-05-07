@@ -16,7 +16,7 @@
 
                 <!-- HEADER -->
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="mb-0">Import Assets</h5> 
+                    <h5 class="mb-0">Import Tickets</h5> 
 
                     <!-- Download Sample Button -->
                 </div>
@@ -28,18 +28,18 @@
                     <div class="mb-3 d-flex gap-2">
 
                         <!-- Download Template -->
-                        <a href="{{ route('ticket.sample.download') }}" class="btn btn-success btn-sm">
+                        <a href="#" class="btn btn-success btn-sm">
                             <i class="bx bx-download me-1"></i> Download Template
                         </a>
 
-                        <a href="{{ route('asset.download.latest') }}" class="btn btn-info btn-sm">
+                        <a href="#" class="btn btn-info btn-sm">
                             <i class="bx bx-download me-1"></i> Download Last Uploaded File
                         </a>
 
                     </div>
 
                     <!-- Form -->
-                    <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data">
+                    <form action="#" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row align-items-end g-3">
