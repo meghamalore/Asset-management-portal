@@ -28,7 +28,7 @@
                     <div class="mb-3 d-flex gap-2">
 
                         <!-- Download Template -->
-                        <a href="{{ route('ticket.sample.download') }}" class="btn btn-success btn-sm">
+                        <a href="{{ route('assets.sample.download') }}" class="btn btn-success btn-sm">
                             <i class="bx bx-download me-1"></i> Download Template
                         </a>
 
@@ -39,7 +39,7 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('import-asset') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row align-items-end g-3">

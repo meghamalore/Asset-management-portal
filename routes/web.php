@@ -94,9 +94,9 @@ Route::post('/import', [ImportDataController::class, 'import'])->name('asset.imp
 Route::get('/asset/download-latest', [ImportDataController::class, 'downloadLatest'])->name('asset.download.latest');
 
 Route::get('/import-ticket', [ImportDataController::class, 'addTicket'])->name('import-ticket');
-// Route::get('/template-download-ticket', [ImportDataController::class, 'downloadTemplateTicket'])->name('ticket.sample.download');
-// Route::post('/import', [ImportDataController::class, 'import'])->name('ticket.import');
-// Route::get('/ticket/download-latest', [ImportDataController::class, 'downloadLatest'])->name('ticket.download.latest');
+Route::get('/template-download-ticket', [ImportDataController::class, 'downloadTemplateTicket'])->name('ticket.sample.download');
+Route::post('/import', [ImportDataController::class, 'importTicket'])->name('ticket.import');
+Route::get('/ticket/download-latest', [ImportDataController::class, 'downloadLatestTicket'])->name('ticket.download.latest');
 
 });
 

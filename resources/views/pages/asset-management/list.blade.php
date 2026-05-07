@@ -71,34 +71,41 @@
                 </div>
             </div>
             @if(auth()->user()->role === 'admin')
-            <div class="row mb-3 mx-auto">
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#exLargeModalAddGenerateSticker">
-                        <span class="tf-icons bx bx-barcode"></span>&nbsp; Generated Stickers
-                    </button>
-                </div> 
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-primary"  id="assetTrasfBtn">
-                        <span class="tf-icons bx bx-transfer-alt"></span>&nbsp; Asset Transfer
-                    </button>
+            <div class="row g-3 mb-3 px-3">
+
+                    <div class="col-lg-3 col-md-6">
+                        <button type="button" id="assetTrasfBtn"
+                            class="btn btn-outline-primary w-100">
+                            <span class="tf-icons bx bx-transfer-alt"></span>
+                            Asset Transfer
+                        </button>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <button type="button" id="disposeBtn"
+                            class="btn btn-outline-danger w-100">
+                            <span class="tf-icons bx bx-trash"></span>
+                            Discard / Sell
+                        </button>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <button type="button" id="updateBtn"
+                            class="btn btn-outline-warning w-100">
+                            <span class="tf-icons bx bx-edit"></span>
+                            Update Asset
+                        </button>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <button type="button" id="scheduleActivityBtn"
+                            class="btn btn-outline-success w-100">
+                            <span class="tf-icons bx bx-calendar"></span>
+                            Schedule Activity
+                        </button>
+                    </div>
+
                 </div>
-                <div class="col-md-2">
-                    <button type="button" id="disposeBtn" class="btn btn-outline-primary">
-                        <span class="tf-icons bx bx-trash"></span>&nbsp; Discard or Sell
-                    </button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="updateBtn" class="btn btn-outline-primary">
-                        <span class="tf-icons bx bx-edit"></span>&nbsp; Update Asset
-                    </button>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" id="scheduleActivityBtn" class="btn btn-outline-primary" >
-                        <span class="tf-icons bx bx-calendar"></span>&nbsp; Schedule Activity
-                    </button>
-                </div>
-            </div>
             @endif
             <div class="card-body">
                 <div class="table-responsive">

@@ -65,11 +65,13 @@
                     <div data-i18n="Without menu">Manage Tickets</div>
                   </a>
                 </li>
+            @if(auth()->user()->role === 'admin')
                 <li class="menu-item">
                   <a href="{{ route("add.help.desk")  }}" class="menu-link">
                     <div data-i18n="Without navbar">New Tickets</div>
                   </a>
                 </li>
+            @endif
               </ul>
             </li>
 
