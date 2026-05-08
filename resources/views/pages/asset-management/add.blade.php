@@ -251,7 +251,7 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" for="basic-default-phone">Status <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
-                                                <select id="country" name="status" class="select2 form-select">
+                                                <select id="status" name="status" class="select2 form-select">
                                                     <option value="">Select Status</option>
                                                     @foreach ($status as $statuses)
                                                     <option value="{{ $statuses->id }}">{{ $statuses->status_name }}</option>
@@ -289,7 +289,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Condition <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" name="condition" class=" form-select force-validate">
+                                            <select id="condition" name="condition" class=" form-select force-validate">
                                                 <option value="">Select</option>
                                                 <option value="damaged">Damaged</option>
                                                 <option value="good">Good</option>
@@ -363,7 +363,7 @@
                             <div id="accordionThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" >Vendor Name</label>
+                                        <label class="col-sm-2 col-form-label" >Vendor Name <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <select name="vendor_name" class="form-select">
                                                 <option value="">Select</option>
@@ -511,7 +511,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Department<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" name="department" class="form-select force-validate">
+                                            <select id="department" name="department" class="form-select force-validate">
                                                 <option value="">Select</option>
                                                 <option value="hr">HR</option>
                                                 <option value="accounting">Accounting</option>
@@ -520,7 +520,7 @@
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Transferred
                                             To<span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" name="transf_to" class="form-select force-validate">
+                                            <select id="transf_to" name="transf_to" class="form-select force-validate">
                                                 <option value="">Select</option>
                                                 <option value="dust">dust</option>
                                                 <option value="james_smith">James smith</option>
@@ -556,7 +556,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">AMC Vendor <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" name="amc_vendor" class="form-select force-validate">
+                                            <select id="amc_vendor" name="amc_vendor" class="form-select force-validate">
                                                 <option value="">Select</option>
                                                 <option value="amc_inc">Acme Inc</option>
                                             </select>
@@ -564,20 +564,18 @@
                                         <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty
                                             Vendor <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" name="Warranty_vendor" class="form-select force-validate">
+                                            <select id="Warranty_vendor" name="Warranty_vendor" class="form-select force-validate">
                                                 <option value="">Select</option>
                                                 <option value="amc_inc">Acme Inc</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Start
-                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance Star Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date"  name="insurance_start_date"/>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End
-                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Insurance End Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="insurance_end_date" />
                                         </div>
@@ -599,8 +597,7 @@
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="amc_end_date" />
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Start
-                                            Date <span style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Warranty Star Date <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" type="date" name="warranty_start_date" />
                                         </div>
@@ -707,7 +704,7 @@
                                                     placeholder="Enter Asset Name" name="trafs_duration"/>
                                             </div>
                                             <div class="col-sm-2">
-                                                <select id="country" class="form-select" name="trafs_duration_type">
+                                                <select id="trafs_duration_type" class="form-select" name="trafs_duration_type">
                                                     <option value="">Select</option>
                                                     <option value="day">Day(s)</option>
                                                     <option value="month">Month(s)</option>
@@ -1198,7 +1195,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Status Type <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="form-select force-validate" name="status_type">
+                                            <select id="status_type" class="form-select force-validate" name="status_type">
                                                 <option value="">Select</option>
                                                 <option value="allotted_status">Allotted Assets</option>
                                                 <option value="unalloted_status">Unallotted Assets</option>
@@ -1213,7 +1210,7 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Next Status <span style="color:#f1416c; font-size:18px;">*</span></label>
                                         <div class="col-sm-4">
-                                            <select id="country" class="form-select force-validate" name="next_status">
+                                            <select id="next_status" class="form-select force-validate" name="next_status">
                                                 <option value="">Select</option>
                                                 <option value="in_use">In Use</option>
                                                 <option value="lost">Lost</option>
@@ -1671,7 +1668,9 @@
                 parent_category_name: {
                     required: function () {
                         return $('[name="selective_category_id"]').val() === "";
-                    }
+                    },
+                        regex: /^[A-Za-z][A-Za-z0-9\s@]*$/  // ADD THIS LINE
+
                 },
                 selective_category_id: {
                     required: function () {
@@ -1691,10 +1690,15 @@
                     required: true
                 },
                 local_category_name: {
-                    required: true
+                    required: true,
+                        regex: /^[A-Za-z][A-Za-z0-9\s@]*$/  // ADD THIS LINE
+
+
                 },
                 category_code: {
-                    required: true
+                    required: true,
+                        regex: /^[A-Za-z0-9][A-Za-z0-9\s-]*$/  // ADD THIS LINE (allows numbers at start)
+
                 },
                 trafs_duration: {
                     required: true,
@@ -1767,7 +1771,9 @@
 
                 // Localization
                 'category_name[]': {
-                    required: true
+                    required: true,
+                    regex: /^[A-Za-z0-9][A-Za-z0-9\s-]*$/  // ADD THIS LINE (allows numbers at start)
+
                 },
                 'language[]': {
                     required: true
@@ -1776,13 +1782,16 @@
 
             messages: {
                 parent_category_name: {
-                    required: "Please Enter category name or select one"
+                    required: "Please Enter category name or select one",
+                    regex: "Category name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters"  // ADD THIS LINE
+
                 },
                 selective_category_id: {
                     required: "Select category or enter new one"
                 },
                 sub_category_name: {
-                    required: "Please enter sub category name"
+                    required: "Please enter sub category name",
+                    regex: "Sub category name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters"
                 },
                 is_inventory: {
                     required: "Please slect inventory"
@@ -1794,7 +1803,9 @@
                     required: "Please select cascade"
                 },
                 category_code: {
-                    required: "Please enter category code"
+                    required: "Please enter category code",
+                        regex: "Category code must start with a letter or number and cannot begin with special characters"  // ADD THIS LINE
+
                 },
                 trafs_duration: {
                     number: "Transfer duration must be a number"
@@ -1865,7 +1876,9 @@
 
                 // Localization
                 'category_name[]': {
-                    required: "Please enter localized category name"
+                    required: "Please enter localized category name",
+                        regex: "Category name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters"  // ADD THIS LINE
+
                 },
                 'language[]': {
                     required: "Please select language"
@@ -2050,7 +2063,8 @@
                 parent_location_name: {
                     required: function () {
                         return $('[name="selective_location_id"]').val() === "";
-                    }
+                    },
+                    regex: /^[A-Za-z][A-Za-z0-9\s@]*$/
                 },
                 selective_location_id: {
                     required: function () {
@@ -2061,7 +2075,8 @@
                     required: true
                 },
                 local_location_name: {
-                    required: true
+                    required: true,
+                    regex: /^[A-Za-z0-9][A-Za-z0-9\s@]*$/
                 },
                 location_code: {
                     required: true
@@ -2090,7 +2105,8 @@
 
                 // Localization
                 'location_name[]': {
-                    required: true
+                    required: true,
+                    regex: /^[A-Za-z0-9][A-Za-z0-9\s@]*$/
                 },
                 'language[]': {
                     required: true
@@ -2099,13 +2115,15 @@
 
             messages: {
                 parent_location_name: {
-                    required: "Please enter parent location name"
+                    required: "Please enter parent location name",
+                    regex: "Parent location name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters"
                 },
                 is_inventory: {
                     required: "Please select inventory option"
                 },
                 local_location_name: {
-                    required: "Please enter location name"
+                    required: "Please enter location name",
+                    regex: "Location name must start with a letter or number and cannot begin with special characters like spaces or @"
                 },
                 location_code: {
                     required: "Please enter location code"
@@ -2136,7 +2154,8 @@
 
                 // Localization
                 'location_name[]': {
-                    required: "Please enter localized location name"
+                    required: "Please enter localized location name",
+                    regex: "Location name must start with a letter or number and cannot begin with special characters like spaces or @"
                 },
                 'language[]': {
                     required: "Please select language"
@@ -2244,10 +2263,14 @@
                     required: true
                 },
                 status_name: {
-                    required: true
+                    required: true,
+                    regex: /^[A-Za-z][A-Za-z0-9\s@]*$/
                 },
                 next_status: {
-                    required: true
+                    required: true,
+                     regex: /^[A-Za-z][A-Za-z0-9\s@]*$/
+
+
                 },
                 'categ_id[]': {
                     required: true
@@ -2257,7 +2280,8 @@
                 },
                 // Localization
                 'localization_name[]': {
-                    required: true
+                    required: true,
+                    regex: /^[A-Za-z][A-Za-z0-9\s@]*$/
                 },
                 'localization_lang[]': {
                     required: true
@@ -2269,7 +2293,8 @@
                     required: "Please select a status type."
                 },
                 status_name: {
-                    required: "Please enter the status name."
+                    required: "Please enter the status name.",
+                    regex: "Status name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters"
                 },
                 next_status: {
                     required: "Please select the next status."
@@ -2283,7 +2308,8 @@
 
                 // Localization
                 'localization_name[]': {
-                    required: "Please enter status name for all languages."
+                    required: "Please enter status name for all languages.",
+                    regex: "Status name localization must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters"
                 },
                 'localization_lang[]': {
                     required: "Please select at least one language."
@@ -2432,6 +2458,12 @@
             var endDate = new Date(value);
             return endDate >= startDate;
         }, 'End date must be after start date');
+
+        // Location name regex validation method
+        $.validator.addMethod('regex', function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        }, 'Invalid format');
 
         $('#assetForm').validate({
 
@@ -2638,10 +2670,12 @@
                     $(element).next('.select2-container').next('.text-danger').hide();
                 } else if ($(element).closest('.input-group').length) {
                     $(element).closest('.input-group').next('.text-danger').hide();
+                } else if ($(element).parent('.input-group').length) {
+                    $(element).parent('.input-group').next('.text-danger').hide();
                 } else {
                     $(element).next('.text-danger').hide();
                 }
-            }, // BUG_007 & BUG_008 - Message clearing for Accumulated Depreciation and Department
+            }, // BUG_006 - Fixed validation message clearing for financial fields
 
             errorPlacement: function (error, element) {
                 if (element.hasClass('select2')) {

@@ -52,6 +52,48 @@ class CategoryController extends Controller
                 ], 422);
             }
 
+            // Validate category name format - should start with letter only
+            if ($request->parent_category_name) {
+                if (!preg_match('/^[A-Za-z][A-Za-z0-9\s@]*$/', $request->parent_category_name)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Category name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters'
+                    ], 422);
+                }
+            }
+
+            // Validate sub category name format
+            if ($request->sub_category_name) {
+                if (!preg_match('/^[A-Za-z][A-Za-z0-9\s@]*$/', $request->sub_category_name)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Sub category name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters'
+                    ], 422);
+                }
+            }
+
+            // Validate category code format
+            if ($request->category_code) {
+                if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9\s-]*$/', $request->category_code)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Category code must start with a letter or number and cannot begin with special characters'
+                    ], 422);
+                }
+            }
+
+            // Validate localization names
+            if ($request->category_name) {
+                foreach ($request->category_name as $index => $categoryName) {
+                    if ($categoryName && !preg_match('/^[A-Za-z][A-Za-z0-9\s@]*$/', $categoryName)) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Category name localization must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters'
+                        ], 422);
+                    }
+                }
+            }
+
             // 1. CATEGORY (create OR use existing)
             if ($request->parent_category_name) {
 
@@ -143,3 +185,8 @@ class CategoryController extends Controller
         return response()->json($subCategories);
     }
 }
+
+
+
+
+

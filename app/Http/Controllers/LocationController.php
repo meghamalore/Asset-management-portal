@@ -22,6 +22,38 @@ class LocationController extends Controller
                 ], 422);
             }
 
+            // Validate location name format - should start with letter only
+            if ($request->parent_location_name) {
+                if (!preg_match('/^[A-Za-z][A-Za-z0-9\s@]*$/', $request->parent_location_name)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Parent location name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters'
+                    ], 422);
+                }
+            }
+
+            // Validate sub location name format
+            if ($request->local_location_name) {
+                if (!preg_match('/^[A-Za-z0-9][A-Za-z0-9\s@]*$/', $request->local_location_name)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Sub location name must start with a letter or number and cannot begin with special characters like spaces or @'
+                    ], 422);
+                }
+            }
+
+            // Validate localization names
+            if ($request->location_name) {
+                foreach ($request->location_name as $index => $locationName) {
+                    if ($locationName && !preg_match('/^[A-Za-z0-9][A-Za-z0-9\s@]*$/', $locationName)) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Location name localization must start with a letter or number and cannot begin with special characters like spaces or @'
+                        ], 422);
+                    }
+                }
+            }
+
             // 1. LOCATION (create OR use existing)
             if ($request->parent_location_name) {
 

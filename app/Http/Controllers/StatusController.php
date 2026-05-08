@@ -29,6 +29,28 @@ class StatusController extends Controller
                 'localization_lang' => 'required|array',
             ]);
 
+            // Validate status name format - should start with letter only
+            if ($request->status_name) {
+                if (!preg_match('/^[A-Za-z][A-Za-z0-9\s@]*$/', $request->status_name)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Status name must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters'
+                    ], 422);
+                }
+            }
+
+            // Validate localization names
+            if ($request->localization_name) {
+                foreach ($request->localization_name as $index => $statusName) {
+                    if ($statusName && !preg_match('/^[A-Za-z][A-Za-z0-9\s@]*$/', $statusName)) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Status name localization must start with a letter (A-Z, a-z) and cannot begin with numbers or special characters'
+                        ], 422);
+                    }
+                }
+            }
+
             // 1. Create Status
             $status = Status::create([
                 'status_type' => $request->status_type,
