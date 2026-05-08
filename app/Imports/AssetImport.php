@@ -43,37 +43,10 @@ class AssetImport implements
 
         $status = Status::where('status_name',$row['status'] ?? null)->first();
 
-        // return new Asset([
-
-        //     'asset_name' => $row['asset_name'] ?? null,
-
-        //     'asset_code' => $row['asset_code'] ?? null,
-
-        //     'category_id' => $category->id ?? null,
-
-        //     'location_id' => $location->id ?? null,
-
-        //     'cwip_invoice_id' => $row['cwip_invoice_id'] ?? null,
-
-        //     'status' => $status->id ?? null,
-
-        //     'condition' => $row['condition'] ?? null,
-
-        //     'brand' => $row['brand'] ?? null,
-
-        //     'model' => $row['model'] ?? null,
-
-        //     'description' => $row['description'] ?? null,
-
-        //     'serial_no' => $row['serial_no'] ?? null,
-
-        //     'po_number' => $row['po_number'] ?? null,
-
-        // ]);
         // Insert Asset
         $asset = Asset::create([
 
-            'asset_name' => $row['asset_name'] ?? null,
+            'asset_name' => trim($row['asset_name']) ?? null,
 
             'asset_code' => $row['asset_code'] ?? null,
 
@@ -109,6 +82,25 @@ class AssetImport implements
         return $asset;
     }
 
+    public function prepareForValidation($data, $index)
+    {
+        return [
+
+            'asset_name' => trim($data['asset_name'] ?? ''),
+
+            'asset_code' => trim($data['asset_code'] ?? ''),
+
+            'category' => trim($data['category'] ?? ''),
+
+            'location' => trim($data['location'] ?? ''),
+
+            'status' => trim($data['status'] ?? ''),
+
+            'serial_no' => trim($data['serial_no'] ?? ''),
+
+        ];
+    }
+
     /**
      * Validation Rules
      */
@@ -120,9 +112,13 @@ class AssetImport implements
 
             '*.asset_code' => 'required|unique:assets,asset_code',
 
-            '*.category' => 'required',
+            '*.category' => 'required|exists:categories,name',
 
-            '*.location' => 'required',
+            '*.location' => 'required|exists:locations,name',
+
+            '*.status' => 'required|exists:statuses,status_name',
+            
+            '*.serial_no' => 'required|exists:asset_additional_infos,serial_no',
 
         ];
     }
@@ -142,7 +138,17 @@ class AssetImport implements
 
             '*.category.required' => 'Category is required',
 
+            '*.category.exists' => 'Category name not found',
+
             '*.location.required' => 'Location is required',
+
+            '*.location.exists' => 'Location name not found',
+
+            '*.status.required' => 'Status is required',
+
+            '*.status.exists' => 'Status name not found',
+
+            '*.serial_no.unique' => 'Serial Number already exists',
 
         ];
     }

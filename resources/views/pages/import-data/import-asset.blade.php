@@ -39,7 +39,7 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="{{ route('import-asset') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('asset.import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row align-items-end g-3">
@@ -71,6 +71,7 @@
 
                     <thead>
                         <tr>
+                            <th>Row</th>
                             <th>Field</th>
                             <th>Error</th>
                         </tr>
@@ -81,6 +82,8 @@
                         @foreach(session('failures') as $failure)
 
                             <tr>
+                                <td>{{ $failure['row'] }}</td>
+                                
                                 <td>{{ $failure['attribute'] }}</td>
 
                                 <td>{{ $failure['errors'] }}</td>

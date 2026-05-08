@@ -199,7 +199,7 @@
                                             </div> -->
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label">Category </label>
+                                            <label class="col-sm-2 col-form-label">Category <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select class="form-select select2" id="category_id" name="categ_id">
                                                     <option value="">Select</option>
@@ -224,7 +224,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Location </label>
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Location<span style="color:#f1416c; font-size:18px;">*</span> </label>
                                             <div class="col-sm-4">
                                                 <select id="location_id" name="location" class="form-select">
                                                     <option value="">Select</option>
@@ -249,7 +249,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status </label>
+                                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Status <span style="color:#f1416c; font-size:18px;">*</span></label>
                                             <div class="col-sm-4">
                                                 <select id="country" name="status" class="select2 form-select">
                                                     <option value="">Select Status</option>
@@ -2441,18 +2441,18 @@
                     required: true
                 },
                 
-                // categ_id: {
-                //     required: true
-                // },
+                categ_id: {
+                    required: true
+                 },
                 // sub_category_id: {
                 //     required: true
                 // },
-                // location: {
-                //     required: true
-                // },
-                // status: {
-                //     required: true
-                // },
+                location: {
+                    required: true
+                },
+                status: {
+                    required: true
+                },
                 // sub_location_id: {
                 //     required: true
                 // },   
@@ -2569,14 +2569,14 @@
 
             messages: {
                 asset_name: "Enter asset name (min 3 characters)",
-                serial_no: "Enter Serial Number"
+                serial_no: "Enter Serial Number",
                 // asset_code: "Max 20 characters allowed",
 
-                // categ_id: "Select category",
+                categ_id: "Select category",
                 // sub_category_id: "Select sub category",
-                // location: "Select location",
+                location: "Select location",
                 // sub_location_id: "Select sub location",
-                // status: "Select status",
+                status: "Select status",
                 // cwip_invoice_id: "Enter CWIP invoice id",
 
                 // condition: "Select condition",

@@ -32,7 +32,7 @@
                             <i class="bx bx-download me-1"></i> Download Template
                         </a>
 
-                        <a href="#" class="btn btn-info btn-sm">
+                        <a href="{{ route('ticket.download.latest') }}" class="btn btn-info btn-sm">
                             <i class="bx bx-download me-1"></i> Download Last Uploaded File
                         </a>
 
@@ -71,6 +71,7 @@
 
                     <thead>
                         <tr>
+                            <th>Row</th>
                             <th>Field</th>
                             <th>Error</th>
                         </tr>
@@ -81,6 +82,8 @@
                         @foreach(session('failures') as $failure)
 
                             <tr>
+                                <td>{{ $failure['row'] }}</td>
+
                                 <td>{{ $failure['attribute'] }}</td>
 
                                 <td>{{ $failure['errors'] }}</td>
