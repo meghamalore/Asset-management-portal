@@ -34,6 +34,12 @@ class AssetController extends Controller
     {
         //  VALIDATION
         $request->validate([
+            'asset_name' => 'required|string|max:255',
+            // 'categ_id' => 'required|exists:categories,id',
+            // 'sub_category_id' => 'nullable|exists:sub_categories,id',
+            // 'location' => 'required|exists:locations,id',
+            // 'sub_location_id' => 'nullable|exists:sub_locations,id',
+            // 'status' => 'required|exists:statuses,id',
             'asset_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\s]+$/'], // BUG_001 - Asset Name special characters validation
             'categ_id' => 'required|exists:categories,id',
             'sub_category_id' => 'nullable|exists:sub_categories,id',
@@ -41,12 +47,33 @@ class AssetController extends Controller
             'sub_location_id' => 'nullable|exists:sub_locations,id',
             'status' => 'required|exists:statuses,id',
 
-            // Additional Info
-            'brand' => 'nullable|string|max:255',
-            'model' => 'nullable|string|max:255',
-            'serial_no' => 'nullable|string|max:255',
+            // // Additional Info
+            // 'brand' => 'nullable|string|max:255',
+            // 'model' => 'nullable|string|max:255',
+            'serial_no' => 'nullable|string|max:255|unique:asset_additional_infos,serial_no',
 
             // Purchase Info
+            // 'vendor_name' => 'nullable|string|max:255',
+            // 'invoice_date' => 'nullable|date',
+            // 'purchase_date' => 'nullable|date',
+            // 'purchase_price' => 'nullable|numeric|min:0',
+            // 'po_number' => 'nullable|numeric|min:0',
+
+            // // Financial Info
+            // 'capitalization_price' => 'nullable|numeric|min:0',
+            // 'depreciation' => 'nullable|numeric|min:0|max:100',
+            // 'scrap_value' => 'nullable|numeric|min:0',
+
+            // // File & Image
+            // 'asset_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            // 'files.*' => 'nullable|file|max:5120',
+
+            // // Linking
+            // 'link_asset' => 'nullable|array',
+            // 'link_asset.*' => 'exists:assets,id',
+        ],[
+            'asset_name.required' => 'Asset Name is required.',
+            'serial_no.unique' => 'Serial Number already exists.',
             'vendor_name' => 'nullable|string|max:255',
             'invoice_date' => 'nullable|date',
             'purchase_date' => 'nullable|date',
@@ -203,7 +230,14 @@ class AssetController extends Controller
     public function index()
     {
         $categories = Category::with('subCategories:id,category_id,name')->get();
-        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->latest()->whereNull('status')->get();
+        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->when(auth()->user()->role != 'admin', function ($query) {
+        $query->whereHas('assetTransfers', function ($q) {
+                $q->where('transferred_to', auth()->id());
+            });
+        })
+        ->latest()
+        ->whereNull('status')
+        ->get();
         $column_master = ColumnMaster::select('id','column_name')->get();
         $views = CustomeView::select('id','view_name')->get();
         $location = Location::select('id','name')->get();

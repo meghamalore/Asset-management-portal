@@ -162,38 +162,38 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Vendor Name</label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->purchaseInfo->vendor_name }}</p>
+                                            <p>{{ $asset->purchaseInfo->vendor_name ?? ''}}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Po Number</label>
                                         <div class="col-sm-4">
-                                           <p>{{ $asset->purchaseInfo->asset_po_number }}</p>
+                                           <p>{{ $asset->purchaseInfo->asset_po_number ?? '' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Invoice Date</label>
                                         <div class="col-sm-4">
-                                           <p>{{ $asset->purchaseInfo->invoice_date }}</p>
+                                           <p>{{ $asset->purchaseInfo->invoice_date ?? '' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Invoice No</label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->purchaseInfo->invoice_no }}</p>
+                                            <p>{{ $asset->purchaseInfo->invoice_no ?? ''}}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Purchase Date</label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->purchaseInfo->purchase_date }}</p>
+                                            <p>{{ $asset->purchaseInfo->purchase_date ?? '' }}</p>
                                         </div>
                                         <label class="col-sm-2 col-form-label">Purchase Price</label>
                                         <div class="col-sm-4">
-                                            <p>{{ $asset->purchaseInfo->purchase_price }}</p>
+                                            <p>{{ $asset->purchaseInfo->purchase_price ?? '' }}</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Self Owned / Partner</label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
-                                                <p>{{ $asset->purchaseInfo->is_self_owned == 1 ? 'yes' : 'No' }}</p>
+                                                <p>{{ optional($asset->purchaseInfo)->is_self_owned ? 'Yes' : 'No' }}</p>
                                             </div>
                                         </div>
                                     </div>
