@@ -118,6 +118,33 @@
                 </li>
               </ul>
             </li>
+
+
+            <!-- Import Data-->
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                  <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Layouts">Administration</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="{{ route('index.asset.management')}}" class="menu-link">
+                    <div data-i18n="Without menu">Categories</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="#" class="menu-link">
+                    <div data-i18n="Without navbar">Status</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="{{ route('list.condition')}}" class="menu-link">
+                    <div data-i18n="Without navbar">Condition</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </aside>
         <!-- / Menu -->

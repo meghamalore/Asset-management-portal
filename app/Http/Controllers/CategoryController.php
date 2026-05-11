@@ -15,17 +15,14 @@ use DB;
 
 class CategoryController extends Controller
 {
-    // public function insert(){
 
-    //     $categories = Category::select('id','name')->get();
-    //     $ids = $categories->pluck('id');
-    //     $subCategories = SubCategory::where('category_id', $ids)->get();
+    public function index()
+    {
 
-    //     $locations = Location::select('id','name')->get();
-    //     return view('pages.asset-management.add',compact('categories','locations'));
+       $categories = Category::with('subCategories')->get();
+        return view('pages.administration.categories.index',compact('categories'));
 
-    // }
-
+    }
 
     public function insert()
     {
@@ -38,6 +35,13 @@ class CategoryController extends Controller
         $asset_list = Asset::select('id','asset_name','asset_code')->get();
 
         return view('pages.asset-management.add', compact('categories','locations','only_categories','status','asset_list'));
+    }
+
+    public function edit($id)
+    {
+        $category = Category::with('subCategory')->findOrFail($id);
+        // dd($category);
+        return view('pages.administration.categories.edit', compact('category'));
     }
 
     public function store(Request $request)
@@ -141,5 +145,51 @@ class CategoryController extends Controller
         $subCategories = SubCategory::where('category_id', $id)->get();
 
         return response()->json($subCategories);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $category = Category::with('subCategory')->findOrFail($id);
+
+        // Validation
+        $request->validate([
+            'parent_category_name' => 'required|string|max:255',
+            'sub_category_name'    => 'nullable|string|max:255',
+            'category_code'        => 'nullable|string|max:255',
+            'trafs_duration'       => 'nullable|numeric',
+            'trafs_duration_type'  => 'nullable|string',
+            'is_link_asset'        => 'nullable|boolean',
+            'cascade'              => 'nullable|boolean',
+            'allow_auto'           => 'nullable|boolean',
+        ]);
+
+        // Update Category
+        $category->update([
+            'name'                 => $request->parent_category_name,
+            'category_code'        => $request->category_code,
+            'trafs_duration'       => $request->trafs_duration,
+            'trafs_duration_type'  => $request->trafs_duration_type,
+            'is_link_asset'        => $request->is_link_asset ?? 0,
+            'cascade'              => $request->cascade ?? 0,
+            'allow_auto'           => $request->allow_auto ?? 0,
+        ]);
+
+        // Update or Create Sub Category
+        if ($request->sub_category_name) {
+
+            $category->subCategory()->updateOrCreate(
+                [
+                    'category_id' => $category->id
+                ],
+                [
+                    'name' => $request->sub_category_name
+                ]
+            );
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Category Updated Successfully'
+        ]);
     }
 }

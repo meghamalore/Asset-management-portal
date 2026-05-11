@@ -23,6 +23,11 @@ class Category extends Model
         return $this->hasMany(SubCategory::class, 'category_id');
     }
 
+    public function subCategory()
+    {
+        return $this->hasOne(SubCategory::class, 'category_id');
+    }
+
     public function assets()
     {
         return $this->hasMany(Asset::class, 'category_id');
