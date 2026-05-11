@@ -14,6 +14,7 @@ use App\Http\Controllers\TicketStatusController;
 use App\Http\Controllers\TicketTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ImportDataController;
+use App\Http\Controllers\ConditionController;
 
 Route::get('/', function () {return view('pages.auth.login');})->name('login');
 Route::get('/login', function () {return view('pages.auth.login');})->name('login');
@@ -25,9 +26,13 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['custom.auth'])->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::get('/add-asset-management', [CategoryController::class, 'insert'])->name('add.asset.management');
+Route::get('/index-asset-management', [CategoryController::class, 'index'])->name('index.asset.management');
 Route::post('/insert-category', [CategoryController::class, 'store'])->name('categories.store');
 Route::get('/get-subcategories/{id}', [CategoryController::class, 'getSubCategories']);
+Route::get('/edit-category/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
 Route::post('/insert-location', [LocationController::class, 'store'])->name('location.store');
 Route::get('/get-sublocation/{id}', [LocationController::class, 'getSubLocation']);
@@ -97,6 +102,11 @@ Route::get('/import-ticket', [ImportDataController::class, 'addTicket'])->name('
 Route::get('/template-download-ticket', [ImportDataController::class, 'downloadTemplateTicket'])->name('ticket.sample.download');
 Route::post('/ticket/import', [ImportDataController::class, 'importTicket'])->name('ticket.import');
 Route::get('/ticket/download-latest', [ImportDataController::class, 'downloadLatestTicket'])->name('ticket.download.latest');
+
+Route::post('/store-condition', [ConditionController::class, 'store'])->name('store.condition');
+Route::get('/index-condition', [ConditionController::class, 'index'])->name('list.condition');
+Route::delete('/destroy-condition/{id}', [ConditionController::class, 'destroy'])->name('condition.destroy');
+Route::post('/condition/{id}', [ConditionController::class, 'update'])->name('condition.update');
 
 });
 
