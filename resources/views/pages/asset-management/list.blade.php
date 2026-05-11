@@ -7,11 +7,11 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        
+
         .sorting {
             width: 13px !important;
         }
-    
+
         th.collapsed {
             background: #dfe6ee;
             color: #555;
@@ -21,8 +21,64 @@
         #toastContainer {
             z-index: 9999 !important;
         }
-        
-        
+
+        /* Bulk Update Grid - Editable Cells */
+        .editable-cell {
+            cursor: pointer;
+            position: relative;
+            min-width: 80px;
+        }
+
+        .editable-cell:hover {
+            background-color: #e8f4f8 !important;
+            outline: 1px solid #0d6efd;
+        }
+
+        .editable-cell:hover::after {
+            content: '✎';
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: #0d6efd;
+            opacity: 0.7;
+        }
+
+        .editable-cell.editing {
+            padding: 0 !important;
+        }
+
+        .editable-cell .form-control,
+        .editable-cell .form-select {
+            border: none;
+            border-radius: 0;
+            background: #fff;
+        }
+
+        /* Row changed indicator */
+        .row-changed {
+            background-color: #fff3cd !important;
+        }
+
+        .row-changed .first-col,
+        .row-changed .second-col {
+            border-left: 3px solid #ffc107;
+        }
+
+        /* Bulk Update Table Styling */
+        .bulk-update-table th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f8f9fa;
+        }
+
+        .bulk-update-table td,
+        .bulk-update-table th {
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
     </style>
 @endsection
 @section('content')
@@ -230,7 +286,7 @@
                                 </td>
                                 @endif
                                 <td class="text-center">
-                                    <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>   
+                                    <a href="{{ route('assets.view', $asset_datas->id) }}" class="text-primary"><i class="bx bx-show" class="text-primary"></i></a>
                                 </td>
 
                                 <td data-column="1">{{ $asset_datas->asset_name ?? ''}}</td>
@@ -333,11 +389,11 @@
                             <div class="row mb-3 mx-2">
                                 <label class="col-sm-2 col-form-label" >View Name</label>
                                 <div class="col-sm-4">
-                                    <input type="text" name="view_name" class="form-control force-validate" 
+                                    <input type="text" name="view_name" class="form-control force-validate"
                                         placeholder="" />
                                 </div>
                                 <label class="col-sm-2 col-form-label" >Columns</label>
-                                <div class="col-sm-4">    
+                                <div class="col-sm-4">
                                     <select id="link" class="select3 form-select force-validate" data-placeholder="Select Columns"  name="columns[]" multiple>
                                         <!-- <option value="">Select Views</option> -->
                                         @foreach ($column_master as $column_masters)
@@ -351,7 +407,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch">
                                         yes<input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="is_default" value="1"/>  
+                                            id="flexSwitchCheckDefault" name="is_default" value="1"/>
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +416,7 @@
                                 <div class="col-sm-4">
                                     <div class="form-check form-switch">
                                         yes<input class="form-check-input force-validate" type="checkbox"
-                                            id="flexSwitchCheckDefault" name="is_private" value="1"/>  
+                                            id="flexSwitchCheckDefault" name="is_private" value="1"/>
                                     </div>
                                 </div>
                                  <label class="col-sm-2 col-form-label" >Role Name</label>
@@ -395,9 +451,9 @@
                 </div>
                 <div class="modal-body">
                     <p class="mb-3 text-center">
-                        Create a custom report, chart, or number & percentage widgets here. 
-                        The charts and widgets created here will be shown in the dashboards. 
-                        Edit a dashboard and add the widget to include it. 
+                        Create a custom report, chart, or number & percentage widgets here.
+                        The charts and widgets created here will be shown in the dashboards.
+                        Edit a dashboard and add the widget to include it.
                         Custom reports are available under the Reports menu → "Custom Reports".
                     </p>
                     <div class="row mb-3">
@@ -613,7 +669,7 @@
                                         <option value="">Select</option>
                                         <option value="lost">Lost</option>
                                         <option value="stolen">Stolen</option>
-                                        <option value="write_off">Write-off</option> 
+                                        <option value="write_off">Write-off</option>
                                     </select>
                             </div>
                         </div>
@@ -683,7 +739,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="scheduleActivityForm">
-                    
+
                     <div class="modal-body">
                         <div class="card mb-3">
                             <div class="row mb-3 mx-2">
@@ -892,7 +948,7 @@
                                                     <div class="row mb-3">
                                                         <label class="col-sm-2 col-form-label" >Asset Name</label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" class="form-control" 
+                                                            <input type="text" class="form-control"
                                                                 placeholder="" name="asset_name" id="asset_name"/>
                                                         </div>
                                                         <label class="col-sm-2 col-form-label" >Asset Image</label>
@@ -977,7 +1033,7 @@
                                                     <div class="row mb-3">
                                                         <label class="col-sm-2 col-form-label" >CWIP Invoice Id</label>
                                                         <div class="col-sm-4">
-                                                            <input type="text" class="form-control" 
+                                                            <input type="text" class="form-control"
                                                                 placeholder="" name="cwip_invoice_id" id="cwip_invoice_id"/>
                                                         </div>
                                                     </div>
@@ -1059,6 +1115,7 @@
                                                 <!-- Container for multiple uploaded filenames -->
                                                 <div id="fileList" class="mt-2"></div>
                                                 <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                            </div>
                                             </div> 
                                         </div>
                                             </div>
@@ -1154,7 +1211,7 @@
                                                                 id="capitalization_price"
                                                             />
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                     <label class="col-sm-2 col-form-label" >End Of Life</label>
                                                     <div class="col-sm-4">
                                                         <input class="form-control" type="date" id="end_of_life" name="end_of_life"/>
@@ -1326,7 +1383,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Extra Large Update Category Modal -->
     <div class="modal fade" id="exLargeModalUpdateCategory" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -1355,7 +1412,7 @@
                                                 <input type="text" class="form-control" placeholder="Enter Category Name" name="parent_category_name">
                                                 <select class="form-select" name="selective_category_id">
                                                     <option value="">Select Categories</option>
-                                                    <option value=""></option> 
+                                                    <option value=""></option>
                                                 </select>
                                             </div>
                                             {{-- <div class="col-sm-4">
@@ -1392,7 +1449,7 @@
                                             </div>
                                             <label class="col-sm-2 col-form-label" >Category Code</label>
                                             <div class="col-sm-4">
-                                                <input type="text" class="form-control" id="category_code" name="category_code" 
+                                                <input type="text" class="form-control" id="category_code" name="category_code"
                                                     placeholder="Enter Category Code" />
                                             </div>
                                         </div>
@@ -1400,7 +1457,7 @@
                                             <label class="col-sm-2 col-form-label" >Default Transfer
                                                 Duration</label>
                                             <div class="col-sm-2">
-                                                <input type="text" class="form-control" 
+                                                <input type="text" class="form-control"
                                                     placeholder="" name="trafs_duration"/>
                                             </div>
                                             <div class="col-sm-2">
@@ -1709,7 +1766,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" tabindex="-1">
-                    
+
                     <!-- Unsaved Changes Alert -->
                     <div id="unsavedBadge" class="alert alert-warning alert-dismissible fade show mb-3" style="display: none;">
                         <span class="tf-icons bx bx-error-circle"></span>
@@ -1721,7 +1778,7 @@
                     <div class="card mb-3">
                         <div class="card-header py-2 d-flex justify-content-between align-items-center bg-light">
                             <div class="text-muted small fw-bold">
-                                <i class="bx bx-info-circle"></i> 
+                                <i class="bx bx-info-circle"></i>
                                 Click any cell to edit. Fields with dropdown/date support will show popup.
                             </div>
                             <div class="d-flex gap-2">
@@ -1802,6 +1859,7 @@
     </div>
 @endsection
 @section('section-js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
     $(document).ready(function () {
 
@@ -1815,7 +1873,7 @@
             allowClear: true,
             width: '100%'
         }).next('.select2-container').css('width', '100%');
-        
+
 
         $('#link_asset_schedule').select2({
             dropdownParent: $('#exLargeModalScheduleActivity'),
@@ -2103,10 +2161,10 @@
             if (window.assetTable && typeof window.assetTable.columns === 'function') {
                 return window.assetTable;
             }
- 
+
             // Recover gracefully if a stale/non-API object was assigned.
             window.assetTable = null;
- 
+
             if ($.fn.DataTable && $.fn.DataTable.isDataTable('#assetTable')) {
                 const api = $('#assetTable').DataTable();
                 if (api && typeof api.columns === 'function') {
@@ -2114,10 +2172,10 @@
                     return window.assetTable;
                 }
             }
- 
+
             return null;
         }
- 
+
         function updateGroupHeaderVisibility(visibleColumnIds) {
             const groups = [
                 { id: '#defaultToggle', cols: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
@@ -2128,17 +2186,17 @@
                 { id: '#warrantyToggle', cols: [39, 40, 41, 42, 43] },
                 { id: '#otherToggle', cols: [44, 45] }
             ];
- 
+
             groups.forEach(group => {
                 const count = group.cols.filter(col => visibleColumnIds.has(col)).length;
                 $(group.id).toggle(count > 0).attr('colspan', Math.max(count, 1));
             });
         }
- 
+
         function applyColumnVisibilityByIds(selectedColumns) {
             const table = getAssetTable();
             if (!table || typeof table.columns !== 'function') return;
- 
+
             const selectedColumnIds = new Set((selectedColumns || []).map(col => parseInt(col, 10)).filter(Boolean));
             // Keep checkbox + Actions always visible (avoid relying on hardcoded indices).
             const alwaysVisibleIndexes = new Set();
@@ -2153,13 +2211,13 @@
             alwaysVisibleIndexes.add(0);
             alwaysVisibleIndexes.add(1);
             const visibleColumnIds = new Set();
- 
+
             // Start with only fixed columns visible.
             const totalColumns = table.columns().indexes().toArray();
             totalColumns.forEach(index => {
                 table.column(index).visible(alwaysVisibleIndexes.has(index), false);
             });
- 
+
             function getColumnIndexByDataColumn(colId) {
                 let matchIndex = null;
                 table.columns().every(function (idx) {
@@ -2171,7 +2229,7 @@
                 });
                 return matchIndex;
             }
- 
+
             // Show selected mapped columns.
             selectedColumnIds.forEach(colId => {
                 const index = getColumnIndexByDataColumn(colId);
@@ -2180,43 +2238,43 @@
                     visibleColumnIds.add(colId);
                 }
             });
- 
+
             updateGroupHeaderVisibility(visibleColumnIds);
             table.columns.adjust().draw(false);
         }
- 
+
         function showAllColumns() {
             const table = getAssetTable();
             if (!table || typeof table.columns !== 'function') return;
- 
+
             table.columns().visible(true, false);
             const allColumnIds = new Set();
- 
+
             $('#assetTable thead tr:eq(1) th[data-column]').each(function () {
                 allColumnIds.add(parseInt($(this).data('column'), 10));
             });
- 
+
             updateGroupHeaderVisibility(allColumnIds);
             table.columns.adjust().draw(false);
         }
- 
+
         $(document).on('change', '#viewSelect', function () {
- 
+
             let viewId = $(this).val();
             let selectedText = $('#viewSelect option:selected').text().trim().toLowerCase();
- 
+
             if (!viewId) {
                 showAllColumns();
                 return;
             }
- 
+
             $.ajax({
                 url: "{{ url('custom-view') }}/" + viewId,
                 type: "GET",
- 
+
                 success: function (response) {
                     let selectedColumns = response.columns || [];
- 
+
                     // Force fixed behavior for requested views.
                     if (selectedText === 'assetname') {
                         // Asset-related set (default section)
@@ -2229,18 +2287,18 @@
                     } else if (selectedText === 'amcvendor') {
                         selectedColumns = [39, 40, 41, 42, 43];
                     }
- 
+
                     applyColumnVisibilityByIds(selectedColumns);
- 
+
                 },
- 
+
                 error: function () {
                     showToast('Failed to load view', 'error');
                 }
             });
- 
+
         });
- 
+
         // Apply selected view after page refresh/load.
         if ($('#viewSelect').val()) {
             $('#viewSelect').trigger('change');
@@ -2368,20 +2426,78 @@
         $('#updateBtn').on('click', function () {
 
             let checked = $('.asset-checkbox:checked'); //  define it
-           
+
             if (checked.length === 0) {
                 showToast('Please select at least one asset');
                 return;
             }
 
             if (checked.length > 1) {
-                new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset')).show();
+                // Trigger bulk update modal for multiple assets
+                triggerBulkUpdate();
                 return;
             }
 
             let id = checked.val(); //  now works
             loadAssetData(id);
         });
+
+        // Function to trigger bulk update
+        function triggerBulkUpdate() {
+            if (isSavingBulkUpdate) {
+                showToast('Please wait, previous save is still processing...', 'warning');
+                return;
+            }
+
+            let checked = $('.asset-checkbox:checked');
+            if (checked.length === 0) {
+                showToast('Please select at least one asset to update', 'warning');
+                return;
+            }
+            if (checked.length > BULK_UPDATE_MAX_ASSETS) {
+                showToast(`Maximum ${BULK_UPDATE_MAX_ASSETS} assets can be edited at once`, 'error');
+                return;
+            }
+
+            let assetIds = [];
+            checked.each(function() {
+                let row = $(this).closest('tr');
+                let assetId = row.data('asset-id') || row.find('td:eq(3)').text();
+                if (assetId) assetIds.push(assetId);
+            });
+
+            $('#bulkUpdateBody').html('<tr><td colspan="40" class="text-center py-4"><div class="spinner-border"></div><p class="mt-2">Loading assets...</p></td></tr>');
+
+            let modal = new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset'));
+            modal.show();
+
+            $.ajax({
+                url: "{{ route('assets.bulk-fetch') }}?_t=" + new Date().getTime(),
+                type: "POST",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    asset_ids: assetIds
+                },
+                success: function(response) {
+                    if (response.status && response.assets) {
+                        selectedAssetIds = assetIds;
+                        editedData = JSON.parse(JSON.stringify(response.assets));
+                        originalData = JSON.parse(JSON.stringify(response.assets));
+                        visibleFields = null; // Reset to show all columns
+                        $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
+                        renderBulkUpdateGrid();
+                        hasUnsavedChanges = false;
+                        $('#unsavedBadge').hide();
+                        $('#btnSaveBulkUpdate').prop('disabled', true);
+                    } else {
+                        showToast('Failed to load assets', 'error');
+                    }
+                },
+                error: function(xhr) {
+                    showToast('Error loading assets: ' + xhr.statusText, 'error');
+                }
+            });
+        }
 
         function loadAssetData(id) {
 
@@ -2396,7 +2512,7 @@
                     $('#asset_name').val(res.asset.asset_name);
                     $('#asset_code').val(res.asset.asset_code);
                     $('#cwip_invoice_id').val(res.asset.cwip_invoice_id);
-                    
+
                     $('#category_id').val(res.asset.category_id).trigger('change');
                     $('#sub_category_id').val(res.asset.sub_category_id).trigger('change');
 
@@ -2477,7 +2593,7 @@
                         $('#fileList').html('<small class="text-muted">No files uploaded</small>');
                     }
 
-                    
+
                     new bootstrap.Modal(document.getElementById('exLargeModalUpdateAsset')).show();
                 }
             });
@@ -2687,7 +2803,7 @@
 
                             $('#exLargeModalUpdateAsset').modal('hide');
 
-                            location.reload(); 
+                            location.reload();
 
                             $('#updateAssetForm')[0].reset();
 
@@ -2838,7 +2954,7 @@
             modal.show();
 
         });
-        
+
         // Function to apply global settings
 
         function applyGlobalSettings() {
@@ -2902,7 +3018,7 @@
             });
 
         }
-        
+
         // Asset Transfer Form Submission
 
         $('#assetTransferForm').validate({
@@ -3188,8 +3304,8 @@ let visibleFields = null; // null = show all fields
 
 const FIELD_CONFIG = {
     'asset_name': { type: 'text', label: 'Asset Name', editable: true, required: true },
-    'sub_category': { type: 'text', label: 'Sub Category', editable: true },
-    'sub_location': { type: 'text', label: 'Sub Location', editable: true },
+    'sub_category': { type: 'dropdown', label: 'Sub Category', editable: true, source: 'subCategories', dependsOn: 'category' },
+    'sub_location': { type: 'dropdown', label: 'Sub Location', editable: true, source: 'subLocations', dependsOn: 'location' },
     'cwip_invoice_id': { type: 'text', label: 'CWIP Invoice ID', editable: true },
     'brand': { type: 'text', label: 'Brand', editable: true },
     'model': { type: 'text', label: 'Model', editable: true },
@@ -3229,14 +3345,17 @@ const FIELD_CONFIG = {
 
 let dropdownData = {
     locations: @json($location ?? []),
-    subLocations: @json($sub_location ?? [])
+    subLocations: @json($sub_location ?? []),
+    categories: @json($categories ?? []),
+    subCategories: @json($categories->flatMap->subCategories ?? collect()),
+    statuses: @json($status ?? [])
 };
 
 // Handle Update Asset button click
 $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', function(e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (isSavingBulkUpdate) {
         showToast('Please wait, previous save is still processing...', 'warning');
         return;
@@ -3272,10 +3391,13 @@ $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', func
             asset_ids: assetIds
         },
         success: function(response) {
+            console.log('Bulk fetch response:', response);
             if (response.status && response.assets) {
+                console.log('Assets loaded:', response.assets);
                 selectedAssetIds = assetIds;
                 editedData = JSON.parse(JSON.stringify(response.assets));
                 originalData = JSON.parse(JSON.stringify(response.assets));
+                console.log('editedData set:', editedData);
                 visibleFields = null; // Reset to show all columns
                 $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
                 renderBulkUpdateGrid();
@@ -3283,6 +3405,7 @@ $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', func
                 $('#unsavedBadge').hide();
                 $('#btnSaveBulkUpdate').prop('disabled', true);
             } else {
+                console.log('Failed to load assets - response:', response);
                 showToast('Failed to load assets', 'error');
             }
         },
@@ -3294,6 +3417,7 @@ $(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', func
 
 // Render the grid
 function renderBulkUpdateGrid() {
+    console.log('renderBulkUpdateGrid called - editedData:', editedData);
     const allFields = [
         { key: 'asset_name', label: 'Asset Name', required: true },
         { key: 'category', label: 'Category' },
@@ -3344,6 +3468,139 @@ function renderBulkUpdateGrid() {
     $('#bulkUpdateBody').html(html);
 }
 
+// Inline cell editing functionality
+$(document).on('click', '.editable-cell', function(e) {
+    e.stopPropagation();
+
+    const $cell = $(this);
+    if ($cell.hasClass('editing')) return; // Already editing
+
+    const field = $cell.data('field');
+    const rowIndex = $cell.closest('tr').data('row-index');
+    const currentValue = $cell.text();
+    const fieldConfig = FIELD_CONFIG[field];
+
+    $cell.addClass('editing');
+
+    // Determine input type based on field config
+    let inputType = 'text';
+    let inputHtml = '';
+
+    if (fieldConfig) {
+        if (fieldConfig.type === 'date') {
+            inputType = 'date';
+        } else if (fieldConfig.type === 'number') {
+            inputType = 'number';
+        } else if (fieldConfig.type === 'dropdown') {
+            // Create dropdown
+            let options = [];
+            if (fieldConfig.options) {
+                options = fieldConfig.options;
+            } else if (fieldConfig.source === 'locations' && dropdownData.locations) {
+                options = dropdownData.locations.map(l => l.name);
+            } else if (fieldConfig.source === 'categories' && dropdownData.categories) {
+                options = dropdownData.categories.map(c => c.name);
+            } else if (fieldConfig.source === 'statuses' && dropdownData.statuses) {
+                options = dropdownData.statuses.map(s => s.status_name);
+            } else if (fieldConfig.source === 'subCategories' && dropdownData.subCategories) {
+                // Get current category value for this row to filter sub-categories
+                const currentCategory = editedData[rowIndex]?.category || '';
+                const categoryObj = dropdownData.categories.find(c => c.name === currentCategory);
+                const categoryId = categoryObj ? categoryObj.id : null;
+
+                // Filter sub-categories by parent category
+                let filteredSubCategories = dropdownData.subCategories;
+                if (categoryId) {
+                    filteredSubCategories = dropdownData.subCategories.filter(sc => sc.category_id == categoryId);
+                }
+                options = filteredSubCategories.map(sc => sc.name);
+            } else if (fieldConfig.source === 'subLocations' && dropdownData.subLocations) {
+                // Get current location value for this row to filter sub-locations
+                const currentLocation = editedData[rowIndex]?.location || '';
+                const locationObj = dropdownData.locations.find(l => l.name === currentLocation);
+                const locationId = locationObj ? locationObj.id : null;
+
+                // Filter sub-locations by parent location
+                let filteredSubLocations = dropdownData.subLocations;
+                if (locationId) {
+                    filteredSubLocations = dropdownData.subLocations.filter(sl => sl.location_id == locationId);
+                }
+                options = filteredSubLocations.map(sl => sl.name);
+            }
+
+            inputHtml = `<select class="form-select form-select-sm" style="min-width:120px;">`;
+            inputHtml += `<option value="">-- Select --</option>`;
+            options.forEach(opt => {
+                const selected = opt === currentValue ? 'selected' : '';
+                inputHtml += `<option value="${opt}" ${selected}>${opt}</option>`;
+            });
+            inputHtml += `</select>`;
+        }
+    }
+
+    // Create input if not dropdown
+    if (!inputHtml) {
+        inputHtml = `<input type="${inputType}" class="form-control form-control-sm" value="${currentValue}" style="min-width:100px;">`;
+    }
+
+    $cell.html(inputHtml);
+    const $input = $cell.find('input, select');
+    $input.focus().select();
+
+    // Handle save on blur or enter key
+    const saveValue = function() {
+        const newValue = $input.val();
+        $cell.removeClass('editing').text(newValue);
+
+        // Update the data model
+        if (editedData[rowIndex]) {
+            const oldValue = editedData[rowIndex][field];
+            editedData[rowIndex][field] = newValue;
+
+            // If category changed, clear sub_category (cascading effect)
+            if (field === 'category' && newValue !== oldValue) {
+                const oldSubCategory = editedData[rowIndex]['sub_category'];
+                if (oldSubCategory) {
+                    editedData[rowIndex]['sub_category'] = '';
+                    // Find and update the sub_category cell in the row
+                    const $row = $cell.closest('tr');
+                    $row.find('td[data-field="sub_category"]').text('').addClass('row-changed');
+                }
+            }
+
+            // If location changed, clear sub_location (cascading effect)
+            if (field === 'location' && newValue !== oldValue) {
+                const oldSubLocation = editedData[rowIndex]['sub_location'];
+                if (oldSubLocation) {
+                    editedData[rowIndex]['sub_location'] = '';
+                    // Find and update the sub_location cell in the row
+                    const $row = $cell.closest('tr');
+                    $row.find('td[data-field="sub_location"]').text('').addClass('row-changed');
+                }
+            }
+
+            // Mark as changed if value changed
+            if (newValue !== oldValue) {
+                hasUnsavedChanges = true;
+                $('#unsavedBadge').show();
+                $('#btnSaveBulkUpdate').prop('disabled', false);
+                $cell.closest('tr').addClass('row-changed');
+            }
+        }
+    };
+
+    $input.on('blur', saveValue);
+    $input.on('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            saveValue();
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            $cell.removeClass('editing').text(currentValue);
+        }
+    });
+});
+
 // Field selection popup
 $('#btnSelectFields').on('click', function() {
     let fields = [
@@ -3388,6 +3645,316 @@ $('#btnSelectFields').on('click', function() {
     $('#fieldSelectionPopup').fadeIn(150);
 });
 
+// Download Excel functionality
+$('#btnDownloadExcel').on('click', function() {
+    console.log('Download clicked - editedData length:', editedData.length);
+    console.log('Download clicked - editedData:', editedData);
+
+    if (editedData.length === 0) {
+        showToast('No data to download - Please load assets first', 'warning');
+        return;
+    }
+
+    // Create CSV content
+    let csvContent = '';
+
+    // Headers - Include ALL available fields
+    const headers = [
+        'Asset Code', 'Asset Name', 'Category', 'Sub Category', 'Location', 'Sub Location', 'Status', 'CWIP Invoice Id',
+        'Condition', 'Brand', 'Model', 'Description', 'Serial No',
+        'Vendor Name', 'PO Number', 'Invoice Date', 'Invoice No', 'Purchase Date', 'Purchase Price',
+        'Capitalization Price', 'End Of Life', 'Capitalization Date', 'Depreciation %', 'Accumulated Depreciation', 'Scrap Value',
+        'Department', 'Transferred To', 'Allotted Upto', 'Remarks',
+        'AMC Vendor', 'Warranty Vendor', 'Insurance Start Date', 'Insurance End Date', 'AMC Start Date', 'AMC End Date', 'Warranty Start Date', 'Warranty End Date'
+    ];
+    csvContent += headers.join(',') + '\n';
+
+    // Data rows - Include ALL available data
+    editedData.forEach((asset, index) => {
+        console.log(`Processing asset ${index}:`, asset);
+        const row = [
+            asset.asset_code || '',
+            asset.asset_name || '',
+            asset.category || '',
+            asset.sub_category || '',
+            asset.location || '',
+            asset.sub_location || '',
+            asset.status || '',
+            asset.cwip_invoice_id || '',
+            asset.condition || '',
+            asset.brand || '',
+            asset.model || '',
+            asset.description || '',
+            asset.serial_no || '',
+            asset.vendor_name || '',
+            asset.asset_po_number || '',
+            asset.invoice_date || '',
+            asset.invoice_no || '',
+            asset.purchase_date || '',
+            asset.purchase_price || '',
+            asset.capitalization_price || '',
+            asset.end_of_life || '',
+            asset.capitalization_date || '',
+            asset.depreciation_percent || '',
+            asset.accumulated_depreciation || '',
+            asset.scrap_value || '',
+            asset.department || '',
+            asset.transferred_to || '',
+            asset.allotted_upto || '',
+            asset.remarks || '',
+            asset.amc_vendor || '',
+            asset.warranty_vendor || '',
+            asset.insurance_start_date || '',
+            asset.insurance_end_date || '',
+            asset.amc_start_date || '',
+            asset.amc_end_date || '',
+            asset.warranty_start_date || '',
+            asset.warranty_end_date || ''
+        ];
+        console.log(`Row ${index}:`, row);
+        const csvRow = row.map(field => `"${field}"`).join(',') + '\n';
+        console.log(`CSV Row ${index}:`, csvRow);
+        csvContent += csvRow;
+    });
+    console.log('Final CSV Content:', csvContent);
+
+    // Create download link using Blob
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `bulk_update_assets_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showToast('Excel file downloaded successfully', 'success');
+});
+
+// Upload Excel functionality
+$('#excelUploadInput').on('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.name.match(/\.(xlsx|xls|csv)$/)) {
+        showToast('Please select a valid Excel file (.xlsx, .xls, .csv)', 'error');
+        $(this).val('');
+        return;
+    }
+
+    showToast('Processing uploaded file...', 'info');
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            const content = e.target.result;
+            let parsedData = [];
+
+            if (file.name.endsWith('.csv')) {
+                parsedData = parseCSV(content);
+            } else {
+                // For Excel files, we'll use a basic approach
+                parsedData = parseExcelContent(content);
+            }
+
+            if (parsedData.length > 0) {
+                updateBulkUpdateGridWithUploadedData(parsedData);
+                showToast(`Successfully loaded ${parsedData.length} records from Excel file`, 'success');
+            } else {
+                showToast('No valid data found in the uploaded file', 'error');
+            }
+        } catch (error) {
+            showToast('Error parsing file: ' + error.message, 'error');
+        }
+
+        $(this).val('');
+    };
+
+    reader.onerror = function() {
+        showToast('Error reading file', 'error');
+        $(this).val('');
+    };
+
+    if (file.name.endsWith('.csv')) {
+        reader.readAsText(file);
+    } else {
+        reader.readAsArrayBuffer(file);
+    }
+});
+
+// Parse CSV content
+function parseCSV(content) {
+    const lines = content.split('\n').filter(line => line.trim());
+    if (lines.length < 2) return [];
+
+    // Detect delimiter (comma, tab, or multiple spaces)
+    const firstLine = lines[0];
+    let delimiter = ',';
+
+    if (firstLine.includes('\t')) {
+        delimiter = '\t';
+    } else if (firstLine.match(/\s{2,}/)) {
+        delimiter = /\s{2,}/; // Multiple spaces
+    } else if (!firstLine.includes(',') && firstLine.includes(' ')) {
+        delimiter = ' '; // Single space
+    }
+
+    const headers = firstLine.split(delimiter).map(h => h.trim().replace(/"/g, ''));
+    const data = [];
+
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(delimiter).map(v => v.trim().replace(/"/g, ''));
+        if (values.length >= headers.length) {
+            const record = {};
+            headers.forEach((header, index) => {
+                const fieldName = header.toLowerCase().replace(/\s+/g, '_');
+                record[fieldName] = values[index] || '';
+            });
+            data.push(record);
+        }
+    }
+
+    return data;
+}
+
+// Parse Excel content using SheetJS library
+function parseExcelContent(content) {
+    try {
+        // Convert ArrayBuffer to Uint8Array for SheetJS
+        const data = new Uint8Array(content);
+
+        // Parse the workbook
+        const workbook = XLSX.read(data, { type: 'array' });
+
+        // Get the first worksheet
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+
+        // Convert worksheet to JSON with headers
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+        if (jsonData.length < 2) {
+            showToast('Excel file appears to be empty or has no data rows', 'warning');
+            return [];
+        }
+
+        // Extract headers (first row)
+        const headers = jsonData[0].map(h => String(h || '').trim());
+
+        // Convert remaining rows to objects
+        const result = [];
+        for (let i = 1; i < jsonData.length; i++) {
+            const row = jsonData[i];
+            if (row.length === 0 || row.every(cell => !cell)) continue; // Skip empty rows
+
+            const record = {};
+            headers.forEach((header, index) => {
+                // Convert header to snake_case for consistency
+                const fieldName = header.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '_');
+                record[fieldName] = row[index] !== undefined ? String(row[index]).trim() : '';
+                // Also store with original header name for matching
+                record[header] = row[index] !== undefined ? String(row[index]).trim() : '';
+            });
+            result.push(record);
+        }
+
+        return result;
+    } catch (error) {
+        console.error('Excel parsing error:', error);
+        showToast('Error parsing Excel file: ' + error.message, 'error');
+        return [];
+    }
+}
+
+// Update bulk update grid with uploaded data
+function updateBulkUpdateGridWithUploadedData(uploadData) {
+    if (!editedData || editedData.length === 0) {
+        showToast('Please load assets first before uploading Excel data', 'error');
+        return;
+    }
+
+    // Map uploaded data to existing assets
+    uploadData.forEach(uploadRecord => {
+        const assetCode = uploadRecord.asset_code || uploadRecord['asset_code'] || uploadRecord['Asset Cod'] || '';
+        const assetName = uploadRecord.asset_name || uploadRecord['asset_name'] || uploadRecord['Asset Nan'] || '';
+
+        // Find matching asset by code or name
+        const existingAssetIndex = editedData.findIndex(asset =>
+            asset.asset_code === assetCode || asset.asset_name === assetName
+        );
+
+        if (existingAssetIndex >= 0) {
+            // Update existing asset with uploaded data
+            const asset = editedData[existingAssetIndex];
+
+            // Update fields that exist in the uploaded data (using actual field names)
+            if (uploadRecord.category || uploadRecord['category'] || uploadRecord['Category']) asset.category = uploadRecord.category || uploadRecord['category'] || uploadRecord['Category'];
+            if (uploadRecord.sub_category || uploadRecord['sub_category'] || uploadRecord['Sub Category']) asset.sub_category = uploadRecord.sub_category || uploadRecord['sub_category'] || uploadRecord['Sub Category'];
+            if (uploadRecord.location || uploadRecord['location'] || uploadRecord['Location']) asset.location = uploadRecord.location || uploadRecord['location'] || uploadRecord['Location'];
+            if (uploadRecord.sub_location || uploadRecord['sub_location'] || uploadRecord['Sub Location']) asset.sub_location = uploadRecord.sub_location || uploadRecord['sub_location'] || uploadRecord['Sub Location'];
+            if (uploadRecord.status || uploadRecord['status'] || uploadRecord['Status']) asset.status = uploadRecord.status || uploadRecord['status'] || uploadRecord['Status'];
+            if (uploadRecord.cwip_invoice_id || uploadRecord['cwip_invoice_id'] || uploadRecord['CWIP Invoice Id']) asset.cwip_invoice_id = uploadRecord.cwip_invoice_id || uploadRecord['cwip_invoice_id'] || uploadRecord['CWIP Invoice Id'];
+            if (uploadRecord.condition || uploadRecord['condition'] || uploadRecord['Condition']) asset.condition = uploadRecord.condition || uploadRecord['condition'] || uploadRecord['Condition'];
+            if (uploadRecord.brand || uploadRecord['brand'] || uploadRecord['Brand']) asset.brand = uploadRecord.brand || uploadRecord['brand'] || uploadRecord['Brand'];
+            if (uploadRecord.model || uploadRecord['model'] || uploadRecord['Model']) asset.model = uploadRecord.model || uploadRecord['model'] || uploadRecord['Model'];
+            if (uploadRecord.description || uploadRecord['description'] || uploadRecord['Description']) asset.description = uploadRecord.description || uploadRecord['description'] || uploadRecord['Description'];
+            if (uploadRecord.serial_no || uploadRecord['serial_no'] || uploadRecord['Serial No']) asset.serial_no = uploadRecord.serial_no || uploadRecord['serial_no'] || uploadRecord['Serial No'];
+            if (uploadRecord.vendor_name || uploadRecord['vendor_name'] || uploadRecord['Vendor Name']) asset.vendor_name = uploadRecord.vendor_name || uploadRecord['vendor_name'] || uploadRecord['Vendor Name'];
+            if (uploadRecord.asset_po_number || uploadRecord['po_number'] || uploadRecord['PO Number']) asset.asset_po_number = uploadRecord.asset_po_number || uploadRecord['po_number'] || uploadRecord['PO Number'];
+            if (uploadRecord.invoice_date || uploadRecord['invoice_date'] || uploadRecord['Invoice Date']) asset.invoice_date = uploadRecord.invoice_date || uploadRecord['invoice_date'] || uploadRecord['Invoice Date'];
+            if (uploadRecord.invoice_no || uploadRecord['invoice_no'] || uploadRecord['Invoice No']) asset.invoice_no = uploadRecord.invoice_no || uploadRecord['invoice_no'] || uploadRecord['Invoice No'];
+            if (uploadRecord.purchase_date || uploadRecord['purchase_date'] || uploadRecord['Purchase Date']) asset.purchase_date = uploadRecord.purchase_date || uploadRecord['purchase_date'] || uploadRecord['Purchase Date'];
+            if (uploadRecord.purchase_price || uploadRecord['purchase_price'] || uploadRecord['Purchase Price']) asset.purchase_price = uploadRecord.purchase_price || uploadRecord['purchase_price'] || uploadRecord['Purchase Price'];
+            if (uploadRecord.capitalization_price || uploadRecord['capitalization_price'] || uploadRecord['Capitalization Price']) asset.capitalization_price = uploadRecord.capitalization_price || uploadRecord['capitalization_price'] || uploadRecord['Capitalization Price'];
+            if (uploadRecord.end_of_life || uploadRecord['end_of_life'] || uploadRecord['End Of Life']) asset.end_of_life = uploadRecord.end_of_life || uploadRecord['end_of_life'] || uploadRecord['End Of Life'];
+            if (uploadRecord.capitalization_date || uploadRecord['capitalization_date'] || uploadRecord['Capitalization Date']) asset.capitalization_date = uploadRecord.capitalization_date || uploadRecord['capitalization_date'] || uploadRecord['Capitalization Date'];
+            if (uploadRecord.depreciation_percent || uploadRecord['depreciation_percent'] || uploadRecord['Depreciation %']) asset.depreciation_percent = uploadRecord.depreciation_percent || uploadRecord['depreciation_percent'] || uploadRecord['Depreciation %'];
+            if (uploadRecord.accumulated_depreciation || uploadRecord['accumulated_depreciation'] || uploadRecord['Accumulated Depreciation']) asset.accumulated_depreciation = uploadRecord.accumulated_depreciation || uploadRecord['accumulated_depreciation'] || uploadRecord['Accumulated Depreciation'];
+            if (uploadRecord.scrap_value || uploadRecord['scrap_value'] || uploadRecord['Scrap Value']) asset.scrap_value = uploadRecord.scrap_value || uploadRecord['scrap_value'] || uploadRecord['Scrap Value'];
+            if (uploadRecord.department || uploadRecord['department'] || uploadRecord['Department']) asset.department = uploadRecord.department || uploadRecord['department'] || uploadRecord['Department'];
+            if (uploadRecord.transferred_to || uploadRecord['transferred_to'] || uploadRecord['Transferred To']) asset.transferred_to = uploadRecord.transferred_to || uploadRecord['transferred_to'] || uploadRecord['Transferred To'];
+            if (uploadRecord.allotted_upto || uploadRecord['allotted_upto'] || uploadRecord['Allotted Upto']) asset.allotted_upto = uploadRecord.allotted_upto || uploadRecord['allotted_upto'] || uploadRecord['Allotted Upto'];
+            if (uploadRecord.remarks || uploadRecord['remarks'] || uploadRecord['Remarks']) asset.remarks = uploadRecord.remarks || uploadRecord['remarks'] || uploadRecord['Remarks'];
+            if (uploadRecord.amc_vendor || uploadRecord['amc_vendor'] || uploadRecord['AMC Vendor']) asset.amc_vendor = uploadRecord.amc_vendor || uploadRecord['amc_vendor'] || uploadRecord['AMC Vendor'];
+            if (uploadRecord.warranty_vendor || uploadRecord['warranty_vendor'] || uploadRecord['Warranty Vendor']) asset.warranty_vendor = uploadRecord.warranty_vendor || uploadRecord['warranty_vendor'] || uploadRecord['Warranty Vendor'];
+            if (uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'] || uploadRecord['Insurance Start Date']) asset.insurance_start_date = uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'] || uploadRecord['Insurance Start Date'];
+            if (uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'] || uploadRecord['Insurance End Date']) asset.insurance_end_date = uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'] || uploadRecord['Insurance End Date'];
+            if (uploadRecord.amc_start_date || uploadRecord['amc_start_date'] || uploadRecord['AMC Start Date']) asset.amc_start_date = uploadRecord.amc_start_date || uploadRecord['amc_start_date'] || uploadRecord['AMC Start Date'];
+            if (uploadRecord.amc_end_date || uploadRecord['amc_end_date'] || uploadRecord['AMC End Date']) asset.amc_end_date = uploadRecord.amc_end_date || uploadRecord['amc_end_date'] || uploadRecord['AMC End Date'];
+            if (uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'] || uploadRecord['Warranty Start Date']) asset.warranty_start_date = uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'] || uploadRecord['Warranty Start Date'];
+            if (uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'] || uploadRecord['Warranty End Date']) asset.warranty_end_date = uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'] || uploadRecord['Warranty End Date'];
+            if (uploadRecord.allotted_upto || uploadRecord['allotted_upto']) asset.allotted_upto = uploadRecord.allotted_upto || uploadRecord['allotted_upto'];
+            if (uploadRecord.remarks || uploadRecord['remarks']) asset.remarks = uploadRecord.remarks || uploadRecord['remarks'];
+            if (uploadRecord.insurance_start_date || uploadRecord['insurance_start_date']) asset.insurance_start_date = uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'];
+            if (uploadRecord.insurance_end_date || uploadRecord['insurance_end_date']) asset.insurance_end_date = uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'];
+            if (uploadRecord.warranty_start_date || uploadRecord['warranty_start_date']) asset.warranty_start_date = uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'];
+            if (uploadRecord.warranty_end_date || uploadRecord['warranty_end_date']) asset.warranty_end_date = uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'];
+
+            // Mark as changed
+            hasUnsavedChanges = true;
+            $('#unsavedBadge').show();
+            $('#btnSaveBulkUpdate').prop('disabled', false);
+        }
+    });
+
+    // Re-render the grid with updated data
+    renderBulkUpdateGrid();
+
+    // Show summary of changes
+    const updatedCount = uploadData.filter(record => {
+        const assetCode = record.asset_code || record['asset_code'] || record['Asset Cod'] || '';
+        const assetName = record.asset_name || record['asset_name'] || record['Asset Nan'] || '';
+        return editedData.some(asset =>
+            asset.asset_code === assetCode || asset.asset_name === assetName
+        );
+    }).length;
+
+    showToast(`Updated ${updatedCount} assets with uploaded data`, 'success');
+}
+
 window.applyFieldSelection = function() {
     visibleFields = $('.field-checkbox:checked').map(function() { return $(this).val(); }).get();
     $('#fieldSelectionPopup').remove();
@@ -3398,77 +3965,92 @@ window.applyFieldSelection = function() {
 // Save button
 $('#btnSaveBulkUpdate').on('click', function() {
     $(this).blur();
-    $('#exLargeModalMultiUpdateAsset .modal-body').focus();
 
-    let changes = [];
-    editedData.forEach((asset, index) => {
-        let assetChanges = {};
-        Object.keys(asset).forEach(field => {
-            let oldVal = originalData[index][field];
-            let newVal = asset[field];
-            if (newVal !== oldVal) {
-                assetChanges[field] = { old: oldVal, new: newVal };
-            }
-        });
-        if (Object.keys(assetChanges).length > 0) {
-            changes.push({ asset_id: asset.id || asset.asset_code, changes: assetChanges });
-        }
-    });
-
-    if (changes.length === 0) {
-        showToast('No changes to save', 'info');
-        return;
+    // First, commit any active cell edit by triggering blur on any focused input
+    const $activeInput = $('.editable-cell.editing input, .editable-cell.editing select');
+    if ($activeInput.length > 0) {
+        $activeInput.trigger('blur');
     }
 
-    isSavingBulkUpdate = true;
-    $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', true);
-    $('#btnSaveBulkUpdate').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+    // Small delay to ensure the blur handler completes before comparing
+    setTimeout(() => {
+        let changes = [];
+        editedData.forEach((asset, index) => {
+            let assetChanges = {};
+            Object.keys(asset).forEach(field => {
+                let oldVal = originalData[index] ? originalData[index][field] : undefined;
+                let newVal = asset[field];
+                // Handle null/undefined comparison
+                oldVal = oldVal === null || oldVal === undefined ? '' : String(oldVal);
+                newVal = newVal === null || newVal === undefined ? '' : String(newVal);
+                if (newVal !== oldVal) {
+                    assetChanges[field] = { old: originalData[index][field], new: asset[field] };
+                }
+            });
+            if (Object.keys(assetChanges).length > 0) {
+                changes.push({ asset_id: asset.id || asset.asset_code, changes: assetChanges });
+            }
+        });
 
-    $.ajax({
-        url: "{{ route('assets.bulkUpdate') }}",
-        type: "POST",
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            changes: changes
-        },
-        success: function(response) {
-            if (response.status) {
-                showToast(response.message, 'success');
-                hasUnsavedChanges = false;
-                $('#unsavedBadge').hide();
-                $('#btnSaveBulkUpdate').prop('disabled', true).html('Save Changes');
-                $('.row-changed').removeClass('row-changed');
-                originalData = JSON.parse(JSON.stringify(editedData));
+        console.log('Changes to save:', changes);
+        console.log('editedData:', editedData);
+        console.log('originalData:', originalData);
 
-                setTimeout(function() {
-                    let modalEl = document.getElementById('exLargeModalMultiUpdateAsset');
-                    let modal = bootstrap.Modal.getInstance(modalEl);
-                    if (modal) modal.hide();
+        if (changes.length === 0) {
+            showToast('No changes to save', 'info');
+            return;
+        }
+
+        isSavingBulkUpdate = true;
+        $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', true);
+        $('#btnSaveBulkUpdate').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+
+        $.ajax({
+            url: "{{ route('assets.bulkUpdate') }}",
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                changes: changes
+            },
+            success: function(response) {
+                if (response.status) {
+                    showToast(response.message, 'success');
+                    hasUnsavedChanges = false;
+                    $('#unsavedBadge').hide();
+                    $('#btnSaveBulkUpdate').prop('disabled', true).html('Save Changes');
+                    $('.row-changed').removeClass('row-changed');
+                    originalData = JSON.parse(JSON.stringify(editedData));
+
                     setTimeout(function() {
-                        $('.modal-backdrop').remove();
-                        $('body').removeClass('modal-open');
-                    }, 350);
-                }, 1500);
+                        let modalEl = document.getElementById('exLargeModalMultiUpdateAsset');
+                        let modal = bootstrap.Modal.getInstance(modalEl);
+                        if (modal) modal.hide();
+                        setTimeout(function() {
+                            $('.modal-backdrop').remove();
+                            $('body').removeClass('modal-open');
+                        }, 350);
+                    }, 1500);
 
-                setTimeout(function() {
-                    location.reload();
-                }, 2000);
-            } else {
-                showToast(response.message || 'Failed to save', 'error');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    showToast(response.message || 'Failed to save', 'error');
+                    $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
+                    isSavingBulkUpdate = false;
+                    $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
+                }
+            },
+            error: function(xhr) {
+                showToast('Save failed: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
                 $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
                 isSavingBulkUpdate = false;
                 $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
             }
-        },
-        error: function(xhr) {
-            showToast('Save failed: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
-            $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
-            isSavingBulkUpdate = false;
-            $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
-        }
-    });
+        });
+    }, 100); // Small delay to ensure blur completes
 });
- 
+
     });
 </script>
 @endsection

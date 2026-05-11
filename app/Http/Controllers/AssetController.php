@@ -17,6 +17,7 @@ use App\Models\Location;
 use App\Models\User;
 use App\Models\SubLocation;
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\ScheduleActivity;
 use App\Models\ScheduleActivityAssetsLink;
 use App\Models\Status;
@@ -39,6 +40,12 @@ class AssetController extends Controller
             // 'location' => 'required|exists:locations,id',
             // 'sub_location_id' => 'nullable|exists:sub_locations,id',
             // 'status' => 'required|exists:statuses,id',
+            'asset_name' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z0-9\s]+$/'], // BUG_001 - Asset Name special characters validation
+            'categ_id' => 'required|exists:categories,id',
+            'sub_category_id' => 'nullable|exists:sub_categories,id',
+            'location' => 'required|exists:locations,id',
+            'sub_location_id' => 'nullable|exists:sub_locations,id',
+            'status' => 'required|exists:statuses,id',
 
             // // Additional Info
             // 'brand' => 'nullable|string|max:255',
@@ -67,6 +74,27 @@ class AssetController extends Controller
         ],[
             'asset_name.required' => 'Asset Name is required.',
             'serial_no.unique' => 'Serial Number already exists.',
+            'vendor_name' => 'nullable|string|max:255',
+            'invoice_date' => 'nullable|date',
+            'purchase_date' => 'nullable|date',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'po_number' => 'nullable|numeric|min:0',
+
+            // Financial Info
+            'capitalization_price' => 'nullable|numeric|min:0',
+            'depreciation' => 'nullable|numeric|min:0|max:100',
+            'scrap_value' => 'nullable|numeric|min:0',
+
+            // File & Image
+            'asset_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'files.*' => 'nullable|file|max:5120',
+
+            // Linking
+            'link_asset' => 'nullable|array',
+            'link_asset.*' => 'exists:assets,id',
+
+            // BUG_003 - CWIP Invoice ID special characters validation
+            'cwip_invoice_id' => ['nullable', 'string', 'max:255', 'regex:/^[A-Za-z0-9\s\-]+$/'],
         ]);
 
         try {
@@ -213,7 +241,7 @@ class AssetController extends Controller
         $column_master = ColumnMaster::select('id','column_name')->get();
         $views = CustomeView::select('id','view_name')->get();
         $location = Location::select('id','name')->get();
-        $sub_location = SubLocation::select('id','name')->get();
+        $sub_location = SubLocation::select('id','name','location_id')->get();
         $status = Status::select('id','status_name')->get();
         $asset_list = Asset::select('id','asset_name','asset_code')->get();
         $users = User::select('id','name')->get();
@@ -276,11 +304,11 @@ class AssetController extends Controller
                 'asset_name' => $request->asset_name,
                 'asset_code' => $request->asset_code,
                 'category_id' => $request->categ_id,
-                'sub_category_id' => $request->sub_category_id,   
+                'sub_category_id' => $request->sub_category_id,
                 'location_id' => $request->location,
-                'status' => $request->status,   
-                'sub_location_id' => $request->sub_location_id,      
-                'cwip_invoice_id' => $request->cwip_invoice_id,   
+                'status' => $request->status,
+                'sub_location_id' => $request->sub_location_id,
+                'cwip_invoice_id' => $request->cwip_invoice_id,
             ]);
 
 
@@ -309,7 +337,7 @@ class AssetController extends Controller
                     'serial_no' => $request->serial_no,
                 ]);
             }
-            
+
             AssetLinks::where('asset_id', $id)->delete();
 
             if ($request->has('link_asset') && is_array($request->link_asset)) {
@@ -394,12 +422,12 @@ class AssetController extends Controller
                 'status' => true,
                 'message' => 'Asset updated successfully'
             ]);
-  
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => 'Something went wrong',
-                'error' => $e->getMessage() 
+                'error' => $e->getMessage()
             ], 500);
         }
     }
@@ -602,6 +630,7 @@ class AssetController extends Controller
             ])
             ->whereIn('asset_code', $assetIds)
             ->orWhereIn('id', $assetIds)
+            ->orderBy('id', 'asc')
             ->get();
 
             if ($assets->isEmpty()) {
@@ -627,14 +656,14 @@ class AssetController extends Controller
                     'status_id' => $asset->status_id ?? '',
                     'status' => $asset->status->status_name ?? '',
                     'cwip_invoice_id' => $asset->cwip_invoice_id ?? '',
-                    
+
                     // Additional Info
                     'condition' => $asset->additionalInfo->condition ?? '',
                     'brand' => $asset->additionalInfo->brand ?? '',
                     'model' => $asset->additionalInfo->model ?? '',
                     'description' => $asset->additionalInfo->description ?? '',
                     'serial_no' => $asset->additionalInfo->serial_no ?? '',
-                    
+
                     // Purchase Info
                     'vendor_name' => $asset->purchaseInfo->vendor_name ?? '',
                     'asset_po_number' => $asset->purchaseInfo->asset_po_number ?? '',
@@ -643,7 +672,7 @@ class AssetController extends Controller
                     'purchase_date' => $asset->purchaseInfo->purchase_date ?? '',
                     'purchase_price' => $asset->purchaseInfo->purchase_price ?? '',
                     'is_self_owned' => $asset->purchaseInfo->is_self_owned ?? 0,
-                    
+
                     // Financial Info
                     'capitalization_price' => $asset->finacialInfos->capitalization_price ?? '',
                     'end_of_life' => $asset->finacialInfos->end_of_life ?? '',
@@ -652,13 +681,13 @@ class AssetController extends Controller
                     'accumulated_depreciation' => $asset->finacialInfos->accumulated_depreciation ?? '',
                     'scrap_value' => $asset->finacialInfos->scrap_value ?? '',
                     'income_tax_depreciation_percent' => $asset->finacialInfos->income_tax_depreciation_percent ?? '',
-                    
+
                     // Allotted Info
                     'department' => $asset->assetallotedInfos->department ?? '',
                     'transferred_to' => $asset->assetallotedInfos->transferred_to ?? '',
                     'allotted_upto' => $asset->assetallotedInfos->allotted_upto ?? '',
                     'remarks' => $asset->assetallotedInfos->remarks ?? '',
-                    
+
                     // Warranty Info
                     'amc_vendor' => $asset->assetwarrantyInfos->amc_vendor ?? '',
                     'warranty_vendor' => $asset->assetwarrantyInfos->warranty_vendor ?? '',
@@ -756,6 +785,14 @@ class AssetController extends Controller
                             }
                             break;
 
+                        case 'sub_category':
+                            $subCategory = SubCategory::where('name', $newValue)->first();
+                            if ($subCategory) {
+                                $asset->sub_category_id = $subCategory->id;
+                                $hasAnyChanges = true;
+                            }
+                            break;
+
                         case 'location':
                             $location = Location::where('name', $newValue)->first();
                             if ($location) {
@@ -769,11 +806,18 @@ class AssetController extends Controller
                         case 'model':
                         case 'description':
                         case 'serial_no':
-                        case 'sub_location':
                             $additionalInfo = $asset->additionalInfo ?? $asset->additionalInfo()->firstOrNew([]);
                             $additionalInfo->{$field} = $newValue;
                             $additionalInfo->save();
                             $hasAnyChanges = true;
+                            break;
+
+                        case 'sub_location':
+                            $subLocation = SubLocation::where('name', $newValue)->first();
+                            if ($subLocation) {
+                                $asset->sub_location_id = $subLocation->id;
+                                $hasAnyChanges = true;
+                            }
                             break;
 
                         case 'vendor_name':
@@ -859,5 +903,5 @@ class AssetController extends Controller
         }
     }
 
-    
+
 }
