@@ -32,6 +32,7 @@ Route::get('/index-asset-management', [CategoryController::class, 'index'])->nam
 Route::post('/insert-category', [CategoryController::class, 'store'])->name('categories.store');
 Route::get('/get-subcategories/{id}', [CategoryController::class, 'getSubCategories']);
 Route::get('/edit-category/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::get('/view-category/{id}', [CategoryController::class, 'view'])->name('categories.view');
 Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
 Route::post('/insert-location', [LocationController::class, 'store'])->name('location.store');

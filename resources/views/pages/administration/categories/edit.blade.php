@@ -23,9 +23,9 @@
                         </p>
                     </div>
 
-                    <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                    <!-- <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
                         <i class="bx bx-arrow-back"></i> Back
-                    </a>
+                    </a> -->
                 </div>
 
                 <!-- Form -->
@@ -204,9 +204,9 @@
                     <!-- Footer -->
                     <div class="card-footer border-top text-end">
 
-                        <button type="reset" class="btn btn-outline-secondary me-2">
+                        <!-- <button type="reset" class="btn btn-outline-secondary me-2">
                             Reset
-                        </button>
+                        </button> -->
 
                         <button type="submit" class="btn btn-primary">
                             <i class="bx bx-save"></i>

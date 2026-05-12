@@ -44,6 +44,13 @@ class CategoryController extends Controller
         return view('pages.administration.categories.edit', compact('category'));
     }
 
+    public function view($id)
+    {
+        $category = Category::with('subCategory')->findOrFail($id);
+        // dd($category);
+        return view('pages.administration.categories.view', compact('category'));
+    }
+
     public function store(Request $request)
     {
         try {
