@@ -293,22 +293,14 @@
                 orderCellsTop: true,
                 autoWidth: false,
                 scrollX: true,
-                columnDefs: [
-                    {
-                        targets: 0,
-                        width: "120px"
-                    }
-                ]
+                responsive: false
             });
-
 
             // ONLY actual columns
             let defaultCols = table.columns('.default-col').indexes().toArray();
-            let financialCols = table.columns('.financial-col').indexes().toArray();
 
             // keep first column visible
             let defaultHideCols = defaultCols.slice(1);
-            let financialHideCols = financialCols.slice(1);
 
             $('#defaultToggle').on('click', function() {
 
@@ -320,21 +312,6 @@
                 table.columns.adjust().draw(false);
 
                 $('.toggle-icon-default')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
-
-            });
-
-            $('#financialToggle').on('click', function() {
-
-                let isVisible = table.column(financialHideCols[0]).visible();
-
-                // hide/show remaining columns
-                table.columns(financialHideCols).visible(!isVisible, false);
-
-                table.columns.adjust().draw(false);
-
-                $('.toggle-icon-financial')
                     .toggleClass('bx-chevron-right', !isVisible)
                     .toggleClass('bx-chevron-left', isVisible);
 

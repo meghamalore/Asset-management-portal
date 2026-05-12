@@ -39,6 +39,11 @@ Route::post('/insert-location', [LocationController::class, 'store'])->name('loc
 Route::get('/get-sublocation/{id}', [LocationController::class, 'getSubLocation']);
 
 Route::post('/insert-status', [StatusController::class, 'store'])->name('status.store');
+Route::get('/list-status', [StatusController::class, 'index'])->name('status.list');
+Route::delete('/destroy-status/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
+Route::get('/edit-status/{id}', [StatusController::class, 'edit'])->name('status.edit');
+Route::post('/update-status/{id}', [StatusController::class, 'update']);
+Route::get('/view-status/{id}', [StatusController::class, 'view'])->name('status.view');
 Route::post('/insert-asset', [AssetController::class, 'store'])->name('asset.store');
 Route::get('/list-asset-management', [AssetController::class, 'index'])->name('list.asset.management');
 

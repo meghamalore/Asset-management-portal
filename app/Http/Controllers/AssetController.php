@@ -51,6 +51,7 @@ class AssetController extends Controller
             // 'brand' => 'nullable|string|max:255',
             // 'model' => 'nullable|string|max:255',
             'serial_no' => 'nullable|string|max:255|unique:asset_additional_infos,serial_no',
+            'mac_address' => 'required|string|max:255',
 
             // Purchase Info
             // 'vendor_name' => 'nullable|string|max:255',
@@ -114,6 +115,7 @@ class AssetController extends Controller
             //  1. MAIN ASSET
             $asset = Asset::create([
                 'asset_name' => $request->asset_name,
+                'mac_address' => $request->mac_address,
                 'asset_code' => $assetCode,
                 'category_id' => $request->categ_id,
                 'sub_category_id' => $request->sub_category_id,
@@ -163,7 +165,7 @@ class AssetController extends Controller
                 'vendor_name' => $request->vendor_name,
                 'invoice_date' => $request->invoice_date,
                 'invoice_no' => $request->invoice_no,
-                'asset_po_number' => $request->po_number,
+                'po_number' => $request->po_number,
                 'purchase_date' => $request->purchase_date,
                 'purchase_price' => $request->purchase_price,
                 'is_self_owned' => $request->has('self_owned') ? 1 : 0,
@@ -238,6 +240,7 @@ class AssetController extends Controller
         ->latest()
         ->whereNull('status')
         ->get();
+        // dd($asset_data);
         $column_master = ColumnMaster::select('id','column_name')->get();
         $views = CustomeView::select('id','view_name')->get();
         $location = Location::select('id','name')->get();
@@ -302,6 +305,7 @@ class AssetController extends Controller
 
             $asset->update([
                 'asset_name' => $request->asset_name,
+                'mac_address' => $request->mac_address,
                 'asset_code' => $request->asset_code,
                 'category_id' => $request->categ_id,
                 'sub_category_id' => $request->sub_category_id,

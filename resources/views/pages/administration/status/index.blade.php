@@ -1,0 +1,275 @@
+@extends('layouts.master')
+@section('section-css')
+    <style>
+        #toastContainer {
+            z-index: 9999 !important;
+        }
+        #statusTable .action-column {
+            width: 120px !important;
+            min-width: 120px !important;
+            max-width: 120px !important;
+            white-space: nowrap;
+        }
+    </style>
+@endsection
+@section('content')
+    <div class="container-xxl flex-grow-1 container-p-y">
+     <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">List of Status</h4>
+    </div>
+        <div class="card">
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table id="statusTable" class="table table-bordered">
+
+                        <thead>
+
+                            <!-- GROUP HEADER -->
+                            <tr>
+
+                                <th rowspan="2" class="action-column">Actions</th>
+
+                                <!-- DEFAULT -->
+                                <th colspan="8" class="text-center">
+
+                                    <div class="d-flex justify-content-start align-items-center gap-2">
+
+                                        <span>Default Section</span>
+
+                                        <button type="button" id="defaultToggle"
+                                            class="btn btn-sm p-0 border-0 bg-transparent">
+
+                                            <i class="bx bx-chevron-left toggle-icon-default fs-5"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </th>
+
+                            </tr>
+                            <tr>
+
+                                <!-- DEFAULT SECTION -->
+                                <th class="default-col">Status Type</th>
+                                <th class="default-col">Status Name</th>
+                                <th class="default-col">Next Status</th>
+                                {{-- <th class="default-col">Only Visiable For Categories</th> --}}
+                                <th class="default-col">Hold/Pause Activity</th>
+                                <th class="default-col">Created By</th>
+                                <th class="default-col">Created At</th>
+                                <th class="default-col">Modify At</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach ($status as $stat)
+                                <tr>
+
+                                    <td class="text-center action-column">
+                                        <div class="d-flex justify-content-center align-items-center gap-2">
+
+                                            <!-- View -->
+                                            <a href="{{ route('status.view', $stat->id) }}" class="text-primary" title="View">
+                                                <i class="bx bx-show"></i>
+                                            </a>
+                                            <!-- Edit -->
+                                            <a href="{{ route('status.edit', $stat->id) }}" class="text-warning" title="Edit">
+                                                <i class="bx bx-edit"></i>
+                                            </a>
+                                            <!-- Delete -->
+                                            <button type="submit" class="btn p-0 border-0 text-danger"
+                                                title="Delete" id="deletestatBtn" data-id ="{{ $stat->id }}">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+
+                                    <!-- DEFAULT SECTION -->
+                                    <td class="default-col">
+                                        {{
+                                            $stat->status_type == 'allotted_assets' ? 'Allotted Assets' :
+                                            ($stat->status_type == 'unalloted_assets' ? 'Unallotted Assets' :
+                                            ($stat->status_type == 'discarded_assets' ? 'Discarded Assets' : '-'))
+                                        }}
+                                    </td>
+
+                                    <td class="default-col">
+                                        {{ $stat->status_name == 1 ? 'Yes' : 'No' }}
+                                    </td>
+                                    <td class="default-col">
+                                        {{ $stat->next_status == 1 ? 'Yes' : 'No' }}
+                                    </td>
+                                    {{-- <td class="default-col">
+
+                                        @if($stat->categories->count())
+                                            @foreach($stat->categories as $category)
+                                                <span class="badge bg-primary">
+                                                    {{ $category->name }}
+                                                </span>
+                                            @endforeach
+                                        @endif
+
+                                        @if($stat->subCategories->count())
+                                            @foreach($stat->subCategories as $sub)
+                                                <span class="badge bg-info">
+                                                    {{ $sub->name }}
+                                                </span>
+                                            @endforeach
+                                        @endif
+
+                                    </td> --}}
+
+                                    <td class="default-col">
+                                        {{ $stat->hold_pause_activity == 1 ? 'Yes' : 'No' }}
+                                    </td>
+
+                                    <td class="default-col">
+                                        {{ auth()->user()->name ?? '-' }}
+                                    </td>
+
+                                    <td class="default-col">
+                                        {{ $stat->created_at ?? '-' }}
+                                    </td>
+
+                                    <td class="default-col">
+                                        {{ $stat->updated_at ?? '-' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+@endsection
+@section('section-js')
+    <script>
+        $(document).ready(function() {
+
+            // Show Toast
+            function showToast(message, type = 'success') {
+
+                let bgClass = 'bg-success';
+                let icon = 'bx-check-circle';
+
+                if (type === 'error') {
+                    bgClass = 'bg-danger';
+                    icon = 'bx-error-circle';
+                } else if (type === 'warning') {
+                    bgClass = 'bg-warning';
+                    icon = 'bx-error';
+                }
+
+                let toastHTML = `
+                    <div class="bs-toast toast fade ${bgClass}" role="alert">
+                        <div class="toast-header">
+                            <i class="bx ${icon} me-2"></i>
+                            <div class="me-auto fw-semibold">Notification</div>
+                            <small>Now</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                `;
+
+                let container = $('#toastContainer');
+                let toastElement = $(toastHTML);
+
+                container.append(toastElement);
+
+                let toast = new bootstrap.Toast(toastElement[0], {
+                    delay: 3000
+                });
+
+                toast.show();
+
+                // remove after hidden
+                toastElement.on('hidden.bs.toast', function() {
+                    $(this).remove();
+                });
+            }
+
+            // Row delete code
+            $(document).on('click', '#deletestatBtn', function() {
+
+                let id = $(this).data('id');
+                if (!confirm('Are you sure you want to delete?')) {
+                    showToast('Delete cancelled by user', 'warning');
+                    return;
+                }
+
+                $.ajax({
+                    url: "/destroy-status/" + id,
+                    type: "POST",
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        _method: "DELETE"
+                    },
+
+                    success: function(response) {
+
+                        if (response.status) {
+                            showToast(response.message, 'success');
+                             location.reload();
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+
+                    error: function(xhr) {
+                        console.log(xhr);
+                        showToast(xhr.responseJSON?.message || 'Delete failed!', 'error');
+                    }
+                });
+
+            });
+
+            // DEFAULT SECTION
+            // keep first column visible, hide remaining columns
+
+            var table = $('#statusTable').DataTable({
+                orderCellsTop: true,
+                autoWidth: false,
+                scrollX: true,
+                responsive: false
+            });
+
+
+            // ONLY actual columns
+            let defaultCols = table.columns('.default-col').indexes().toArray();
+
+            // keep first column visible
+            let defaultHideCols = defaultCols.slice(1);
+
+            $('#defaultToggle').on('click', function() {
+
+                let isVisible = table.column(defaultHideCols[0]).visible();
+
+                // hide/show remaining columns
+                table.columns(defaultHideCols).visible(!isVisible, false);
+
+                table.columns.adjust().draw(false);
+
+                $('.toggle-icon-default')
+                    .toggleClass('bx-chevron-right', !isVisible)
+                    .toggleClass('bx-chevron-left', isVisible);
+
+            });
+
+
+        });
+    </script>
+@endsection

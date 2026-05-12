@@ -121,7 +121,7 @@
 
 
             <!-- Import Data-->
-            <li class="menu-item">
+            <li class="menu-item {{ request()->routeIs('list.condition') || request()->routeIs('status.list') || request()->routeIs('index.asset.management') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Layouts">Administration</div>
@@ -134,7 +134,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="{{ route('status.list')}}" class="menu-link">
                     <div data-i18n="Without navbar">Status</div>
                   </a>
                 </li>

@@ -329,7 +329,7 @@
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label">Upload Files</label>
-                                        <small class="form-text">Additional Documents (For Insurance / Maintenance / Replacements, etc.)</small>
+                                        {{-- <small class="form-text">Additional Documents (For Insurance / Maintenance / Replacements, etc.)</small> --}}
                                         <div class="col-sm-4">
                                             <label class="btn btn-sm btn-primary mb-0">
                                                 <i class="bx bx-upload me-1"></i> Upload Files
@@ -345,6 +345,10 @@
                                             <!-- Container for multiple uploaded filenames -->
                                             <div id="fileList" class="mt-2"></div>
                                             <input type="file" id="fileUpload" name="files[]" multiple hidden>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" >Mac Address<span style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control force-validate" type="text" name="mac_address" />
                                         </div>
                                     </div>
                                 </div>
@@ -1202,8 +1206,8 @@
                                         <div class="col-sm-4">
                                             <select id="country" class="form-select force-validate" name="status_type">
                                                 <option value="">Select</option>
-                                                <option value="allotted_status">Allotted Assets</option>
-                                                <option value="unalloted_status">Unallotted Assets</option>
+                                                <option value="allotted_assets">Allotted Assets</option>
+                                                <option value="unalloted_assets">Unallotted Assets</option>
                                                 <option value="discarded_assets">Discarded Assets</option>
                                             </select>
                                         </div>
@@ -2452,6 +2456,10 @@
                 serial_no: {
                     required: true
                 },
+
+                mac_address: {
+                    required: true
+                },
                 
                 categ_id: {
                     required: true
@@ -2515,28 +2523,29 @@
                 //     required: true,
                 //     number: true
                 // },
-                vendor_name: {
-                    required: true
-                }, // BUG_004 - Vendor Name mandatory
-                invoice_date: {
-                    required: true,
-                    date: true
-                },
-                invoice_no: {
-                    required: true
-                },
-                po_number: {
-                    required: true
-                },
-                purchase_date: {
-                    required: true,
-                    date: true
-                },
-                purchase_price: {
-                    required: true,
-                    number: true,
-                    min: 0
-                }, // BUG_005 - Purchase Price specific validation messages
+                // vendor_name: {
+                //     required: true
+                // }, // BUG_004 - Vendor Name mandatory
+                // invoice_date: {
+                //     required: true,
+                //     date: true
+                // },
+                // invoice_no: {
+                //     required: true
+                // },
+                // po_number: {
+                //     required: true
+                // },
+                // purchase_date: {
+                //     required: true,
+                //     date: true
+                // },
+                // purchase_price: {
+                //     required: true,
+                //     number: true,
+                //     min: 0
+                // }, 
+                // BUG_005 - Purchase Price specific validation messages
 
                 // Financial
                 // capitalization_price: {
@@ -2606,42 +2615,43 @@
                 //     required: true,
                 //     date: true
                 // }
-                amc_vendor: {
-                    required: true
-                },
-                Warranty_vendor: {
-                    required: true
-                },
-                insurance_start_date: {
-                    required: true,
-                    date: true
-                },
-                insurance_end_date: {
-                    required: true,
-                    date: true,
-                    greaterThan: '#insurance_start_date'
-                }, // BUG_009 - Insurance End Date validation
-                amc_start_date: {
-                    required: true,
-                    date: true
-                },
-                warranty_end_date: {
-                    required: true,
-                    date: true
-                },
-                amc_end_date: {
-                    required: true,
-                    date: true
-                },
-                warranty_start_date: {
-                    required: true,
-                    date: true
-                }
+                // amc_vendor: {
+                //     required: true
+                // },
+                // Warranty_vendor: {
+                //     required: true
+                // },
+                // insurance_start_date: {
+                //     required: true,
+                //     date: true
+                // },
+                // insurance_end_date: {
+                //     required: true,
+                //     date: true,
+                //     greaterThan: '#insurance_start_date'
+                // }, // BUG_009 - Insurance End Date validation
+                // amc_start_date: {
+                //     required: true,
+                //     date: true
+                // },
+                // warranty_end_date: {
+                //     required: true,
+                //     date: true
+                // },
+                // amc_end_date: {
+                //     required: true,
+                //     date: true
+                // },
+                // warranty_start_date: {
+                //     required: true,
+                //     date: true
+                // }
             },
 
             messages: {
                 asset_name: "Enter asset name (min 3 characters)",
                 serial_no: "Enter Serial Number",
+                mac_address: "Enter Mac Address",
                 // asset_code: "Max 20 characters allowed",
 
                 categ_id: "Select category",
@@ -2682,43 +2692,43 @@
                 // warranty_end_date: "Select warranty end date",
                 // amc_end_date: "Select AMC end date",
                 // warranty_start_date: "Select warranty start date"
-                cwip_invoice_id: "Enter CWIP invoice id",
+                // cwip_invoice_id: "Enter CWIP invoice id",
 
-                condition: "Select condition",
-                brand: "Enter brand",
-                model: "Enter model",
-                description: "Enter description",
+                // condition: "Select condition",
+                // brand: "Enter brand",
+                // model: "Enter model",
+                // description: "Enter description",
 
-                vendor_name: "Enter vendor name",
-                invoice_date: "Select invoice date",
-                invoice_no: "Enter invoice number",
-                purchase_date: "Select purchase date",
-                purchase_price: {
-                    required: "Enter purchase price",
-                    number: "Enter Valid number",
-                    min: "Price cannot be negative"
-                },
-                po_number: "Enter Po Number",
+                // vendor_name: "Enter vendor name",
+                // invoice_date: "Select invoice date",
+                // invoice_no: "Enter invoice number",
+                // purchase_date: "Select purchase date",
+                // purchase_price: {
+                //     required: "Enter purchase price",
+                //     number: "Enter Valid number",
+                //     min: "Price cannot be negative"
+                // },
+                // po_number: "Enter Po Number",
 
-                capitalization_price: "Enter capitalization price",
-                end_of_life: "Select end of life date",
-                capitalization_date: "Select capitalization date",
-                depreciation: "Enter depreciation %",
-                accumulated_dep: "Enter accumulated depreciation",
-                scrap_value: "Enter scrap value",
+                // capitalization_price: "Enter capitalization price",
+                // end_of_life: "Select end of life date",
+                // capitalization_date: "Select capitalization date",
+                // depreciation: "Enter depreciation %",
+                // accumulated_dep: "Enter accumulated depreciation",
+                // scrap_value: "Enter scrap value",
 
-                department: "Select department",
-                transf_to: "Select transfer person",
-                allotted_upto: "Select allotted date",
+                // department: "Select department",
+                // transf_to: "Select transfer person",
+                // allotted_upto: "Select allotted date",
 
-                amc_vendor: "Select AMC vendor",
-                Warranty_vendor: "Select warranty vendor", // BUG_010 - Warranty Vendor correct message
-                insurance_start_date: "Select insurance start date",
-                insurance_end_date: "Enter insurance end date",
-                amc_start_date: "Select AMC start date",
-                warranty_end_date: "Select warranty end date",
-                amc_end_date: "Select AMC end date",
-                warranty_start_date: "Select warranty start date"
+                // amc_vendor: "Select AMC vendor",
+                // Warranty_vendor: "Select warranty vendor", // BUG_010 - Warranty Vendor correct message
+                // insurance_start_date: "Select insurance start date",
+                // insurance_end_date: "Enter insurance end date",
+                // amc_start_date: "Select AMC start date",
+                // warranty_end_date: "Select warranty end date",
+                // amc_end_date: "Select AMC end date",
+                // warranty_start_date: "Select warranty start date"
             },
 
             errorElement: 'span',
