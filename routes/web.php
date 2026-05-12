@@ -32,12 +32,18 @@ Route::get('/index-asset-management', [CategoryController::class, 'index'])->nam
 Route::post('/insert-category', [CategoryController::class, 'store'])->name('categories.store');
 Route::get('/get-subcategories/{id}', [CategoryController::class, 'getSubCategories']);
 Route::get('/edit-category/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
+Route::get('/view-category/{id}', [CategoryController::class, 'view'])->name('categories.view');
 Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
 Route::post('/insert-location', [LocationController::class, 'store'])->name('location.store');
 Route::get('/get-sublocation/{id}', [LocationController::class, 'getSubLocation']);
 
 Route::post('/insert-status', [StatusController::class, 'store'])->name('status.store');
+Route::get('/list-status', [StatusController::class, 'index'])->name('status.list');
+Route::delete('/destroy-status/{id}', [StatusController::class, 'destroy'])->name('status.destroy');
+Route::get('/edit-status/{id}', [StatusController::class, 'edit'])->name('status.edit');
+Route::post('/update-status/{id}', [StatusController::class, 'update']);
+Route::get('/view-status/{id}', [StatusController::class, 'view'])->name('status.view');
 Route::post('/insert-asset', [AssetController::class, 'store'])->name('asset.store');
 Route::get('/list-asset-management', [AssetController::class, 'index'])->name('list.asset.management');
 

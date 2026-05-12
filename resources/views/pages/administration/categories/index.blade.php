@@ -14,14 +14,9 @@
 @endsection
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        {{-- <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold mb-0">List of category Status</h4>
-        <button type="button" class="btn btn-primary btn-sm">
-            <a href="{{ route('add.category.status') }}" class="btn btn-primary btn-sm">
-                <i class="bx bx-plus"></i> Add
-            </a>
-        </button>
-    </div> --}}
+     <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">List of Categories</h4>
+    </div>
         <div class="card">
             <div class="card-body">
                 <!-- TOGGLES -->
@@ -34,10 +29,10 @@
                     </button>
 
                     <!-- Financial Section Toggle -->
-                    <button id="financialToggle" class="btn btn-warning btn-sm collapsed">
+                    <!-- <button id="financialToggle" class="btn btn-warning btn-sm collapsed">
                         <i class="bx bx-chevron-right toggle-icon-financial"></i>
                         Financial Section
-                    </button>
+                    </button> -->
 
                 </div> --}}
 
@@ -72,7 +67,7 @@
                                 </th>
 
                                 <!-- FINANCIAL -->
-                                <th colspan="6" class="text-center">
+                                <!-- <th colspan="6" class="text-center">
 
                                     <div class="d-flex justify-content-start align-items-center gap-2">
 
@@ -87,7 +82,7 @@
 
                                     </div>
 
-                                </th>
+                                </th> -->
 
                             </tr>
 
@@ -95,7 +90,7 @@
                             <tr>
 
                                 <!-- DEFAULT SECTION -->
-                                <th class="default-col">Parent Category</th>
+                                <th class="default-col">Category Name</th>
                                 <th class="default-col">Show Category</th>
                                 <th class="default-col">Sub Category Name</th>
                                 <th class="default-col">Category-wise Assets</th>
@@ -104,12 +99,12 @@
                                 <th class="default-col">Cascade</th>
 
                                 <!-- FINANCIAL SECTION -->
-                                <th class="financial-col">End Of Life</th>
+                                <!-- <th class="financial-col">End Of Life</th>
                                 <th class="financial-col">Depreciation %</th>
                                 <th class="financial-col">Scrap Value</th>
                                 <th class="financial-col">Created By</th>
                                 <th class="financial-col">Income Tax Depreciation %</th>
-                                <th class="financial-col">Created Date</th>
+                                <th class="financial-col">Created Date</th> -->
 
                             </tr>
 
@@ -124,7 +119,7 @@
                                         <div class="d-flex justify-content-center align-items-center gap-2">
 
                                             <!-- View -->
-                                            <a href="#" class="text-primary" title="View">
+                                            <a href="{{ route('categories.view', $category->id) }}" class="text-primary" title="View">
                                                 <i class="bx bx-show"></i>
                                             </a>
                                             <!-- Edit -->
@@ -169,7 +164,7 @@
                                     </td>
 
                                     <!-- FINANCIAL SECTION -->
-                                    <td class="financial-col">
+                                    <!-- <td class="financial-col">
                                         {{ $category->end_of_life ?? '-' }}
                                     </td>
 
@@ -191,7 +186,7 @@
 
                                     <td class="financial-col">
                                         {{ $category->created_at ? $category->created_at->format('Y-m-d') : '-' }}
-                                    </td>
+                                    </td> -->
 
                                 </tr>
                             @endforeach
@@ -298,22 +293,14 @@
                 orderCellsTop: true,
                 autoWidth: false,
                 scrollX: true,
-                columnDefs: [
-                    {
-                        targets: 0,
-                        width: "120px"
-                    }
-                ]
+                responsive: false
             });
-
 
             // ONLY actual columns
             let defaultCols = table.columns('.default-col').indexes().toArray();
-            let financialCols = table.columns('.financial-col').indexes().toArray();
 
             // keep first column visible
             let defaultHideCols = defaultCols.slice(1);
-            let financialHideCols = financialCols.slice(1);
 
             $('#defaultToggle').on('click', function() {
 
@@ -325,21 +312,6 @@
                 table.columns.adjust().draw(false);
 
                 $('.toggle-icon-default')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
-
-            });
-
-            $('#financialToggle').on('click', function() {
-
-                let isVisible = table.column(financialHideCols[0]).visible();
-
-                // hide/show remaining columns
-                table.columns(financialHideCols).visible(!isVisible, false);
-
-                table.columns.adjust().draw(false);
-
-                $('.toggle-icon-financial')
                     .toggleClass('bx-chevron-right', !isVisible)
                     .toggleClass('bx-chevron-left', isVisible);
 

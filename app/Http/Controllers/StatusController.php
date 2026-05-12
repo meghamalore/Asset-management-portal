@@ -7,6 +7,7 @@ use App\Models\Status;
 use App\Models\StatusNameLocalization;
 use App\Models\StatusSubCategory;
 use App\Models\StatusCategory;
+use App\Models\Category;
 
 
 class StatusController extends Controller
@@ -96,6 +97,115 @@ class StatusController extends Controller
                 'message' => $e->getMessage() // 👈 show real error (for debug)
             ]);
         }
+    }
+
+    public function index()
+    {
+
+        $status = Status::with(['categories', 'subCategories'])->get();
+        return view('pages.administration.status.index',compact('status'));
+
+    }
+
+    public function destroy($id)
+    {
+        $status = Status::find($id);
+
+        if (!$status) {
+            return redirect()->back()->with('error', 'Record not found');
+        }
+
+        $status->delete();
+
+        return response()->json([
+                'status' => true,
+                'message' => 'Status deleted successfully'
+            ]);
+    }
+
+    public function edit($id)
+    {
+        $status = Status::with(['categories', 'subCategories'])->find($id);
+        $categories = Category::with('subCategories:id,category_id,name')->get();
+
+        return view('pages.administration.status.edit', compact('status','categories'));
+    }
+
+    public function view($id)
+    {
+        $status = Status::with(['categories', 'subCategories'])->find($id);
+
+        return view('pages.administration.status.view', compact('status'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $status = Status::findOrFail($id);
+
+        // VALIDATION
+        $request->validate([
+            'status_type'          => 'required|string',
+            'status_name'          => 'required|string|max:255',
+            'next_status'          => 'nullable|string|max:255',
+            'categories'           => 'nullable|array',
+            'categories.*'         => 'exists:categories,id',
+            'sub_categories'       => 'nullable|array',
+            'sub_categories.*'     => 'exists:sub_categories,id',
+            'hold_pause_activity'  => 'nullable|boolean',
+        ]);
+
+        // UPDATE STATUS
+        $status->update([
+
+            'status_type' => $request->status_type,
+
+            'status_name' => $request->status_name,
+
+            'next_status' => $request->next_status,
+
+            'hold_pause_activity' => $request->has('hold_pause_activity') ? 1 : 0,
+
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | SYNC CATEGORIES
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->has('categories')) {
+
+            $status->categories()->sync($request->categories);
+
+        } else {
+
+            $status->categories()->detach();
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SYNC SUB CATEGORIES
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->has('sub_categories')) {
+
+            $status->subCategories()->sync($request->sub_categories);
+
+        } else {
+
+            $status->subCategories()->detach();
+
+        }
+
+        return response()->json([
+
+            'success' => true,
+
+            'message' => 'Status updated successfully'
+
+        ]);
     }
 
 

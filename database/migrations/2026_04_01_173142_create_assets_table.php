@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('assets', function (Blueprint $table) {
                 $table->id();
                 $table->string('asset_name');
+                $table->string('mac_address');
                 $table->string('asset_code')->nullable();
                 $table->string('asset_image')->nullable();
 

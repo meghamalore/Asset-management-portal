@@ -49,117 +49,129 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <script>
-        $(document).ready(function() {
-        
-            $('#defaultToggle').addClass('collapsed');
-            $('#additionalToggle').addClass('collapsed');
-            $('#purchaseToggle').addClass('collapsed');
-            $('#financialToggle').addClass('collapsed');
-            $('#allottedToggle').addClass('collapsed');
-            $('#warrantyToggle').addClass('collapsed');
-        
+        $(document).ready(function () {
+
             var table = $('#assetTable').DataTable({
                 orderCellsTop: true,
-                autoWidth: false,   //  important
-                scrollX: true       //  optional but recommended
+                autoWidth: false,
+                scrollX: true
             });
-        
-            $('#selectAll').click(function() {
+
+            // Select all checkbox
+            $('#selectAll').click(function () {
+
                 $('tbody input[type="checkbox"]').prop('checked', this.checked);
+
             });
-        
-            //  ONLY THIS (no extra logic)
+
+            // Column groups
             let defaultCols = table.columns('.default-extra').indexes().toArray();
             let additionalCols = table.columns('.additional-extra').indexes().toArray();
             let purchaseCols = table.columns('.purchase-extra').indexes().toArray();
             let financialCols = table.columns('.financial-extra').indexes().toArray();
             let allottedCols = table.columns('.allotted-extra').indexes().toArray();
             let warrantyCols = table.columns('.warranty-extra').indexes().toArray();
-        
-            let defaultOpen = false;
-            let additionalOpen = false;
-            let purchaseOpen = false;
-        
+
+            // Hide all sections initially
+            table.columns(defaultCols).visible(false, false);
+            table.columns(additionalCols).visible(false, false);
+            table.columns(purchaseCols).visible(false, false);
+            table.columns(financialCols).visible(false, false);
+            table.columns(allottedCols).visible(false, false);
+            table.columns(warrantyCols).visible(false, false);
+
+            table.columns.adjust().draw(false);
+
             // DEFAULT
-            $('#defaultToggle').on('click', function() {
-        
-                let isVisible = table.column(defaultCols[0]).visible(); //  check current state
-        
+            $('#defaultToggle').on('click', function () {
+
+                let isVisible = table.column(defaultCols[0]).visible();
+
                 table.columns(defaultCols).visible(!isVisible, false);
-        
+
                 table.columns.adjust().draw(false);
-        
-                $(this).toggleClass('collapsed', isVisible);
-        
+
                 $('.toggle-icon')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
+                    .toggleClass('bx-chevron-right', isVisible)
+                    .toggleClass('bx-chevron-left', !isVisible);
+
             });
-        
+
             // ADDITIONAL
-            $('#additionalToggle').on('click', function() {
-        
+            $('#additionalToggle').on('click', function () {
+
                 let isVisible = table.column(additionalCols[0]).visible();
-        
+
                 table.columns(additionalCols).visible(!isVisible, false);
-        
+
                 table.columns.adjust().draw(false);
-        
-                $(this).toggleClass('collapsed', isVisible);
-        
+
                 $('.toggle-icon-add')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
+                    .toggleClass('bx-chevron-right', isVisible)
+                    .toggleClass('bx-chevron-left', !isVisible);
+
             });
-        
-            $('#purchaseToggle').on('click', function() {
-        
+
+            // PURCHASE
+            $('#purchaseToggle').on('click', function () {
+
                 let isVisible = table.column(purchaseCols[0]).visible();
-        
+
                 table.columns(purchaseCols).visible(!isVisible, false);
-        
+
                 table.columns.adjust().draw(false);
-        
-                $(this).toggleClass('collapsed', isVisible);
-        
+
                 $('.toggle-icon-purchase')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
+                    .toggleClass('bx-chevron-right', isVisible)
+                    .toggleClass('bx-chevron-left', !isVisible);
+
             });
 
             // FINANCIAL
-            $('#financialToggle').on('click', function() {
+            $('#financialToggle').on('click', function () {
+
                 let isVisible = table.column(financialCols[0]).visible();
+
                 table.columns(financialCols).visible(!isVisible, false);
+
                 table.columns.adjust().draw(false);
-                $(this).toggleClass('collapsed', isVisible);
+
                 $('.toggle-icon-financial')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
+                    .toggleClass('bx-chevron-right', isVisible)
+                    .toggleClass('bx-chevron-left', !isVisible);
+
             });
 
-            //Allotted Information
-            $('#allottedToggle').on('click', function() {
+            // ALLOTTED
+            $('#allottedToggle').on('click', function () {
+
                 let isVisible = table.column(allottedCols[0]).visible();
+
                 table.columns(allottedCols).visible(!isVisible, false);
+
                 table.columns.adjust().draw(false);
-                $(this).toggleClass('collapsed', isVisible);
+
                 $('.toggle-icon-allotted')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
+                    .toggleClass('bx-chevron-right', isVisible)
+                    .toggleClass('bx-chevron-left', !isVisible);
+
             });
 
             // WARRANTY
-            $('#warrantyToggle').on('click', function() {
+            $('#warrantyToggle').on('click', function () {
+
                 let isVisible = table.column(warrantyCols[0]).visible();
+
                 table.columns(warrantyCols).visible(!isVisible, false);
+
                 table.columns.adjust().draw(false);
-                $(this).toggleClass('collapsed', isVisible);
+
                 $('.toggle-icon-warranty')
-                    .toggleClass('bx-chevron-right', !isVisible)
-                    .toggleClass('bx-chevron-left', isVisible);
+                    .toggleClass('bx-chevron-right', isVisible)
+                    .toggleClass('bx-chevron-left', !isVisible);
+
             });
-        
+
         });
     </script>
   </body>

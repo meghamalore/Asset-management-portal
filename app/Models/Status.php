@@ -19,4 +19,24 @@ class Status extends Model
     {
         return $this->hasMany(Asset::class,'status_id');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(
+            Category::class,
+            'status_categories',
+            'status_id',
+            'category_id'
+        );
+    }
+
+    public function subCategories()
+    {
+        return $this->belongsToMany(
+            SubCategory::class,
+            'status_sub_categories',
+            'status_id',
+            'sub_category_id'
+        );
+    }
 }
