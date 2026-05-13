@@ -121,30 +121,68 @@
 
 
             <!-- Import Data-->
-            <li class="menu-item {{ request()->routeIs('list.condition') || request()->routeIs('status.list') || request()->routeIs('index.asset.management') ? 'active open' : '' }}">
-              <a href="javascript:void(0);" class="menu-link menu-toggle">
-                  <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Layouts">Administration</div>
-              </a>
+            <li class="menu-item 
+    {{ request()->routeIs('index.asset.management')
+        || request()->routeIs('list.condition')
+        || request()->routeIs('status.list')
+        ? 'active open' : '' }}">
 
-              <ul class="menu-sub">
+    <!-- MAIN MODULE -->
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-user"></i>
+        <div data-i18n="Administrator">Administrator</div>
+    </a>
+
+    <ul class="menu-sub">
+
+        <!-- ADVANCE SETTINGS -->
+        <li class="menu-item 
+            {{ request()->routeIs('index.asset.management')
+                || request()->routeIs('list.condition')
+                || request()->routeIs('status.list')
+                ? 'active open' : '' }}">
+
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <div data-i18n="Advance Settings">Advance Settings</div>
+            </a>
+
+            <ul class="menu-sub">
+
                 <li class="menu-item">
-                  <a href="{{ route('index.asset.management')}}" class="menu-link">
-                    <div data-i18n="Without menu">Categories</div>
-                  </a>
+                    <a href="{{ route('index.asset.management') }}" class="menu-link">
+                        <div>Categories</div>
+                    </a>
                 </li>
+
                 <li class="menu-item">
-                  <a href="{{ route('status.list')}}" class="menu-link">
-                    <div data-i18n="Without navbar">Status</div>
-                  </a>
+                    <a href="{{ route('list.condition') }}" class="menu-link">
+                        <div>Condition</div>
+                    </a>
                 </li>
+
                 <li class="menu-item">
-                  <a href="{{ route('list.condition')}}" class="menu-link">
-                    <div data-i18n="Without navbar">Condition</div>
-                  </a>
+                    <a href="{{ route('status.list') }}" class="menu-link">
+                        <div>Status</div>
+                    </a>
                 </li>
-              </ul>
-            </li>
+
+                <li class="menu-item">
+                    <a href="{{ route('location.list') }}" class="menu-link">
+                        <div>Location</div>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="{{ route('list.barcode') }}" class="menu-link">
+                        <div>Barcode Templates</div>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+
+    </ul>
+</li>
           </ul>
         </aside>
         <!-- / Menu -->
