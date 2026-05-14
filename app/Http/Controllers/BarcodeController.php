@@ -32,6 +32,18 @@ class BarcodeController extends Controller
     {
         $asset = Asset::findOrFail($request->asset_id);
 
+        $alreadyExists = AssetQrBarcode::where('asset_id', $request->asset_id)
+        ->first();
+
+        if ($alreadyExists) {
+
+            return response()->json([
+                'status'  => false,
+                'message' => 'QR Code already generated for this asset.'
+            ]);
+
+        }
+
         $assetName = $asset->asset_name;
 
         // Create folders if not exists

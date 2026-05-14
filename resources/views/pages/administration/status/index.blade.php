@@ -55,7 +55,7 @@
                                 <!-- DEFAULT SECTION -->
                                 <th class="default-col">Status Type</th>
                                 <th class="default-col">Status Name</th>
-                                <th class="default-col">Next Status</th>
+                                {{-- <th class="default-col">Next Status</th> --}}
                                 {{-- <th class="default-col">Only Visiable For Categories</th> --}}
                                 <th class="default-col">Hold/Pause Activity</th>
                                 <th class="default-col">Created By</th>
@@ -100,11 +100,11 @@
                                     </td>
 
                                     <td class="default-col">
-                                        {{ $stat->status_name == 1 ? 'Yes' : 'No' }}
+                                        {{ $stat->status_name ?? '' }}
                                     </td>
-                                    <td class="default-col">
+                                    {{-- <td class="default-col">
                                         {{ $stat->next_status == 1 ? 'Yes' : 'No' }}
-                                    </td>
+                                    </td> --}}
                                     {{-- <td class="default-col">
 
                                         @if($stat->categories->count())

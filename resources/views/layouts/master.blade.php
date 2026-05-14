@@ -65,13 +65,13 @@
                     <div data-i18n="Without menu">Manage Tickets</div>
                   </a>
                 </li>
-            @if(auth()->user()->role === 'admin')
+            {{-- @if(auth()->user()->role === 'admin') --}}
                 <li class="menu-item">
                   <a href="{{ route("add.help.desk")  }}" class="menu-link">
                     <div data-i18n="Without navbar">New Tickets</div>
                   </a>
                 </li>
-            @endif
+            {{-- @endif --}}
               </ul>
             </li>
 
@@ -130,7 +130,7 @@
                 <!-- MAIN MODULE -->
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-user"></i>
-                    <div data-i18n="Administrator">Administrator</div>
+                    <div data-i18n="Administrator">Administration</div>
                 </a>
 
                 <ul class="menu-sub">
@@ -174,7 +174,7 @@
 
                             <li class="menu-item">
                                 <a href="{{ route('list.barcode') }}" class="menu-link">
-                                    <div>Barcode Templates</div>
+                                    <div>Generate QR</div>
                                 </a>
                             </li>
 

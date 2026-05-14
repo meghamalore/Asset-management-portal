@@ -82,7 +82,7 @@ class ImportDataController extends Controller
 
     public function downloadTemplate()
     {
-        $filePath = public_path('templates/upload_multiple_assets.xlsx');
+        $filePath = public_path('templates/upload_multiple_assets_latest.xlsx');
 
         if (!file_exists($filePath)) {
             abort(404, 'Template file not found');

@@ -333,7 +333,7 @@
                             </tr>
 
                             <!-- FILTER -->
-                            <tr>
+                            {{-- <tr>
 
                                 @php
                                      $filterColumns = auth()->user()->role === 'admin' ? 38 : 37;
@@ -357,7 +357,7 @@
 
                                 @endfor
 
-                            </tr>
+                            </tr> --}}
 
                         </thead>
 
@@ -386,6 +386,16 @@
                                         class="text-primary">
 
                                             <i class="bx bx-show"></i>
+
+                                        </a>
+                                          <!-- Generate QR Button -->
+                                        <a href="#"
+                                            class="text-success" id="printQrBtn" 
+                                            data-name="{{$asset_datas->asset_name}}"
+                                            data-code="{{ $asset_datas->barcode->asset_code ?? ''}}"
+                                            data-qr-code="{{ $asset_datas->barcode->qr_code ?? ''}}">
+                                        
+                                            <i class="bx bx-qr"></i>
 
                                         </a>
 
@@ -571,6 +581,64 @@
         </div>
         <!--/ Bordered Table -->
         <!--/ Basic Bootstrap Table -->
+    </div>
+
+    <!-- QR Modal -->
+    <div class="modal fade" id="printQrModal" tabindex="-1">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Asset QR Details
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body text-center">
+
+                    <!-- QR Image -->
+                    <img id="qr_image"
+                        src=""
+                        class="img-fluid mb-3"
+                        width="200">
+
+                    <!-- Asset Data -->
+                    
+                    <p>
+                        <strong>Asset Name :</strong>
+                        <span id="qr_asset_name"></span>
+                    </p>
+                    <p>
+                        <strong>Asset Code :</strong>
+                        <span id="qr_asset_code"></span>
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            onclick="printQr()">
+
+                        Print
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
     <!-- Extra Large Defult view Modal -->
@@ -2157,6 +2225,29 @@
                     }
                 });
             }
+        });
+
+        $(document).on('click', '#printQrBtn', function () {
+
+            let assetName = $(this).data('name');
+            let assetCode = $(this).data('code');
+            let qrCode    = $(this).data('qr-code');
+
+            if (!assetCode || !qrCode)
+            {
+                showToast('QR Code Not Generated For this Asset' , 'error');
+
+                return false;
+            }
+
+            $('#qr_asset_name').text(assetName ?? 'Not Found');
+
+            $('#qr_asset_code').text(assetCode ?? 'Not Found');
+
+            $('#qr_image').attr('src', '/' + qrCode);
+
+            $('#printQrModal').modal('show');
+
         });
 
         //  Select2 Init

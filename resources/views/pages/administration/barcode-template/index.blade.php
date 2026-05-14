@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">List of Barcode & QR Code</h4>
+            <h4 class="fw-bold mb-0">List of QR Code</h4>
             {{-- <button type="button" class="btn btn-primary btn-sm"> --}}
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exLargeModalCondition">
                 <i class="bx bx-plus"></i> Add
@@ -162,40 +162,6 @@
 
     </div>
 
-    {{-- edit modal --}}
-    <div class="modal fade" id="editConditionModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <form id="editConditionForm">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Condition</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <input type="hidden" id="edit_condition_id" name="id">
-
-                        <div class="mb-3">
-                            <label>Condition Name</label>
-                            <input type="text" class="form-control" id="edit_condition_name" name="condition_name">
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">
-                            Update
-                        </button>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-    </div>
 @endsection
 @section('section-js')
 
