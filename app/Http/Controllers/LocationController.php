@@ -93,4 +93,87 @@ class LocationController extends Controller
 
         return response()->json($subLocations);
     }
+
+    public function index()
+    {
+
+        $locations = Location::with('subLocation')->get();
+        return view('pages.administration.location.index',compact('locations'));
+
+    }
+
+    public function edit($id)
+    {
+        $location = Location::with('subLocation')->findOrFail($id);
+        // dd($category);
+        return view('pages.administration.location.edit', compact('location'));
+    }
+
+     public function view($id)
+    {
+        $location = Location::with('subLocation')->findOrFail($id);
+        // dd($category);
+        return view('pages.administration.location.view', compact('location'));
+    }
+
+    public function update(Request $request, $id)
+    {
+       $location = Location::with('subLocation')->findOrFail($id);
+
+        // // Validation
+        // $request->validate([
+        //     'parent_category_name' => 'required|string|max:255',
+        //     'sub_category_name'    => 'nullable|string|max:255',
+        //     'category_code'        => 'nullable|string|max:255',
+        //     'trafs_duration'       => 'nullable|numeric',
+        //     'trafs_duration_type'  => 'nullable|string',
+        //     'is_link_asset'        => 'nullable|boolean',
+        //     'cascade'              => 'nullable|boolean',
+        //     'allow_auto'           => 'nullable|boolean',
+        // ]);
+
+        // Update Category
+        $location->update([
+            'name'          => $request->parent_location_name,
+            'location_code' => $request->location_code,
+            'description'   => $request->description,
+        ]);
+
+        // Update or Create Sub Category
+       if ($request->has('sub_locations')) {
+
+            // Delete old sub locations
+            $location->subLocation()->delete();
+
+            // Insert new sub locations
+            foreach ($request->sub_locations as $subLocationName) {
+
+                SubLocation::create([
+                    'location_id' => $location->id,
+                    'name'        => $subLocationName
+                ]);
+            }
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Location Updated Successfully'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $location = Location::find($id);
+
+        if (!$location) {
+            return redirect()->back()->with('error', 'Record not found');
+        }
+
+        $location->delete();
+
+        return response()->json([
+                'status' => true,
+                'message' => 'Location deleted successfully'
+            ]);
+    }
 }

@@ -15,6 +15,7 @@ use App\Http\Controllers\TicketTypeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ImportDataController;
 use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\BarcodeController;
 
 Route::get('/', function () {return view('pages.auth.login');})->name('login');
 Route::get('/login', function () {return view('pages.auth.login');})->name('login');
@@ -37,6 +38,11 @@ Route::post('/categories/{id}', [CategoryController::class, 'update'])->name('ca
 
 Route::post('/insert-location', [LocationController::class, 'store'])->name('location.store');
 Route::get('/get-sublocation/{id}', [LocationController::class, 'getSubLocation']);
+Route::get('/list-location', [LocationController::class, 'index'])->name('location.list');
+Route::get('/edit-location/{id}', [LocationController::class, 'edit'])->name('location.edit');
+Route::get('/view-location/{id}', [LocationController::class, 'view'])->name('location.view');
+Route::post('/update-location/{id}', [LocationController::class, 'update']);
+Route::delete('/destroy-location/{id}', [LocationController::class, 'destroy'])->name('location.destroy');
 
 Route::post('/insert-status', [StatusController::class, 'store'])->name('status.store');
 Route::get('/list-status', [StatusController::class, 'index'])->name('status.list');
@@ -113,6 +119,12 @@ Route::post('/store-condition', [ConditionController::class, 'store'])->name('st
 Route::get('/index-condition', [ConditionController::class, 'index'])->name('list.condition');
 Route::delete('/destroy-condition/{id}', [ConditionController::class, 'destroy'])->name('condition.destroy');
 Route::post('/condition/{id}', [ConditionController::class, 'update'])->name('condition.update');
+
+Route::get('/add-barcode', [BarcodeController::class, 'add'])->name('add.barcode');
+Route::get('/index-barcode', [BarcodeController::class, 'index'])->name('list.barcode');
+Route::post('/store-qr', [BarcodeController::class, 'store'])->name('store.qr');
+
+
 
 });
 

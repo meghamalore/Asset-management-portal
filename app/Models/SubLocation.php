@@ -12,4 +12,11 @@ class SubLocation extends Model
         'location_id',
         'name',
     ];
+
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
 }
