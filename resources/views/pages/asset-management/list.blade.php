@@ -153,13 +153,13 @@
                         </button>
                     </div>
 
-                    <div class="col-lg-3 col-md-6">
+                    {{-- <div class="col-lg-3 col-md-6">
                         <button type="button" id="scheduleActivityBtn"
                             class="btn btn-outline-success w-100">
                             <span class="tf-icons bx bx-calendar"></span>
                             Schedule Activity
                         </button>
-                    </div>
+                    </div> --}}
 
                 </div>
             @endif

@@ -99,7 +99,7 @@
             @endif
 
             <!-- Import Data-->
-            <li class="menu-item {{ request()->routeIs('import-asset') || request()->routeIs('import-ticket') ? 'active open' : '' }}">
+            <li class="menu-item {{ request()->routeIs('import-asset') ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                   <i class="menu-icon tf-icons bx bx-import"></i>
                 <div data-i18n="Layouts">Import Data</div>
@@ -111,78 +111,80 @@
                     <div data-i18n="Without menu">Assets</div>
                   </a>
                 </li>
-                <li class="menu-item">
+                {{-- <li class="menu-item">
                   <a href="{{ route('import-ticket')}}" class="menu-link">
                     <div data-i18n="Without navbar">Tickets</div>
                   </a>
-                </li>
+                </li> --}}
               </ul>
             </li>
 
-
-            <!-- Import Data-->
+            <!-- Administrator -->
+            @if(auth()->user()->role === 'admin')
             <li class="menu-item 
-    {{ request()->routeIs('index.asset.management')
-        || request()->routeIs('list.condition')
-        || request()->routeIs('status.list')
-        ? 'active open' : '' }}">
+                {{ request()->routeIs('index.asset.management')
+                    || request()->routeIs('list.condition')
+                    || request()->routeIs('status.list')
+                    ? 'active open' : '' }}">
 
-    <!-- MAIN MODULE -->
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-user"></i>
-        <div data-i18n="Administrator">Administrator</div>
-    </a>
+                <!-- MAIN MODULE -->
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class="menu-icon tf-icons bx bx-user"></i>
+                    <div data-i18n="Administrator">Administrator</div>
+                </a>
 
-    <ul class="menu-sub">
+                <ul class="menu-sub">
 
-        <!-- ADVANCE SETTINGS -->
-        <li class="menu-item 
-            {{ request()->routeIs('index.asset.management')
-                || request()->routeIs('list.condition')
-                || request()->routeIs('status.list')
-                ? 'active open' : '' }}">
+                    <!-- ADVANCE SETTINGS -->
+                    <li class="menu-item 
+                        {{ request()->routeIs('index.asset.management')
+                            || request()->routeIs('list.condition')
+                            || request()->routeIs('status.list')
+                            ? 'active open' : '' }}">
 
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <div data-i18n="Advance Settings">Advance Settings</div>
-            </a>
+                        <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <div data-i18n="Advance Settings">Advance Settings</div>
+                        </a>
 
-            <ul class="menu-sub">
+                        <ul class="menu-sub">
 
-                <li class="menu-item">
-                    <a href="{{ route('index.asset.management') }}" class="menu-link">
-                        <div>Categories</div>
-                    </a>
-                </li>
+                            <li class="menu-item">
+                                <a href="{{ route('index.asset.management') }}" class="menu-link">
+                                    <div>Categories</div>
+                                </a>
+                            </li>
 
-                <li class="menu-item">
-                    <a href="{{ route('list.condition') }}" class="menu-link">
-                        <div>Condition</div>
-                    </a>
-                </li>
+                            <li class="menu-item">
+                                <a href="{{ route('list.condition') }}" class="menu-link">
+                                    <div>Condition</div>
+                                </a>
+                            </li>
 
-                <li class="menu-item">
-                    <a href="{{ route('status.list') }}" class="menu-link">
-                        <div>Status</div>
-                    </a>
-                </li>
+                            <li class="menu-item">
+                                <a href="{{ route('status.list') }}" class="menu-link">
+                                    <div>Status</div>
+                                </a>
+                            </li>
 
-                <li class="menu-item">
-                    <a href="{{ route('location.list') }}" class="menu-link">
-                        <div>Location</div>
-                    </a>
-                </li>
+                            <li class="menu-item">
+                                <a href="{{ route('location.list') }}" class="menu-link">
+                                    <div>Location</div>
+                                </a>
+                            </li>
 
-                <li class="menu-item">
-                    <a href="{{ route('list.barcode') }}" class="menu-link">
-                        <div>Barcode Templates</div>
-                    </a>
-                </li>
+                            <li class="menu-item">
+                                <a href="{{ route('list.barcode') }}" class="menu-link">
+                                    <div>Barcode Templates</div>
+                                </a>
+                            </li>
 
-            </ul>
-        </li>
+                        </ul>
+                    </li>
 
-    </ul>
-</li>
+                </ul>
+            </li>
+            @endif
+
           </ul>
         </aside>
         <!-- / Menu -->
