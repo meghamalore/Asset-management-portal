@@ -125,7 +125,8 @@ Route::get('/index-barcode', [BarcodeController::class, 'index'])->name('list.ba
 Route::post('/store-qr', [BarcodeController::class, 'store'])->name('store.qr');
 Route::delete('/destroy-qr/{id}', [BarcodeController::class, 'destroy'])->name('destroy.qr');
 Route::get('/view-qr/{id}', [BarcodeController::class, 'view'])->name('qr.view');
-
+Route::post('/multiple-qr-generate', [BarcodeController::class, 'multipleQrGenerate']);
+Route::post('/download-pdf', [BarcodeController::class, 'downloadPDF']);
 
 
 });

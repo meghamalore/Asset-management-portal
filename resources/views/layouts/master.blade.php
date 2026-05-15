@@ -172,11 +172,11 @@
                                 </a>
                             </li>
 
-                            <li class="menu-item">
+                            {{-- <li class="menu-item">
                                 <a href="{{ route('list.barcode') }}" class="menu-link">
                                     <div>Generate QR</div>
                                 </a>
-                            </li>
+                            </li> --}}
 
                         </ul>
                     </li>
