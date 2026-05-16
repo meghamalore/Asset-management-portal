@@ -20,15 +20,15 @@ class StatusController extends Controller
             // dd($request->all());
 
             // ✅ VALIDATION (IMPORTANT)
-            $request->validate([
-                'status_type' => 'required',
-                'status_name' => 'required',
-                'next_status' => 'required',
-                'categ_id' => 'required|array',     // ✅ FIX
-                'categ_id.*' => 'required',
-                'localization_name' => 'required|array',
-                'localization_lang' => 'required|array',
-            ]);
+            // $request->validate([
+            //     'status_type' => 'required',
+            //     'status_name' => 'required',
+            //     'next_status' => 'required',
+            //     'categ_id' => 'required|array',     // ✅ FIX
+            //     'categ_id.*' => 'required',
+            //     'localization_name' => 'required|array',
+            //     'localization_lang' => 'required|array',
+            // ]);
 
             // 1. Create Status
             $status = Status::create([

@@ -452,9 +452,7 @@
                                                 />
                                             </div>
                                         </div> 
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life </label>
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life <span style="color:#f1416c; font-size:18px;">*</span></label>
+                                        <label class="col-sm-2 col-form-label" for="basic-default-phone">End Of Life</label>
                                         <div class="col-sm-4">
                                             <input class="form-control force-validate" name="end_of_life" type="date"  />
                                         </div>
@@ -674,7 +672,7 @@
                                             </div> --}}
                                         </div>
                                         <div class="row mb-3">
-                                            <label class="col-sm-2 col-form-label" >Show Category in
+                                            <!-- <label class="col-sm-2 col-form-label" >Show Category in
                                                 Inventory Module </label>
                                             <div class="col-sm-4">
                                                 <div class="form-check form-switch mb-2">
@@ -682,7 +680,7 @@
                                                         id="flexSwitchCheckDefault" name="is_inventory" value="1"/>
                                                     <label class="form-check-label" for="flexSwitchCheckDefault">yes</label>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <label class="col-sm-2 col-form-label">Sub Category </label>
                                             <div class="col-sm-4">
                                                 <input type="text" class="form-control" id="category_name"
@@ -705,7 +703,7 @@
                                                     placeholder="Enter Category Code" />
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
+                                        <!-- <div class="row mb-3">
                                             <label class="col-sm-2 col-form-label" >Default Transfer
                                                 Duration </label>
                                             <div class="col-sm-2">
@@ -740,13 +738,13 @@
                                                 </div>
                                             </div>
 
-                                        </div>
+                                        </div> -->
                                     </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="accordion mt-3" id="accordionExample">
+                    <!-- <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
                             <h2 class="accordion-header" id="headingOne">
                                 <button type="button" class="accordion-button" data-bs-toggle="collapse"
@@ -992,7 +990,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
                 <div class="modal-footer">
@@ -1052,7 +1050,7 @@
                                                 placeholder="Enter Location Code" id="location_code" name="location_code" />
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Inventory Location </label>
                                         <div class="col-sm-4">
                                             <div class="form-check form-switch mb-2">
@@ -1068,14 +1066,14 @@
                                             <input type="text" class="form-control"
                                                 placeholder="Longitude" id="longitude" name="longitude"/>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row mb-3">
                                         <label class="col-sm-2 col-form-label" >Description </label>
                                         <div class="col-sm-4">
                                             <input class="form-control" type="text" name="description" id="description" />
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
+                                    <!-- <div class="row mb-3">
                                         <label class="col-sm-4 col-form-label" >Additional Info </label>
                                     </div>
                                     <div class="row mb-3">
@@ -1086,8 +1084,8 @@
                                         <div class="col-sm-4">
                                             <label class=" col-form-label" for="basic-default-phone">Users</label>
                                         </div>
-                                    </div>
-                                    <div id="addition-container-location">
+                                    </div> -->
+                                    <!-- <div id="addition-container-location">
                                         <div class="addition-location">
                                             <div class="row mb-3">
                                                 <div class="col-sm-4">
@@ -1111,12 +1109,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="accordion mt-3" id="accordionExample">
+                    <!-- <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
                             <h2 class="accordion-header" id="headingOne">
                                 <button type="button" class="accordion-button" data-bs-toggle="collapse"
@@ -1165,7 +1163,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -1307,7 +1305,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="accordion mt-3" id="accordionExample">
+                    <!-- <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
                             <h2 class="accordion-header" id="headingOne">
                                 <button type="button" class="accordion-button" data-bs-toggle="collapse"
@@ -1358,7 +1356,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -1684,100 +1682,100 @@
                         return $('[name="parent_category_name"]').val().trim() === "";
                     }
                 },
-                sub_category_name: {
-                    required: true
-                },
-                is_inventory: {
-                    required: true
-                },
-                is_link_asset: {
-                    required: true
-                },
-                cascade: {
-                    required: true
-                },
-                local_category_name: {
-                    required: true
-                },
-                category_code: {
-                    required: true
-                },
-                trafs_duration: {
-                    required: true,
-                    number: true
-                },
-                trafs_duration_type: {
-                    required: true
-                },
-                end_of_life: {
-                    required: true,
-                    number: true
-                },
-                end_of_life_type: {
-                    required: true
-                },
-                depreciation: {
-                    required: true,
-                    number: true
-                },
-                scrap_value: {
-                    required: true,
-                    number: true
-                },
-                scrap_value_type: {
-                    required: true,
-                },
-                income_tax_depreciation: {
-                    required: true,
-                    number: true
-                },
-                allow_auto: {
-                    required: true,
-                    number: true
-                },
+                // sub_category_name: {
+                //     required: true
+                // },
+                // is_inventory: {
+                //     required: true
+                // },
+                // is_link_asset: {
+                //     required: true
+                // },
+                // cascade: {
+                //     required: true
+                // },
+                // local_category_name: {
+                //     required: true
+                // },
+                // category_code: {
+                //     required: true
+                // },
+                // trafs_duration: {
+                //     required: true,
+                //     number: true
+                // },
+                // trafs_duration_type: {
+                //     required: true
+                // },
+                // end_of_life: {
+                //     required: true,
+                //     number: true
+                // },
+                // end_of_life_type: {
+                //     required: true
+                // },
+                // depreciation: {
+                //     required: true,
+                //     number: true
+                // },
+                // scrap_value: {
+                //     required: true,
+                //     number: true
+                // },
+                // scrap_value_type: {
+                //     required: true,
+                // },
+                // income_tax_depreciation: {
+                //     required: true,
+                //     number: true
+                // },
+                // allow_auto: {
+                //     required: true,
+                //     number: true
+                // },
 
-                // Activity Schedule
-                assign_based: {
-                    required: true
-                },
-                user_type: {
-                    required: true
-                },
-                assign_role: {
-                    required: true
-                },
-                assignee: {
-                    required: true
-                },
+                // // Activity Schedule
+                // assign_based: {
+                //     required: true
+                // },
+                // user_type: {
+                //     required: true
+                // },
+                // assign_role: {
+                //     required: true
+                // },
+                // assignee: {
+                //     required: true
+                // },
 
-                'activity_type[]': {
-                    required: true
-                },
-                'occurs[]': {
-                    required: true
-                },
-                'start_schedule_after[]': {
-                    required: true,
-                    number: true
-                },
-                'activity_reminder[]': {
-                    required: true
-                },
-                'schedule_based_on[]': {
-                    required: true
-                },
-                'custom_days[]': {
-                    required: true,
-                    number: true
-                },
+                // 'activity_type[]': {
+                //     required: true
+                // },
+                // 'occurs[]': {
+                //     required: true
+                // },
+                // 'start_schedule_after[]': {
+                //     required: true,
+                //     number: true
+                // },
+                // 'activity_reminder[]': {
+                //     required: true
+                // },
+                // 'schedule_based_on[]': {
+                //     required: true
+                // },
+                // 'custom_days[]': {
+                //     required: true,
+                //     number: true
+                // },
 
-                // Localization
-                'category_name[]': {
-                    required: true
-                },
-                'language[]': {
-                    required: true
-                }
+                // // Localization
+                // 'category_name[]': {
+                //     required: true
+                // },
+                // 'language[]': {
+                //     required: true
+                // } 
             },
 
             messages: {
@@ -1787,95 +1785,95 @@
                 selective_category_id: {
                     required: "Select category or enter new one"
                 },
-                sub_category_name: {
-                    required: "Please enter sub category name"
-                },
-                is_inventory: {
-                    required: "Please slect inventory"
-                },
-                is_link_asset: {
-                    required: "Please link asset"
-                },
-                cascade: {
-                    required: "Please select cascade"
-                },
-                category_code: {
-                    required: "Please enter category code"
-                },
-                trafs_duration: {
-                    number: "Transfer duration must be a number"
-                },
-                trafs_duration_type: {
-                    required: "Please select duration type"
-                },
-                end_of_life: {
-                    required: "Please enter end of life",
-                    number: "End of life must be a number"
-                },
-                end_of_life_type: {
-                    required: "Please select end of life type"
-                },
-                depreciation: {
-                    required: "Please enter depreciation",
-                    number: "Depreciation must be a number"
-                },
-                scrap_value: {
-                    required: "Please enter Scrap value",
-                    number: "Scrap value must be a number"
-                },
-                scrap_value_type: {
-                    required: "Please enter Scrap value"
-                },
-                income_tax_depreciation: {
-                    required: "Please enter income tax depreciation",
-                    number: "Income tax depreciation must be a number"
-                },
-                allow_auto: {
-                    number: "Income tax depreciation must be a number"
-                },
+                // sub_category_name: {
+                //     required: "Please enter sub category name"
+                // },
+                // is_inventory: {
+                //     required: "Please slect inventory"
+                // },
+                // is_link_asset: {
+                //     required: "Please link asset"
+                // },
+                // cascade: {
+                //     required: "Please select cascade"
+                // },
+                // category_code: {
+                //     required: "Please enter category code"
+                // },
+                // trafs_duration: {
+                //     number: "Transfer duration must be a number"
+                // },
+                // trafs_duration_type: {
+                //     required: "Please select duration type"
+                // },
+                // end_of_life: {
+                //     required: "Please enter end of life",
+                //     number: "End of life must be a number"
+                // },
+                // end_of_life_type: {
+                //     required: "Please select end of life type"
+                // },
+                // depreciation: {
+                //     required: "Please enter depreciation",
+                //     number: "Depreciation must be a number"
+                // },
+                // scrap_value: {
+                //     required: "Please enter Scrap value",
+                //     number: "Scrap value must be a number"
+                // },
+                // scrap_value_type: {
+                //     required: "Please enter Scrap value"
+                // },
+                // income_tax_depreciation: {
+                //     required: "Please enter income tax depreciation",
+                //     number: "Income tax depreciation must be a number"
+                // },
+                // allow_auto: {
+                //     number: "Income tax depreciation must be a number"
+                // },
 
-                // Activity Schedule
-                assign_based: {
-                    required: "Please select user type"
-                },
-                user_type: {
-                    required: "Please select user type"
-                },
-                assign_role: {
-                    required: "Please select assign role"
-                },
-                assignee: {
-                    required: "Please select assignee"
-                },
+                // // Activity Schedule
+                // assign_based: {
+                //     required: "Please select user type"
+                // },
+                // user_type: {
+                //     required: "Please select user type"
+                // },
+                // assign_role: {
+                //     required: "Please select assign role"
+                // },
+                // assignee: {
+                //     required: "Please select assignee"
+                // },
 
-                'activity_type[]': {
-                    required: "Please select activity type"
-                },
-                'occurs[]': {
-                    required: "Please select occurs"
-                },
-                'start_schedule_after[]': {
-                    required: "Please enter start schedule days",
-                    number: "Must be a number"
-                },
-                'activity_reminder[]': {
-                    required: "Please select activity reminder"
-                },
-                'schedule_based_on[]': {
-                    required: "Please select schedule based on"
-                },
-                'custom_days[]': {
-                    required: "Please enter custom days",
-                    number: "Must be a number"
-                },
+                // 'activity_type[]': {
+                //     required: "Please select activity type"
+                // },
+                // 'occurs[]': {
+                //     required: "Please select occurs"
+                // },
+                // 'start_schedule_after[]': {
+                //     required: "Please enter start schedule days",
+                //     number: "Must be a number"
+                // },
+                // 'activity_reminder[]': {
+                //     required: "Please select activity reminder"
+                // },
+                // 'schedule_based_on[]': {
+                //     required: "Please select schedule based on"
+                // },
+                // 'custom_days[]': {
+                //     required: "Please enter custom days",
+                //     number: "Must be a number"
+                // },
 
-                // Localization
-                'category_name[]': {
-                    required: "Please enter localized category name"
-                },
-                'language[]': {
-                    required: "Please select language"
-                }
+                // // Localization
+                // 'category_name[]': {
+                //     required: "Please enter localized category name"
+                // },
+                // 'language[]': {
+                //     required: "Please select language"
+                // }
             },
 
             errorElement: 'span',
@@ -2063,90 +2061,90 @@
                         return $('[name="parent_location_name"]').val().trim() === "";
                     }
                 },
-                is_inventory: {
-                    required: true
-                },
-                local_location_name: {
-                    required: true
-                },
-                location_code: {
-                    required: true
-                },
-                latitude: {
-                    required: true,
-                    number: true
-                },
-                longitude: {
-                    required: true
-                },
-                description: {
-                    required: true
-                },
-                'department[]': {
-                    required: true
-                },
+                // is_inventory: {
+                //     required: true
+                // },
+                // local_location_name: {
+                //     required: true
+                // },
+                // location_code: {
+                //     required: true
+                // },
+                // latitude: {
+                //     required: true,
+                //     number: true
+                // },
+                // longitude: {
+                //     required: true
+                // },
+                // description: {
+                //     required: true
+                // },
+                // 'department[]': {
+                //     required: true
+                // },
 
                 // Additional Info
-                'file[]': {
-                    required: true
-                },
-                'users[]': {
-                    required: true
-                },
+                // 'file[]': {
+                //     required: true
+                // },
+                // 'users[]': {
+                //     required: true
+                // },
 
-                // Localization
-                'location_name[]': {
-                    required: true
-                },
-                'language[]': {
-                    required: true
-                }
+                // // Localization
+                // 'location_name[]': {
+                //     required: true
+                // },
+                // 'language[]': {
+                //     required: true
+                // }
             },
 
             messages: {
                 parent_location_name: {
                     required: "Please enter parent location name"
                 },
-                is_inventory: {
-                    required: "Please select inventory option"
-                },
-                local_location_name: {
-                    required: "Please enter location name"
-                },
-                location_code: {
-                    required: "Please enter location code"
-                },
-                latitude: {
-                    required: "Please enter latitude",
-                    number: "Latitude must be a number"
-                },
-                longitude: {
-                    required: "Please enter longitude",
-                    number: "Longitude must be a number"
-                },
-                description: {
-                    required: "Please enter description"
-                },
+                // is_inventory: {
+                //     required: "Please select inventory option"
+                // },
+                // local_location_name: {
+                //     required: "Please enter location name"
+                // },
+                // location_code: {
+                //     required: "Please enter location code"
+                // },
+                // latitude: {
+                //     required: "Please enter latitude",
+                //     number: "Latitude must be a number"
+                // },
+                // longitude: {
+                //     required: "Please enter longitude",
+                //     number: "Longitude must be a number"
+                // },
+                // description: {
+                //     required: "Please enter description"
+                // },
 
-                // Additional Info
-                'department[]': {
-                    required: "Please enter department"
-                },
-                'files[]': {
-                    required: "Please enter department"
-                },
+                // // Additional Info
+                // 'department[]': {
+                //     required: "Please enter department"
+                // },
+                // 'files[]': {
+                //     required: "Please enter department"
+                // },
 
-                'users[]': {
-                    required: "Please select user"
-                },
+                // 'users[]': {
+                //     required: "Please select user"
+                // },
 
-                // Localization
-                'location_name[]': {
-                    required: "Please enter localized location name"
-                },
-                'language[]': {
-                    required: "Please select language"
-                }
+                // // Localization
+                // 'location_name[]': {
+                //     required: "Please enter localized location name"
+                // },
+                // 'language[]': {
+                //     required: "Please select language"
+                // }
             },
 
             submitHandler: function (form) {
@@ -2255,19 +2253,19 @@
                 next_status: {
                     required: true
                 },
-                'categ_id[]': {
-                    required: true
-                },
-                hold_pause_activity: {
-                    required: true
-                },
-                // Localization
-                'localization_name[]': {
-                    required: true
-                },
-                'localization_lang[]': {
-                    required: true
-                }
+                // 'categ_id[]': {
+                //     required: true
+                // },
+                // hold_pause_activity: {
+                //     required: true
+                // },
+                // // Localization
+                // 'localization_name[]': {
+                //     required: true
+                // },
+                // 'localization_lang[]': {
+                //     required: true
+                // }
             },
 
             messages: {
@@ -2280,20 +2278,20 @@
                 next_status: {
                     required: "Please select the next status."
                 },
-                'categ_id[]': {
-                    required: "Please select at least one category."
-                },
-                hold_pause_activity: {
-                    required: "Please choose hold/pause activity."
-                },
+                // 'categ_id[]': {
+                //     required: "Please select at least one category."
+                // },
+                // hold_pause_activity: {
+                //     required: "Please choose hold/pause activity."
+                // },
 
-                // Localization
-                'localization_name[]': {
-                    required: "Please enter status name for all languages."
-                },
-                'localization_lang[]': {
-                    required: "Please select at least one language."
-                }
+                // // Localization
+                // 'localization_name[]': {
+                //     required: "Please enter status name for all languages."
+                // },
+                // 'localization_lang[]': {
+                //     required: "Please select at least one language."
+                // }
             },
 
             submitHandler: function (form) {
