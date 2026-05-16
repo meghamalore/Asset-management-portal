@@ -9,7 +9,7 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">List of Barcode & QR Code</h4>
+            <h4 class="fw-bold mb-0">List of QR Code</h4>
             {{-- <button type="button" class="btn btn-primary btn-sm"> --}}
             <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#exLargeModalCondition">
                 <i class="bx bx-plus"></i> Add
@@ -34,37 +34,49 @@
                                 <th>Asset Name</th>
                                 <th>Asset Code</th>
                                 <th>QR Code</th>
-                                <th>Barcode Code</th>
+                                {{-- <th>Barcode Code</th> --}}
                                 <th>Created Date</th>
                             </tr>
 
                         </thead>
 
                         <tbody>
+                            @foreach ( $aAssetQrBarcodessets as $aAssetQrBarcodesset)                               
                             <tr>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center align-items-center gap-2">
 
                                         <!-- View -->
-                                        <a href="#" class="text-primary" title="View">
+                                        <a href="{{ route('qr.view', $aAssetQrBarcodesset->id) }}" class="text-primary" title="View">
                                             <i class="bx bx-show"></i>
                                         </a>
 
                                         <!-- Edit -->
-                                        <a href="#" class="text-warning" title="Edit" id="editConditionBtn">
+                                        {{-- <a href="#" class="text-warning" title="Edit" id="editConditionBtn">
                                             <i class="bx bx-edit"></i>
-                                        </a>
-                                        <button type="submit" class="btn p-0 border-0 text-danger" title="Delete"
-                                            id="deleteConditionBtn">
+                                        </a> --}}
+                                        <button type="button" class="btn p-0 border-0 text-danger" title="Delete" 
+                                            id="deleteQrBtn" data-id = "{{ $aAssetQrBarcodesset->id }}"  >
                                             <i class="bx bx-trash"></i>
                                         </button>
                                     </div>
                                 </td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ $aAssetQrBarcodesset->asset->asset_name ?? '-' }}</td>
+                                <td>{{ $aAssetQrBarcodesset->asset_code}}</td>
                                 {{-- <td>{{ $condition->updated_at ? $condition->updated_at->format('d/m/Y h:i a') : '-' }}</td> --}}
-                                <td></td>
+                                <td>
+                                    <img src="{{ asset($aAssetQrBarcodesset->qr_code) }}" 
+                                        width="80">
+                                </td>
+
+                                {{-- <td>
+                                    <img src="{{ asset($aAssetQrBarcodesset->barcode) }}" 
+                                        width="150">
+                                </td> --}}
+                                <td>{{ $aAssetQrBarcodesset->created_at}}</td>
+
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -150,44 +162,56 @@
 
     </div>
 
-    {{-- edit modal --}}
-    <div class="modal fade" id="editConditionModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <form id="editConditionForm">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Condition</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body">
-
-                        <input type="hidden" id="edit_condition_id" name="id">
-
-                        <div class="mb-3">
-                            <label>Condition Name</label>
-                            <input type="text" class="form-control" id="edit_condition_name" name="condition_name">
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">
-                            Update
-                        </button>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-    </div>
 @endsection
 @section('section-js')
 
 <script>
+$(document).ready(function() {
+
+    // Show Toast
+    function showToast(message, type = 'success') {
+
+        let bgClass = 'bg-success';
+        let icon = 'bx-check-circle';
+
+        if (type === 'error') {
+            bgClass = 'bg-danger';
+            icon = 'bx-error-circle';
+        } else if (type === 'warning') {
+            bgClass = 'bg-warning';
+            icon = 'bx-error';
+        }
+
+        let toastHTML = `
+            <div class="bs-toast toast fade ${bgClass}" role="alert">
+                <div class="toast-header">
+                    <i class="bx ${icon} me-2"></i>
+                    <div class="me-auto fw-semibold">Notification</div>
+                    <small>Now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">
+                    ${message}
+                </div>
+            </div>
+        `;
+
+        let container = $('#toastContainer');
+        let toastElement = $(toastHTML);
+
+        container.append(toastElement);
+
+        let toast = new bootstrap.Toast(toastElement[0], {
+            delay: 3000
+        });
+
+        toast.show();
+
+        // remove after hidden
+        toastElement.on('hidden.bs.toast', function() {
+            $(this).remove();
+        });
+    }
 
     $('#assetSelect').on('change', function () {
 
@@ -251,8 +275,6 @@
 
                 if (response.status) {
                     showToast(response.message, 'success');
-
-                    $('#conditionForm')[0].reset();
                     location.reload();
                 } else {
                     showToast(response.message, 'error');
@@ -286,5 +308,44 @@
         });
         }
     });
+
+    // Row delete code
+    $(document).on('click', '#deleteQrBtn', function () {
+
+        let id = $(this).data('id'); 
+
+        if (!confirm('Are you sure you want to delete?')) {
+            showToast('Delete cancelled by user', 'warning');
+            return;
+        }
+
+        $.ajax({
+            url: "/destroy-qr/" + id, 
+            type: "POST",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+                _method: "DELETE"
+            },
+
+            success: function (response) {
+
+                if (response.status) {
+                    showToast(response.message, 'success');
+                    setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                } else {
+                    showToast(response.message, 'error');
+                }
+            },
+
+            error: function (xhr) {
+                console.log(xhr);
+                showToast(xhr.responseJSON?.message || 'Delete failed!', 'error');
+            }
+        });
+
+    });
+});
 </script>
 @endsection

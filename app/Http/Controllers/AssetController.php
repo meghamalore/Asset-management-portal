@@ -232,7 +232,7 @@ class AssetController extends Controller
     public function index()
     {
         $categories = Category::with('subCategories:id,category_id,name')->get();
-        $asset_data = Asset::with('category','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->when(auth()->user()->role != 'admin', function ($query) {
+        $asset_data = Asset::with('category','barcode','location','status','additionalInfo','purchaseInfo','finacialInfos','assetallotedInfos','assetwarrantyInfos')->when(auth()->user()->role != 'admin', function ($query) {
         $query->whereHas('assetTransfers', function ($q) {
                 $q->where('transferred_to', auth()->id());
             });

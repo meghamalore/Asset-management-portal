@@ -80,6 +80,11 @@ class Asset extends Model
     //     return $this->belongsToMany(AssetLinks::class,'asset_id');
     // }
 
+    public function barcode()
+    {
+        return $this->hasOne(AssetQrBarcode::class, 'asset_id');
+    }
+
     public function linkedAssets()
     {
         return $this->belongsToMany(

@@ -130,6 +130,14 @@
             <div class="row g-3 mb-3 px-3">
 
                     <div class="col-lg-3 col-md-6">
+                        <button type="button" id="openMultipleQrModal"
+                            class="btn btn-outline-primary w-100">
+                            <span class="tf-icons bx bx-transfer-alt"></span>
+                            Generate Qr
+                        </button>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
                         <button type="button" id="assetTrasfBtn"
                             class="btn btn-outline-primary w-100">
                             <span class="tf-icons bx bx-transfer-alt"></span>
@@ -153,13 +161,13 @@
                         </button>
                     </div>
 
-                    <div class="col-lg-3 col-md-6">
+                    {{-- <div class="col-lg-3 col-md-6">
                         <button type="button" id="scheduleActivityBtn"
                             class="btn btn-outline-success w-100">
                             <span class="tf-icons bx bx-calendar"></span>
                             Schedule Activity
                         </button>
-                    </div>
+                    </div> --}}
 
                 </div>
             @endif
@@ -333,7 +341,7 @@
                             </tr>
 
                             <!-- FILTER -->
-                            <tr>
+                            {{-- <tr>
 
                                 @php
                                      $filterColumns = auth()->user()->role === 'admin' ? 38 : 37;
@@ -357,7 +365,7 @@
 
                                 @endfor
 
-                            </tr>
+                            </tr> --}}
 
                         </thead>
 
@@ -373,8 +381,7 @@
 
                                             <input type="checkbox"
                                                 class="asset-checkbox"
-                                                value="{{ $asset_datas->id }}">
-
+                                                value="{{ $asset_datas->id }}" data-code="{{ $asset_datas->asset_code }}" data-name="{{ $asset_datas->asset_name }}">
                                         </td>
 
                                     @endif
@@ -386,6 +393,16 @@
                                         class="text-primary">
 
                                             <i class="bx bx-show"></i>
+
+                                        </a>
+                                          <!-- Generate QR Button -->
+                                        <a href="#"
+                                            class="text-success" id="printQrBtn" 
+                                            data-id="{{$asset_datas->id}}"
+                                            data-name="{{$asset_datas->asset_name}}"
+                                            data-code="{{ $asset_datas->asset_code ?? ''}}">
+                                        
+                                            <i class="bx bx-qr"></i>
 
                                         </a>
 
@@ -571,6 +588,244 @@
         </div>
         <!--/ Bordered Table -->
         <!--/ Basic Bootstrap Table -->
+    </div>
+
+    <!-- QR Modal -->
+    <div class="modal fade" id="printQrModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-sm" role="document">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Generate QR Code</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <form id="qrBarcodeForm">
+                    @csrf
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" id="assetId" name="id" readonly />
+
+                            <label class="form-label">
+                                Asset Name
+                            </label>
+                            <input type="text" class="form-control" id="assetName" name="asset_name" readonly />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label class="form-label">
+                                Asset Code
+                            </label>
+
+                            <input type="text" class="form-control" id="assetCode" name="asset_code" readonly />
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">
+
+                            Close
+
+                        </button>
+
+                        <button type="submit" class="btn btn-primary btn-sm">
+
+                            Save
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- QR Preview Modal -->
+    <div class="modal fade" id="qrPreviewModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        QR Preview
+                    </h5>
+
+                    <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body text-center" id="qrPrintArea">
+
+                    <h5 id="previewAssetName"></h5>
+
+                    <p id="previewAssetCode"></p>
+
+                    <div id="previewQrImage"></div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                        class="btn btn-secondary btn-sm"
+                        data-bs-dismiss="modal">
+
+                        Close
+
+                    </button>
+
+                    <button type="button"
+                        class="btn btn-primary btn-sm"
+                        id="printQr">
+
+                        Print
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Multiple QR Generate Button -->
+    <!-- Modal -->
+    <div class="modal fade" id="multipleQrModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Generate Multiple QR Codes
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <table class="table table-bordered">
+
+                        <thead>
+
+                            <tr>
+
+                                <th width="50">
+                                    #
+                                </th>
+
+                                <th>
+                                    Asset Code
+                                </th>
+
+                                <th>
+                                    Asset Name
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="selectedAssetsBody">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                    <button type="button" class="btn btn-primary" id="submitMultipleQrBtn">
+                        Submit
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Generated QR Modal -->
+    <div class="modal fade" id="generatedQrModal" tabindex="-1" aria-hidden="true">
+
+        <div class="modal-dialog modal-xl">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Generated QR Codes
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Print Area -->
+                    <div class="row" id="generatedQrList">
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                    <button type="button" class="btn btn-primary" id="printGeneratedQrBtn">
+
+                        <i class="bx bx-printer"></i>
+                        Print QR
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
     <!-- Extra Large Defult view Modal -->
@@ -2157,6 +2412,406 @@
                     }
                 });
             }
+        });
+        
+
+        $(document).on('click', '#printQrBtn', function () {
+
+            let assetName = $(this).data('name');
+            let assetCode = $(this).data('code');
+            let assetId = $(this).data('id');
+
+            // Set values in input fields
+            $('#assetName').val(assetName ?? 'Not Found');
+
+            $('#assetCode').val(assetCode ?? 'Not Found');
+            $('#assetId').val(assetId ?? 'Not Found');
+
+            // Show modal
+            $('#printQrModal').modal('show');
+
+        });
+
+        $(document).on('click', '#generateMultipleQrBtn', function () {
+
+            let assetIds = [];
+
+            $('.asset-checkbox:checked').each(function () {
+                assetIds.push($(this).val());
+            });
+
+            if (assetIds.length === 0) {
+                showToast('Please select assets', 'error');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ url('/multiple-qr-generate') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    asset_ids: assetIds
+                },
+
+                success: function (response) {
+
+                    if (response.status) {
+
+                        if (response.generated.length > 0) {
+                            showToast(
+                                response.generated.length + ' QR Codes Generated',
+                                'success'
+                            );
+                        }
+
+                        if (response.already_exists.length > 0) {
+                            showToast(
+                                response.already_exists.length + ' Already Generated',
+                                'warning'
+                            );
+                        }
+                    }
+                }
+            });
+
+        });
+
+        $('#qrBarcodeForm').validate({
+
+            ignore: ":hidden:not(.force-validate)",
+
+            rules: {
+                asset_id: {
+                    required: true
+                },
+                asset_code: {
+                    required: true
+                }
+            },
+
+            messages: {  
+                asset_id: {
+                    required: "Please enter the asset name."
+                },
+                asset_code: {
+                    required: "Please enter the asset code."
+                }
+            },
+
+            submitHandler: function (form) {
+                let formData = new FormData(form);
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                url: "{{ route('store.qr') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+
+                //  BEFORE SEND
+                beforeSend: function () {
+
+                    // Disable submit button
+                    $('#qrBarcodeForm button[type="submit"]').prop('disabled', true);
+
+                    // Change button text (optional)
+                    $('#qrBarcodeForm button[type="submit"]').html(
+                        `<span class="spinner-border spinner-border-sm me-2"></span> Saving...`
+                    );
+                },
+
+                //  SUCCESS
+                success: function (response) {
+
+                    // QR Already Generated
+                    if (response.already_generated) {
+
+                        showToast(response.message, 'info');
+
+                        // Hide Generate Modal
+                        $('#printQrModal').modal('hide');
+
+                        // Set Preview Data
+                        $('#previewAssetName').text(response.data.asset_name);
+
+                        $('#previewAssetCode').text(response.data.asset_code);
+
+                        $('#previewQrImage').html(`
+                            <img src="${response.data.qr}" class="img-fluid">
+                        `);
+
+                        // Open Preview Modal
+                        $('#qrPreviewModal').modal('show');
+
+                        return;
+                    }
+
+                    // New QR Generated
+                    if (response.status) {
+
+                        showToast(response.message, 'success');
+
+                        // Hide Generate Modal
+                        $('#printQrModal').modal('hide');
+
+                        // Set Preview Data
+                        $('#previewAssetName').text(response.data.asset_name);
+
+                        $('#previewAssetCode').text(response.data.asset_code);
+
+                        $('#previewQrImage').html(`
+                            <img src="${response.data.qr}" class="img-fluid">
+                        `);
+
+                        // Open Preview Modal
+                        $('#qrPreviewModal').modal('show');
+
+                    } else {
+
+                        showToast(response.message, 'error');
+
+                    }
+                },
+
+                //  ERROR
+                error: function (xhr) {
+
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+
+                        $.each(errors, function (field, messages) {
+                            showToast(messages[0], 'error'); // replaced toastr
+                        });
+
+                    } else {
+                        showToast(xhr.responseJSON.message || 'Something went wrong!', 'error');
+                    }
+                },
+
+                //  AFTER COMPLETE (always runs)
+                complete: function () {
+
+                    // Enable button again
+                    $('#qrBarcodeForm button[type="submit"]').prop('disabled', false);
+
+                    // Restore button text
+                    $('#qrBarcodeForm button[type="submit"]').html('Submit');
+                }
+            });
+            }
+        });
+
+        // Print
+
+        $(document).on('click', '#openMultipleQrModal', function () {
+
+            let html = '';
+            let count = 1;
+
+            $('.asset-checkbox:checked').each(function () {
+
+                let id = $(this).val();
+                let code = $(this).data('code');
+                let name = $(this).data('name');
+
+                html += `
+                    <tr>
+                        <td>
+                            ${count}
+                            <input type="hidden"
+                                class="selected-asset-id"
+                                value="${id}">
+                        </td>
+
+                        <td>${code}</td>
+
+                        <td>${name}</td>
+                    </tr>
+                `;
+
+                count++;
+
+            });
+
+            if (html == '') {
+
+                showToast('Please select assets', 'error');
+                return;
+
+            }
+
+            $('#selectedAssetsBody').html(html);
+
+            $('#multipleQrModal').modal('show');
+
+        });
+
+        // Submit Multiple QR Generate
+        $(document).on('click', '#submitMultipleQrBtn', function () {
+
+            let assetIds = [];
+
+            $('.selected-asset-id').each(function () {
+
+                assetIds.push($(this).val());
+
+            });
+
+            $.ajax({
+
+                url: "{{ url('/multiple-qr-generate') }}",
+                type: "POST",
+
+                data: {
+
+                    _token: "{{ csrf_token() }}",
+                    asset_ids: assetIds
+
+                },
+
+                success: function (response) {
+
+                    let html = '';
+
+                    // Generated QR
+                    if (response.generated_assets.length > 0) {
+
+                        response.generated_assets.forEach(function (item) {
+
+                            html += `
+
+                                <div class="col-md-4 mb-4">
+
+                                    <div class="card shadow-sm border-0">
+
+                                        <div class="card-body text-center">
+
+                                            <img src="${item.qr_code}"
+                                                class="img-fluid mb-3"
+                                                style="height:180px; object-fit:contain;">
+
+                                            <h5 class="mb-1 qr-asset-name">
+                                                ${item.asset_name}
+                                            </h5>
+
+                                            <p class="text-muted mb-0 qr-asset-code">
+                                                ${item.asset_code}
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        });
+
+                    }
+
+
+                    // Already Generated QR
+                    if (response.already_generated.length > 0) {
+
+                        response.already_generated.forEach(function (item) {
+
+                            html += `
+
+                                <div class="col-md-4 mb-4 generated-qr-item">
+
+                                    <div class="card border-warning">
+
+                                        <div class="card-body text-center">
+
+                                            <img src="${item.qr_code}"
+                                                class="img-fluid mb-3"
+                                                style="height:180px; object-fit:contain;">
+
+                                            <h5 class="mb-1">
+                                                ${item.asset_name}
+                                            </h5>
+
+                                            <p class="text-muted">
+                                                ${item.asset_code}
+                                            </p>
+
+                                            <span class="badge bg-warning">
+                                                Already Generated
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        });
+
+                    }
+
+                    $('#generatedQrList').html(html);
+
+                    // Hide Selection Modal
+                    $('#multipleQrModal').modal('hide');
+
+                    // Show QR Preview Modal
+                    $('#generatedQrModal').modal('show');
+
+                }
+
+            });
+
+        });
+
+        $(document).on('click', '#printGeneratedQrBtn', function () {
+
+            let qrData = [];
+
+            $('.generated-qr-item').each(function () {
+
+                qrData.push({
+
+                    asset_name: $(this).find('.qr-asset-name').text(),
+
+                    asset_code: $(this).find('.qr-asset-code').text(),
+
+                    qr_image: $(this).find('img').attr('src')
+
+                });
+
+            });
+
+            $.ajax({
+
+                url: '/download-pdf',
+
+                type: 'POST',
+
+                data: {
+
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+
+                    qrData: JSON.stringify(qrData)
+
+                },
+
+                success: function(response) {
+
+                    console.log(response);
+
+                }
+
+            });
+
         });
 
         //  Select2 Init
