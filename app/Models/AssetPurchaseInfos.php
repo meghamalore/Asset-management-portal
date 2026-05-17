@@ -17,7 +17,7 @@ class AssetPurchaseInfos extends Model
         'purchase_price',
         'is_self_owned',
         'end_of_life',
-        // 'asset_po_number',
+        'asset_po_number',
     ];
 
     public function asset()

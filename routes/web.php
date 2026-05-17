@@ -86,8 +86,8 @@ Route::get('/add-ticket-status', [HelpDeskSettingController::class, 'insert'])->
 Route::get('/add-ticket-type', [HelpDeskSettingController::class, 'insert'])->name('add-ticket-type');
 // Route::get('/list-ticket-type', [HelpDeskSettingController::class, 'index_type'])->name('list.ticket.type');
 
-Route::post('/api/assets/bulk-fetch', [AssetController::class, 'bulkFetch'])->name('assets.bulk-fetch');
-Route::post('/api/assets/bulk-update', [AssetController::class, 'bulkUpdate'])->name('assets.bulkUpdate');
+Route::get('/bulk-fetch', [AssetController::class, 'bulkFetch'])->name('assets.bulk-fetch');
+Route::post('/bulk-update', [AssetController::class, 'bulkUpdate'])->name('assets.bulkUpdate');
 
 Route::get('/add-ticket-status', [TicketStatusController::class, 'add'])->name('add.ticket.status');
 Route::post('/store-ticket-status', [TicketStatusController::class, 'store'])->name('store-ticket-status');
@@ -109,6 +109,7 @@ Route::get('/import-asset', [ImportDataController::class, 'add'])->name('import-
 Route::get('/template-download', [ImportDataController::class, 'downloadTemplate'])->name('assets.sample.download');
 Route::post('/import-assets', [ImportDataController::class, 'import'])->name('asset.import');
 Route::get('/asset/download-latest', [ImportDataController::class, 'downloadLatest'])->name('asset.download.latest');
+Route::get('/excel-preview', [ImportDataController::class, 'showPreview'])->name('excel.preview');
 
 Route::get('/import-ticket', [ImportDataController::class, 'addTicket'])->name('import-ticket');
 Route::get('/template-download-ticket', [ImportDataController::class, 'downloadTemplateTicket'])->name('ticket.sample.download');

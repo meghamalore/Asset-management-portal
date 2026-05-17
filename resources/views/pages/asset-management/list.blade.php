@@ -87,43 +87,71 @@
         <!-- Basic Bootstrap Table -->
         <!-- Bordered Table -->
         <div class="card">
-            <div class="row mb-3">
-                <div class="col-sm-3">
+            <div class="row mb-3 p-3">
+                <!-- <div class="col-sm-3">
                     <h5 class="card-header">Assets List</h5>
-                </div>
-                <div class="col-sm-3 my-auto">
-                    <select id="viewSelect" class="form-select">
-                        <option value="">Select Option</option>
-                        @foreach($views as $view)
-                            <option value="{{ $view->id }}">{{ $view->view_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-sm-3 my-auto">
-                    <button type="button" class="btn btn-icon btn-warning" data-bs-toggle="modal"
-                        data-bs-target="#exLargeModaldefaultview">
-                        <span class="tf-icons bx bx-plus"></span>
-                    </button>
-                    <button type="button" id="deleteViewBtn" class="btn btn-icon btn-danger">
-                        <span class="tf-icons bx bx-trash"></span>
-                    </button>
-                </div>
-                <div class="col-sm-3">
-                    <div class="demo-inline-spacing">
-                        {{-- <button type="button" class="btn btn-icon btn-dark" data-bs-toggle="modal"
-                            data-bs-target="#exLargeModalAddWidget">
-                            <span class="tf-icons bx bx-bar-chart-alt-2"></span>
-                        </button> --}}
-                        <a href="{{ route('assets.export') }}" class="btn btn-icon btn-info">
-                            <span class="tf-icons bx bx-download"></span>
-                        </a>
-                        <button type="button" id="refreshTableBtn" class="btn btn-icon refreshTableBtn btn-primary">
-                            <span class="tf-icons bx bx-refresh"></span>
-                        </button>
-                        {{-- <button type="button" class="btn btn-icon btn-primary">
-                            <span class="tf-icons bx bx-grid-alt"></span>
-                        </button> --}}
+                </div> -->
+                <div class="row align-items-center">
+
+                    <!-- View Select -->
+                    <div class="col-sm-3">
+                        <select id="viewSelect" class="form-select">
+                            <option value="">Select Option</option>
+
+                            @foreach($views as $view)
+                                <option value="{{ $view->id }}">
+                                    {{ $view->view_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
+
+                    <!-- Add/Delete Buttons -->
+                    <div class="col-sm-3">
+                        <div class="d-flex gap-2">
+
+                            <button type="button"
+                                class="btn btn-warning"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exLargeModaldefaultview">
+
+                                <span class="tf-icons bx bx-plus"></span>
+                                Add View
+                            </button>
+
+                            <button type="button"
+                                id="deleteViewBtn"
+                                class="btn btn-danger">
+
+                                <span class="tf-icons bx bx-trash"></span>
+                                Delete
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="col-sm-6">
+                        <div class="d-flex justify-content-sm-end gap-2 mt-2 mt-sm-0">
+
+                            <a href="{{ route('assets.export') }}"
+                                class="btn btn-info">
+
+                                <span class="tf-icons bx bx-download"></span>
+                                Excel
+                            </a>
+
+                            <button type="button"
+                                id="refreshTableBtn"
+                                class="btn btn-primary refreshTableBtn">
+
+                                <span class="tf-icons bx bx-refresh"></span>
+                                Refresh
+                            </button>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
             @if(auth()->user()->role === 'admin')
@@ -380,8 +408,13 @@
                                         <td class="text-center">
 
                                             <input type="checkbox"
-                                                class="asset-checkbox"
-                                                value="{{ $asset_datas->id }}" data-code="{{ $asset_datas->asset_code }}" data-name="{{ $asset_datas->asset_name }}">
+                                               class="rowCheckbox"
+                                               value="{{ $asset_datas->id }}"
+                                                data-code="{{ $asset_datas->asset_code }}"
+                                                data-name="{{ $asset_datas->asset_name }}"
+                                                data-asset-pur-price="{{ $asset_datas->purchaseInfo->purchase_price ?? '' }}"
+                                                data-location-id="{{ $asset_datas->location_id }}"
+                                                data-sub-location-id="{{ $asset_datas->sub_location_id }}">
                                         </td>
 
                                     @endif
@@ -395,6 +428,14 @@
                                             <i class="bx bx-show"></i>
 
                                         </a>
+
+                                        <a href="#"
+                                            class="text-info editAssetBtn"
+                                            data-id="{{$asset_datas->id}}">
+
+                                            <i class="bx bx-edit"></i>
+
+                                        </a>
                                           <!-- Generate QR Button -->
                                         <a href="#"
                                             class="text-success" id="printQrBtn" 
@@ -405,6 +446,7 @@
                                             <i class="bx bx-qr"></i>
 
                                         </a>
+
 
                                     </td>
 
@@ -1158,23 +1200,21 @@
                                         <option value="18">Gst 18%</option>
                                     </select>
                             </div>
-                            <label class="col-sm-2 col-form-label">Upload Files</label>
+                            <!-- <label class="col-sm-2 col-form-label">Upload Files</label>
                             <div class="col-sm-4">
                                         <label class="btn btn-sm btn-primary mb-0">
                                             <i class="bx bx-upload me-1"></i> Upload Files
                                             <input type="file" id="fileUpload" name="files[]" multiple hidden>
                                         </label>
-                                        <!-- Loader shown during file processing -->
                                         <div id="fileLoader" class="mt-2 d-none">
                                             <div class="spinner-border spinner-border-sm text-primary" role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
                                             <span class="ms-2 text-muted small">Uploading...</span>
                                         </div>
-                                        <!-- Container for multiple uploaded filenames -->
                                         <div id="fileList" class="mt-2"></div>
                                         <input type="hidden" id="uploadedFilesData" name="uploaded_files">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -2217,106 +2257,93 @@
         </div>
     </div>
 
-    <!-- Extra Large Update Asset Modal -->
+    <!-- Extra Large Update Multiple Assets Modal -->
     <div class="modal fade" id="exLargeModalMultiUpdateAsset" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">
-                        <span class="tf-icons bx bx-edit"></span>&​nbsp; Bulk Update Assets
-                        <span id="selectedCountBadge" class="badge bg-primary ms-2">0 assets selected</span>
+                        Update Assets
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" tabindex="-1">
+                <form id="bulkUpdateForm">
+                    @csrf
+                    <div class="modal-body" tabindex="-1">
 
-                    <!-- Unsaved Changes Alert -->
-                    <div id="unsavedBadge" class="alert alert-warning alert-dismissible fade show mb-3" style="display: none;">
-                        <span class="tf-icons bx bx-error-circle"></span>
-                        <strong>You have unsaved changes!</strong> Click "Save Changes" to persist your edits.
-                        <button type="button" class="btn-close" onclick="$('#unsavedBadge').hide();"></button>
-                    </div>
+                        <!-- Update Actions -->
+                        <div class="card mb-3">
+                            <div class="card-body p-0">
 
-                    <!-- Update Actions -->
-                    <div class="card mb-3">
-                        <div class="card-header py-2 d-flex justify-content-between align-items-center bg-light">
-                            <div class="text-muted small fw-bold">
-                                <i class="bx bx-info-circle"></i>
-                                Click any cell to edit. Fields with dropdown/date support will show popup.
-                            </div>
-                            <div class="d-flex gap-2">
-                                <div class="btn-group">
-                                    <input type="file" id="excelUploadInput" accept=".xlsx,.xls,.csv" style="display: none;">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="$('#excelUploadInput').click()">
-                                        <i class="bx bx-upload"></i> Upload Excel
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="btnDownloadExcel">
-                                        <i class="bx bx-download"></i> Download
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-outline-info" id="btnSelectFields">
-                                        <i class="bx bx-grid-small"></i> Select Fields
-                                    </button>
+                                <!-- Bulk Update Table -->
+                                <div class="table-responsive" style="max-height: 500px; overflow: auto;">
+                                    <table class="table table-bordered table-sm bulk-update-table" id="bulkUpdateTable">
+                                        <thead class="bg-light sticky-top">
+                                            <tr id="bulkUpdateHeaderRow">
+                                                <th>Asset Code</th>
+                                                <th>Asset Name</th>
+                                                <th>Category</th>
+                                                <th>Location</th>
+                                                <th>Status</th>
+                                                <th>CWIP Invoice Id</th>
+                                                <th>Condition</th>
+                                                <th>Brand</th>
+                                                <th>Model</th>
+                                                <!-- <th>Linked Asset</th> -->
+                                                <th>Description</th>
+                                                <th>Serial No</th>
+                                                <th>Mac Address</th>
+                                                <!-- <th>Vendor Name</th> -->
+                                                <th>PO Number</th>
+                                                <th>Invoice Date</th>
+                                                <th>Invoice No</th>
+                                                <th>Purchase Date</th>
+                                                <th>Purchase Price</th>
+                                                <th>Self Owned / Partner</th>
+                                                <th>Partner</th>
+                                                <th>End of Life</th>
+                                                <th>Capitalization Date</th>
+                                                <th>Depreciation %</th>
+                                                <th>Accumulated Depreciation</th>
+                                                <th>Scrap Value</th>
+                                                <th>Income Tax Dep%</th>
+                                                <th>Department</th>
+                                                <th>Transferred To</th>
+                                                <th>Allotted Upto</th>
+                                                <th>Remarks</th>
+                                                <th>AMC Vendor</th>
+                                                <th>Warranty Vendor</th>
+                                                <th>Insurance Start Date</th>
+                                                <th>Insurance End Date</th>
+                                                <th>AMC Start Date</th>
+                                                <th>AMC End Date</th>
+                                                <th>Warranty End Date</th>
+                                                <th>Warranty End Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bulkUpdateBody">
+                                            <tr class="text-center text-muted">
+                                                <td colspan="40" class="py-4">
+                                                    <i class="bx bx-info-circle fs-4 d-block mb-2"></i>
+                                                    Select assets and click "Update Asset" to load data
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body p-0">
 
-                            <!-- Bulk Update Table -->
-                            <div class="table-responsive" style="max-height: 500px; overflow: auto;">
-                                <table class="table table-bordered table-sm bulk-update-table" id="bulkUpdateTable">
-                                    <thead class="bg-light sticky-top">
-                                        <tr id="bulkUpdateHeaderRow">
-                                            <th class="first-col">#</th>
-                                            <th class="second-col">Asset Code</th>
-                                            <th>Asset Name</th>
-                                            <th>Category</th>
-                                            <th>Location</th>
-                                            <th>Status</th>
-                                            <th>CWIP Invoice Id</th>
-                                            <th>Condition</th>
-                                            <th>Brand</th>
-                                            <th>Model</th>
-                                            <th>Linked Asset</th>
-                                            <th>Description</th>
-                                            <th>Serial No</th>
-                                            <th>Vendor Name</th>
-                                            <th>PO Number</th>
-                                            <th>Invoice Date</th>
-                                            <th>Invoice No</th>
-                                            <th>Purchase Date</th>
-                                            <th>Purchase Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="bulkUpdateBody">
-                                        <tr class="text-center text-muted">
-                                            <td colspan="40" class="py-4">
-                                                <i class="bx bx-info-circle fs-4 d-block mb-2"></i>
-                                                Select assets and click "Update Asset" to load data
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Footer Actions inside card -->
-                            <div class="d-flex justify-content-between align-items-center mt-3 p-3">
-                                <div class="text-muted small">
-                                    <i class="bx bx-info-circle"></i> Max 100 assets can be edited at once
-                                </div>
-                                <div id="saveStatus" class="text-muted small"></div>
-                            </div>
-                        </div>
                     </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="btnCloseBulkUpdate">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary" id="btnSaveBulkUpdate" disabled>
-                        <i class="bx bx-save"></i> Save Changes
-                    </button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="btnCloseBulkUpdate">
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btnSaveBulkUpdate" disabled>
+                            <i class="bx bx-save"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -2345,6 +2372,95 @@
             width: '100%'
         }).next('.select2-container').css('width', '100%');
 
+        $('#disposeBtn').on('click', function () {
+
+            let checked = $('.rowCheckbox:checked');
+
+            if (checked.length === 0) {
+                showToast('Please select at least one asset');
+                return;
+            }
+
+            let container = $('#assetSections');
+            container.html(''); // clear old
+
+            let index = 1;
+
+            checked.each(function () {
+
+                let checkbox = $(this);
+                let name = checkbox.data('name');
+                let code = checkbox.data('code');
+                let price = checkbox.data('asset-pur-price');
+                let locationId = checkbox.data('location-id');
+                let subLocationId = checkbox.data('sub-location-id');
+
+                let section = `
+                <div class="card mb-3">
+                    <h6 class="card-header">Section ${index}</h6>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Asset Code</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="assets[${index}][asset_code]" value="${code}">
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Asset Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="assets[${index}][asset_name]" value="${name}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Sold value</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control sold_value"  name="assets[${index}][sold_value]">
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Purchase Price</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control pur_price" name="assets[${index}][purchase_price]" value="${price}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Price Difference</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control price_diff" name="assets[${index}][price_difference]" readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3 mx-2">
+                        <label class="col-sm-2 col-form-label">Location</label>
+                        <div class="col-sm-4">
+                            <select class="form-select location" name="assets[${index}][location_id]">
+                                ${getLocationOptions(locationId)}
+                            </select>
+                        </div>
+
+                        <label class="col-sm-2 col-form-label">Sub Location</label>
+                        <div class="col-sm-4">
+                            <select class="form-select sub_location" name="assets[${index}][sub_location_id]">
+                                ${getSubLocationOptions(subLocationId)}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                container.append(section);
+
+                // Set selected values
+                container.find('.location').last().val(locationId);
+                container.find('.sub_location').last().val(subLocationId);
+
+                index++;
+            });
+
+            // Open modal
+            let modal = new bootstrap.Modal(document.getElementById('exLargeModalAssetDisposal'));
+            modal.show();
+        });
 
         $('#assetDispoForm').validate({
 
@@ -2387,7 +2503,11 @@
                     success: function (response) {
                         if (response.status) {
                             showToast(response.message, 'success');
+                            setTimeout(function () {
 
+                                location.reload();
+
+                            }, 1000);
                             $('#assetForm')[0].reset();
                             $('.select2').val(null).trigger('change');
                         } else {
@@ -2414,7 +2534,6 @@
             }
         });
         
-
         $(document).on('click', '#printQrBtn', function () {
 
             let assetName = $(this).data('name');
@@ -2436,7 +2555,7 @@
 
             let assetIds = [];
 
-            $('.asset-checkbox:checked').each(function () {
+            $('.rowCheckbox:checked').each(function () {
                 assetIds.push($(this).val());
             });
 
@@ -2614,7 +2733,7 @@
             let html = '';
             let count = 1;
 
-            $('.asset-checkbox:checked').each(function () {
+            $('.rowCheckbox:checked').each(function () {
 
                 let id = $(this).val();
                 let code = $(this).data('code');
@@ -3195,177 +3314,10 @@
             return options;
         }
 
-        $('#disposeBtn').on('click', function () {
-
-            let checked = $('.asset-checkbox:checked');
-
-            if (checked.length === 0) {
-                showToast('Please select at least one asset');
-                return;
-            }
-
-            let container = $('#assetSections');
-            container.html(''); // clear old
-
-            let index = 1;
-
-            checked.each(function () {
-
-                let row = $(this).closest('tr');
-
-                let name = row.data('asset-name');
-                let code = row.data('asset-code');
-                let price = row.data('asset-pur-price');
-                let locationId = row.data('location-id');
-                let subLocationId = row.data('sub-location-id');
-
-                let section = `
-                <div class="card mb-3">
-                    <h6 class="card-header">Section ${index}</h6>
-
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label">Asset Code</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="assets[${index}][asset_code]" value="${code}">
-                        </div>
-
-                        <label class="col-sm-2 col-form-label">Asset Name</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control" name="assets[${index}][asset_name]" value="${name}">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label">Sold value</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control sold_value"  name="assets[${index}][sold_value]">
-                        </div>
-
-                        <label class="col-sm-2 col-form-label">Purchase Price</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control pur_price" name="assets[${index}][purchase_price]" value="${price}">
-                        </div>
-                    </div>
-
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label">Price Difference</label>
-                        <div class="col-sm-4">
-                            <input type="text" class="form-control price_diff" name="assets[${index}][price_difference]" readonly>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3 mx-2">
-                        <label class="col-sm-2 col-form-label">Location</label>
-                        <div class="col-sm-4">
-                            <select class="form-select location" name="assets[${index}][location_id]">
-                                ${getLocationOptions(locationId)}
-                            </select>
-                        </div>
-
-                        <label class="col-sm-2 col-form-label">Sub Location</label>
-                        <div class="col-sm-4">
-                            <select class="form-select sub_location" name="assets[${index}][sub_location_id]">
-                                ${getSubLocationOptions(subLocationId)}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                `;
-
-                container.append(section);
-
-                // Set selected values
-                container.find('.location').last().val(locationId);
-                container.find('.sub_location').last().val(subLocationId);
-
-                index++;
-            });
-
-            // Open modal
-            let modal = new bootstrap.Modal(document.getElementById('exLargeModalAssetDisposal'));
-            modal.show();
-        });
-
-        $('#updateBtn').on('click', function () {
-
-            let checked = $('.asset-checkbox:checked'); //  define it
-
-            if (checked.length === 0) {
-                showToast('Please select at least one asset');
-                return;
-            }
-
-            if (checked.length > 1) {
-                // Trigger bulk update modal for multiple assets
-                triggerBulkUpdate();
-                return;
-            }
-
-            let id = checked.val(); //  now works
-            loadAssetData(id);
-        });
-
-        // Function to trigger bulk update
-        function triggerBulkUpdate() {
-            if (isSavingBulkUpdate) {
-                showToast('Please wait, previous save is still processing...', 'warning');
-                return;
-            }
-
-            let checked = $('.asset-checkbox:checked');
-            if (checked.length === 0) {
-                showToast('Please select at least one asset to update', 'warning');
-                return;
-            }
-            if (checked.length > BULK_UPDATE_MAX_ASSETS) {
-                showToast(`Maximum ${BULK_UPDATE_MAX_ASSETS} assets can be edited at once`, 'error');
-                return;
-            }
-
-            let assetIds = [];
-            checked.each(function() {
-                let row = $(this).closest('tr');
-                let assetId = row.data('asset-id') || row.find('td:eq(3)').text();
-                if (assetId) assetIds.push(assetId);
-            });
-
-            $('#bulkUpdateBody').html('<tr><td colspan="40" class="text-center py-4"><div class="spinner-border"></div><p class="mt-2">Loading assets...</p></td></tr>');
-
-            let modal = new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset'));
-            modal.show();
+        function loadAssetData(assetId) {
 
             $.ajax({
-                url: "{{ route('assets.bulk-fetch') }}?_t=" + new Date().getTime(),
-                type: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    asset_ids: assetIds
-                },
-                success: function(response) {
-                    if (response.status && response.assets) {
-                        selectedAssetIds = assetIds;
-                        editedData = JSON.parse(JSON.stringify(response.assets));
-                        originalData = JSON.parse(JSON.stringify(response.assets));
-                        visibleFields = null; // Reset to show all columns
-                        $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
-                        renderBulkUpdateGrid();
-                        hasUnsavedChanges = false;
-                        $('#unsavedBadge').hide();
-                        $('#btnSaveBulkUpdate').prop('disabled', true);
-                    } else {
-                        showToast('Failed to load assets', 'error');
-                    }
-                },
-                error: function(xhr) {
-                    showToast('Error loading assets: ' + xhr.statusText, 'error');
-                }
-            });
-        }
-
-        function loadAssetData(id) {
-
-            $.ajax({
-                url: '/get-asset-details/' + id,
+                url: '/get-asset-details/' + assetId,
                 type: 'GET',
 
                 success: function (res) {
@@ -3463,10 +3415,510 @@
             });
         }
 
-        // scheduleActivityBtn
-         $('#scheduleActivityBtn').on('click', function () {
+        $(document).on('click', '.editAssetBtn', function (e) {
 
-            let checked = $('.asset-checkbox:checked');
+            e.preventDefault();
+
+            let assetId = $(this).data('id');
+
+            $('#asset_id').val(assetId);
+
+            loadAssetData(assetId);
+
+        });
+
+        $(document).on('click', '#updateBtn', function () {
+
+            let ids = [];
+
+            $('.rowCheckbox:checked').each(function () {
+
+                ids.push($(this).val());
+
+            });
+
+            if (ids.length === 0) {
+
+                showToast('Please select at least one record', 'error');
+                return;
+            }
+
+             if (ids.length === 1) {
+
+                let assetId = ids[0];
+
+                // optional hidden input
+                $('#asset_id').val(assetId);
+
+                // open single update modal
+                $('#exLargeModalUpdateAsset').modal('show');
+
+                // optional fetch single asset data
+                loadAssetData(assetId);
+
+                return;
+            }
+
+            $.ajax({
+
+                url: '/bulk-fetch',
+                type: 'GET',
+
+                data: {
+                    asset_ids: ids
+                },
+
+                success: function (res) {
+
+                    if (!res.status) {
+
+                        showToast(res.message, 'error');
+                        return;
+                    }
+
+                    let html = '';
+
+                    $.each(res.assets, function (index, asset) {
+
+                    // Category Options
+                        let categoryOptions = '';
+
+                        $.each(res.categories, function (i, category) {
+
+                            let selected = asset.category_id == category.id ? 'selected' : '';
+
+                            categoryOptions += `
+                                <option value="${category.id}" ${selected}>
+                                    ${category.name}
+                                </option>
+                            `;
+                        });
+
+                        // Location Options
+                        let locationOptions = '';
+
+                        $.each(res.locations, function (i, location) {
+
+                            let selected = asset.location_id == location.id ? 'selected' : '';
+
+                            locationOptions += `
+                                <option value="${location.id}" ${selected}>
+                                    ${location.name}
+                                </option>
+                            `;
+                        });
+
+                        // Status Options
+                        let statusOptions = '';
+
+                        $.each(res.statuses, function (i, status) {
+
+                            let selected = asset.status_id == status.id ? 'selected' : '';
+
+                            statusOptions += `
+                                <option value="${status.id}" ${selected}>
+                                    ${status.status_name}
+                                </option>
+                            `;
+                        });
+
+                        html += `
+                            <tr>
+
+                                <td>
+                                    <input type="hidden"
+                                        name="asset_ids[]"
+                                        value="${asset.id}">
+
+                                    ${asset.asset_code ?? ''}
+                                </td>
+
+                                <!-- Asset Name -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="asset_name[${asset.id}]"
+                                        value="${asset.asset_name ?? ''}">
+                                </td>
+
+                                <!-- Category -->
+                                <td>
+                                    <select class="form-select form-select-sm"
+                                            name="category_id[${asset.id}]">
+
+                                        ${categoryOptions}
+
+                                    </select>
+                                </td>
+
+                                <!-- Location -->
+                                <td>
+                                    <select class="form-select form-select-sm"
+                                            name="location_id[${asset.id}]">
+
+                                        ${locationOptions}
+
+                                    </select>
+                                </td>
+
+                                <!-- Status -->
+                                <td>
+                                    <select class="form-select form-select-sm"
+                                            name="status_id[${asset.id}]">
+
+                                        ${statusOptions}
+
+                                    </select>
+                                </td>
+
+                                <!-- CWIP Invoice -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="cwip_invoice_id[${asset.id}]"
+                                        value="${asset.cwip_invoice_id ?? ''}">
+                                </td>
+
+                                <!-- Condition -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="condition[${asset.id}]"
+                                        value="${asset.additional_info?.condition ?? ''}">
+                                </td>
+
+                                <!-- Brand -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="brand[${asset.id}]"
+                                        value="${asset.additional_info?.brand ?? ''}">
+                                </td>
+
+                                <!-- Model -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="model[${asset.id}]"
+                                        value="${asset.additional_info?.model ?? ''}">
+                                </td>
+
+                                <!-- Description -->
+                                <td>
+                                    <textarea class="form-control form-control-sm"
+                                            name="description[${asset.id}]">${asset.additional_info?.description ?? ''}</textarea>
+                                </td>
+
+                                <!-- Serial No -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="serial_no[${asset.id}]"
+                                        value="${asset.additional_info?.serial_no ?? ''}">
+                                </td>
+
+                                <!-- MAC Address -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="mac_address[${asset.id}]"
+                                        value="${asset.additional_info?.mac_address ?? ''}">
+                                </td>
+
+                                <!-- PO Number -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="po_number[${asset.id}]"
+                                        value="${asset.purchaseInfo?.asset_po_number ?? ''}">
+                                </td>
+
+                                <!-- Invoice Date -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="invoice_date[${asset.id}]"
+                                        value="${asset.purchaseInfo?.invoice_date ?? ''}">
+                                </td>
+
+                                <!-- Invoice No -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="invoice_no[${asset.id}]"
+                                        value="${asset.purchaseInfo?.invoice_no ?? ''}">
+                                </td>
+
+                                <!-- Purchase Date -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="purchase_date[${asset.id}]"
+                                        value="${asset.purchaseInfo?.purchase_date ?? ''}">
+                                </td>
+
+                                <!-- Purchase Price -->
+                                <td>
+                                    <input type="number"
+                                        step="0.01"
+                                        class="form-control form-control-sm"
+                                        name="purchase_price[${asset.id}]"
+                                        value="${asset.purchaseInfo?.purchase_price ?? ''}">
+                                </td>
+
+                                <!-- Ownership Type -->
+                                <td>
+                                    <select class="form-select form-select-sm"
+                                            name="ownership_type[${asset.id}]">
+
+                                        <option value="Self Owned"
+                                            ${asset.finacialInfos?.ownership_type == 'Self Owned' ? 'selected' : ''}>
+                                            Self Owned
+                                        </option>
+
+                                        <option value="Partner"
+                                            ${asset.finacialInfos?.ownership_type == 'Partner' ? 'selected' : ''}>
+                                            Partner
+                                        </option>
+
+                                    </select>
+                                </td>
+
+                                <!-- Capitalization price -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="partner[${asset.id}]"
+                                        value="${asset.finacialInfos?.capitalization_price ?? ''}">
+                                </td>
+
+                                <!-- Capitalization Date -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="capitalization_date[${asset.id}]"
+                                        value="${asset.finacialInfos?.capitalization_date ?? ''}">
+                                </td>
+
+                                 <!-- Accumulated Depreciation -->
+                                <td>
+                                    <input type="number"
+                                        step="0.01"
+                                        class="form-control form-control-sm"
+                                        name="accumulated_depreciation[${asset.id}]"
+                                        value="${asset.finacialInfos?.accumulated_depreciation ?? ''}">
+                                </td>
+
+                                <!-- Scrap Value -->
+                                <td>
+                                    <input type="number"
+                                        step="0.01"
+                                        class="form-control form-control-sm"
+                                        name="scrap_value[${asset.id}]"
+                                        value="${asset.finacialInfos?.scrap_value ?? ''}">
+                                </td>
+
+                                <!-- End Of Life -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="end_of_life[${asset.id}]"
+                                        value="${asset.finacialInfos?.end_of_life ?? ''}">
+                                </td>
+
+
+                                <!-- Depreciation Percent -->
+                                <td>
+                                    <input type="number"
+                                        step="0.01"
+                                        class="form-control form-control-sm"
+                                        name="depreciation_percent[${asset.id}]"
+                                        value="${asset.finacialInfos?.depreciation_percent ?? ''}">
+                                </td>
+
+                                <!-- Income Tax Dep -->
+                                <td>
+                                    <input type="number"
+                                        step="0.01"
+                                        class="form-control form-control-sm"
+                                        name="income_tax_dep[${asset.id}]"
+                                        value="${asset.finacialInfos?.income_tax_dep ?? ''}">
+                                </td>
+
+                                <!-- Department -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="department[${asset.id}]"
+                                        value="${asset.assetallotedInfos?.department ?? ''}">
+                                </td>
+
+                                <!-- Transferred To -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="transferred_to[${asset.id}]"
+                                        value="${asset.assetallotedInfos?.transferred_to ?? ''}">
+                                </td>
+
+                                <!-- Allotted Upto -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="allotted_upto[${asset.id}]"
+                                        value="${asset.assetallotedInfos?.allotted_upto ?? ''}">
+                                </td>
+
+                                <!-- Remarks -->
+                                <td>
+                                    <textarea class="form-control form-control-sm"
+                                            name="remarks[${asset.id}]">${asset.assetallotedInfos?.remarks ?? ''}</textarea>
+                                </td>
+
+                                <!-- AMC Vendor -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="amc_vendor[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.amc_vendor ?? ''}">
+                                </td>
+
+                                <!-- Warranty Vendor -->
+                                <td>
+                                    <input type="text"
+                                        class="form-control form-control-sm"
+                                        name="warranty_vendor[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.warranty_vendor ?? ''}">
+                                </td>
+
+                                <!-- Insurance Start -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="insurance_start_date[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.insurance_start_date ?? ''}">
+                                </td>
+
+                                <!-- Insurance End -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="insurance_end_date[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.insurance_end_date ?? ''}">
+                                </td>
+
+                                <!-- AMC Start -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="amc_start_date[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.amc_start_date ?? ''}">
+                                </td>
+
+                                <!-- AMC End -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="amc_end_date[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.amc_end_date ?? ''}">
+                                </td>
+
+                                <!-- Warranty Start -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="warranty_start_date[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.warranty_start_date ?? ''}">
+                                </td>
+
+                                <!-- Warranty End -->
+                                <td>
+                                    <input type="date"
+                                        class="form-control form-control-sm"
+                                        name="warranty_end_date[${asset.id}]"
+                                        value="${asset.assetwarrantyInfos?.warranty_end_date ?? ''}">
+                                </td>
+
+                            </tr>
+                        `;
+                    });
+
+                    $('#bulkUpdateBody').html(html);
+
+                    $('#btnSaveBulkUpdate').prop('disabled', false);
+
+                    $('#exLargeModalMultiUpdateAsset').modal('show');
+
+                },
+
+                error: function (xhr) {
+
+                    showToast(xhr.responseJSON?.message ?? 'Something went wrong', 'error');
+
+                }
+
+            });
+
+        });
+
+        $('#bulkUpdateForm').validate({
+            ignore: ":hidden:not(.force-validate)",
+
+            errorElement: 'span',
+            errorClass: 'text-danger',
+
+            highlight: function (element) {
+                $(element).addClass('is-invalid');
+            },
+
+            unhighlight: function (element) {
+                $(element).removeClass('is-invalid');
+            },
+
+            submitHandler: function (form) {
+
+                let formData = new FormData(form);
+
+                let btn = $('#bulkUpdateForm button[type="submit"]');
+
+                $.ajax({
+                    url: '/bulk-update',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+
+                    beforeSend: function () {
+                        btn.prop('disabled', true);
+                        btn.html(`<span class="spinner-border spinner-border-sm me-2"></span> Updating...`);
+                    },
+
+                    success: function (response) {
+
+                        if (response.status) {
+                            showToast(response.message, 'success');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        } else {
+                            showToast(response.message, 'error');
+                        }
+                    },
+
+                    error: function (xhr) {
+                        console.log(xhr);
+                        showToast(xhr.responseJSON?.message || ' failed!', 'error');
+                    }
+                });
+            }
+        });
+
+
+        // scheduleActivityBtn
+        
+        $('#scheduleActivityBtn').on('click', function () {
+
+            let checked = $('.rowCheckbox:checked');
 
             if (checked.length === 0) {
                 showToast('Please select at least one asset');
@@ -3707,7 +4159,7 @@
         $('#assetTrasfBtn').on('click', function() {
 
 
-            let checked = $('.asset-checkbox:checked'); //  define it
+            let checked = $('.rowCheckbox:checked'); //  define it
 
             if (checked.length === 0) {
                 showToast('Please select at least one asset');
@@ -3724,15 +4176,12 @@
 
                 let row = $(this).closest('tr');
 
+                let checkbox = $(this);
                 let assetId = row.data('asset-id');
-
-                let name = row.data('asset-name');
-
-                let code = row.data('asset-code');
-
-                let locationId = row.data('location-id');
-
-                let subLocationId = row.data('sub-location-id');
+                let name = checkbox.data('name');
+                let code = checkbox.data('code');
+                let locationId = checkbox.data('location-id');
+                let subLocationId = checkbox.data('sub-location-id');
 
                 // Get values from the rowcondition
 
@@ -4154,766 +4603,6 @@
             }
         });
         // multi update js
-
-        // ==================== BULK UPDATE SYSTEM ====================
-
-const BULK_UPDATE_MAX_ASSETS = 100;
-let selectedAssetIds = [];
-let editedData = [];
-let originalData = [];
-let hasUnsavedChanges = false;
-let currentDropdownContext = null;
-let isSavingBulkUpdate = false;
-let visibleFields = null; // null = show all fields
-
-const FIELD_CONFIG = {
-    'asset_name': { type: 'text', label: 'Asset Name', editable: true, required: true },
-    'sub_category': { type: 'dropdown', label: 'Sub Category', editable: true, source: 'subCategories', dependsOn: 'category' },
-    'sub_location': { type: 'dropdown', label: 'Sub Location', editable: true, source: 'subLocations', dependsOn: 'location' },
-    'cwip_invoice_id': { type: 'text', label: 'CWIP Invoice ID', editable: true },
-    'brand': { type: 'text', label: 'Brand', editable: true },
-    'model': { type: 'text', label: 'Model', editable: true },
-    'description': { type: 'text', label: 'Description', editable: true },
-    'serial_no': { type: 'text', label: 'Serial No', editable: true },
-    'vendor_name': { type: 'text', label: 'Vendor Name', editable: true },
-    'asset_po_number': { type: 'text', label: 'PO Number', editable: true },
-    'invoice_date': { type: 'date', label: 'Invoice Date', editable: true },
-    'invoice_no': { type: 'text', label: 'Invoice No', editable: true },
-    'purchase_date': { type: 'date', label: 'Purchase Date', editable: true },
-    'purchase_price': { type: 'number', label: 'Purchase Price', editable: true },
-    'is_self_owned': { type: 'dropdown', label: 'Self Owned', editable: true, options: ['Yes', 'No'] },
-    'capitalization_price': { type: 'number', label: 'Capitalization Price', editable: true },
-    'end_of_life': { type: 'date', label: 'End of Life', editable: true },
-    'capitalization_date': { type: 'date', label: 'Capitalization Date', editable: true },
-    'depreciation_percent': { type: 'number', label: 'Depreciation %', editable: true },
-    'accumulated_depreciation': { type: 'number', label: 'Accumulated Dep', editable: true },
-    'scrap_value': { type: 'number', label: 'Scrap Value', editable: true },
-    'income_tax_depreciation_percent': { type: 'number', label: 'Income Tax Dep %', editable: true },
-    'department': { type: 'dropdown', label: 'Department', editable: true, options: ['IT', 'HR', 'Finance', 'Operations', 'Sales', 'Marketing'] },
-    'transferred_to': { type: 'text', label: 'Transferred To', editable: true },
-    'allotted_upto': { type: 'date', label: 'Allotted Upto', editable: true },
-    'remarks': { type: 'text', label: 'Remarks', editable: true },
-    'amc_vendor': { type: 'text', label: 'AMC Vendor', editable: true },
-    'warranty_vendor': { type: 'text', label: 'Warranty Vendor', editable: true },
-    'insurance_start_date': { type: 'date', label: 'Insurance Start', editable: true },
-    'insurance_end_date': { type: 'date', label: 'Insurance End', editable: true },
-    'amc_start_date': { type: 'date', label: 'AMC Start', editable: true },
-    'amc_end_date': { type: 'date', label: 'AMC End', editable: true },
-    'warranty_start_date': { type: 'date', label: 'Warranty Start', editable: true },
-    'warranty_end_date': { type: 'date', label: 'Warranty End', editable: true },
-    'category': { type: 'dropdown', label: 'Category', editable: true, source: 'categories' },
-    'location': { type: 'dropdown', label: 'Location', editable: true, source: 'locations' },
-    'status': { type: 'dropdown', label: 'Status', editable: true, source: 'statuses' },
-    'condition': { type: 'dropdown', label: 'Condition', editable: true, options: ['New', 'Good', 'Fair', 'Poor', 'Damaged'] },
-};
-
-let dropdownData = {
-    locations: @json($location ?? []),
-    subLocations: @json($sub_location ?? []),
-    categories: @json($categories ?? []),
-    subCategories: @json($categories->flatMap->subCategories ?? collect()),
-    statuses: @json($status ?? [])
-};
-
-// Handle Update Asset button click
-$(document).on('click', '[data-bs-target="#exLargeModalMultiUpdateAsset"]', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    if (isSavingBulkUpdate) {
-        showToast('Please wait, previous save is still processing...', 'warning');
-        return;
-    }
-
-    let checked = $('.asset-checkbox:checked');
-    if (checked.length === 0) {
-        showToast('Please select at least one asset to update', 'warning');
-        return;
-    }
-    if (checked.length > BULK_UPDATE_MAX_ASSETS) {
-        showToast(`Maximum ${BULK_UPDATE_MAX_ASSETS} assets can be edited at once`, 'error');
-        return;
-    }
-
-    let assetIds = [];
-    checked.each(function() {
-        let row = $(this).closest('tr');
-        let assetId = row.data('asset-id') || row.find('td:eq(3)').text();
-        if (assetId) assetIds.push(assetId);
-    });
-
-    $('#bulkUpdateBody').html('<tr><td colspan="40" class="text-center py-4"><div class="spinner-border"></div><p class="mt-2">Loading assets...</p></td></tr>');
-
-    let modal = new bootstrap.Modal(document.getElementById('exLargeModalMultiUpdateAsset'));
-    modal.show();
-
-    $.ajax({
-        url: "{{ route('assets.bulk-fetch') }}?_t=" + new Date().getTime(),
-        type: "POST",
-        data: {
-            _token: $('meta[name="csrf-token"]').attr('content'),
-            asset_ids: assetIds
-        },
-        success: function(response) {
-            console.log('Bulk fetch response:', response);
-            if (response.status && response.assets) {
-                console.log('Assets loaded:', response.assets);
-                selectedAssetIds = assetIds;
-                editedData = JSON.parse(JSON.stringify(response.assets));
-                originalData = JSON.parse(JSON.stringify(response.assets));
-                console.log('editedData set:', editedData);
-                visibleFields = null; // Reset to show all columns
-                $('#selectedCountBadge').text(`${selectedAssetIds.length} assets selected`);
-                renderBulkUpdateGrid();
-                hasUnsavedChanges = false;
-                $('#unsavedBadge').hide();
-                $('#btnSaveBulkUpdate').prop('disabled', true);
-            } else {
-                console.log('Failed to load assets - response:', response);
-                showToast('Failed to load assets', 'error');
-            }
-        },
-        error: function(xhr) {
-            showToast('Error loading assets: ' + xhr.statusText, 'error');
-        }
-    });
-});
-
-// Render the grid
-function renderBulkUpdateGrid() {
-    console.log('renderBulkUpdateGrid called - editedData:', editedData);
-    const allFields = [
-        { key: 'asset_name', label: 'Asset Name', required: true },
-        { key: 'category', label: 'Category' },
-        { key: 'sub_category', label: 'Sub Category' },
-        { key: 'location', label: 'Location' },
-        { key: 'sub_location', label: 'Sub Location' },
-        { key: 'status', label: 'Status' },
-        { key: 'condition', label: 'Condition' },
-        { key: 'brand', label: 'Brand' },
-        { key: 'model', label: 'Model' },
-        { key: 'description', label: 'Description' },
-        { key: 'serial_no', label: 'Serial No' },
-        { key: 'vendor_name', label: 'Vendor' },
-        { key: 'asset_po_number', label: 'PO Number' },
-        { key: 'invoice_date', label: 'Invoice Date' },
-        { key: 'purchase_date', label: 'Purchase Date' },
-        { key: 'purchase_price', label: 'Purchase Price' },
-        { key: 'department', label: 'Department' },
-        { key: 'allotted_upto', label: 'Allotted Upto' },
-        { key: 'remarks', label: 'Remarks' },
-        { key: 'insurance_start_date', label: 'Insurance Start' },
-        { key: 'insurance_end_date', label: 'Insurance End' },
-        { key: 'warranty_start_date', label: 'Warranty Start' },
-        { key: 'warranty_end_date', label: 'Warranty End' }
-    ];
-
-    let fieldsToShow = allFields;
-    if (visibleFields && visibleFields.length > 0) {
-        fieldsToShow = allFields.filter(f => f.required || visibleFields.includes(f.key));
-    }
-
-    let headerHtml = '<th class="first-col">#</th><th class="second-col">Asset Code</th>';
-    fieldsToShow.forEach(f => { headerHtml += `<th>${f.label}</th>`; });
-    $('#bulkUpdateHeaderRow').html(headerHtml);
-
-    let html = '';
-    editedData.forEach((asset, index) => {
-        html += `<tr data-row-index="${index}">
-            <td class="first-col">${index + 1}</td>
-            <td class="second-col">${asset.asset_code || ''}</td>`;
-        fieldsToShow.forEach(f => {
-            let value = asset[f.key] || '';
-            if (f.key === 'is_self_owned') value = asset[f.key] ? 'Yes' : 'No';
-            html += `<td class="editable-cell" data-field="${f.key}">${value}</td>`;
-        });
-        html += `</tr>`;
-    });
-    $('#bulkUpdateBody').html(html);
-}
-
-// Inline cell editing functionality
-$(document).on('click', '.editable-cell', function(e) {
-    e.stopPropagation();
-
-    const $cell = $(this);
-    if ($cell.hasClass('editing')) return; // Already editing
-
-    const field = $cell.data('field');
-    const rowIndex = $cell.closest('tr').data('row-index');
-    const currentValue = $cell.text();
-    const fieldConfig = FIELD_CONFIG[field];
-
-    $cell.addClass('editing');
-
-    // Determine input type based on field config
-    let inputType = 'text';
-    let inputHtml = '';
-
-    if (fieldConfig) {
-        if (fieldConfig.type === 'date') {
-            inputType = 'date';
-        } else if (fieldConfig.type === 'number') {
-            inputType = 'number';
-        } else if (fieldConfig.type === 'dropdown') {
-            // Create dropdown
-            let options = [];
-            if (fieldConfig.options) {
-                options = fieldConfig.options;
-            } else if (fieldConfig.source === 'locations' && dropdownData.locations) {
-                options = dropdownData.locations.map(l => l.name);
-            } else if (fieldConfig.source === 'categories' && dropdownData.categories) {
-                options = dropdownData.categories.map(c => c.name);
-            } else if (fieldConfig.source === 'statuses' && dropdownData.statuses) {
-                options = dropdownData.statuses.map(s => s.status_name);
-            } else if (fieldConfig.source === 'subCategories' && dropdownData.subCategories) {
-                // Get current category value for this row to filter sub-categories
-                const currentCategory = editedData[rowIndex]?.category || '';
-                const categoryObj = dropdownData.categories.find(c => c.name === currentCategory);
-                const categoryId = categoryObj ? categoryObj.id : null;
-
-                // Filter sub-categories by parent category
-                let filteredSubCategories = dropdownData.subCategories;
-                if (categoryId) {
-                    filteredSubCategories = dropdownData.subCategories.filter(sc => sc.category_id == categoryId);
-                }
-                options = filteredSubCategories.map(sc => sc.name);
-            } else if (fieldConfig.source === 'subLocations' && dropdownData.subLocations) {
-                // Get current location value for this row to filter sub-locations
-                const currentLocation = editedData[rowIndex]?.location || '';
-                const locationObj = dropdownData.locations.find(l => l.name === currentLocation);
-                const locationId = locationObj ? locationObj.id : null;
-
-                // Filter sub-locations by parent location
-                let filteredSubLocations = dropdownData.subLocations;
-                if (locationId) {
-                    filteredSubLocations = dropdownData.subLocations.filter(sl => sl.location_id == locationId);
-                }
-                options = filteredSubLocations.map(sl => sl.name);
-            }
-
-            inputHtml = `<select class="form-select form-select-sm" style="min-width:120px;">`;
-            inputHtml += `<option value="">-- Select --</option>`;
-            options.forEach(opt => {
-                const selected = opt === currentValue ? 'selected' : '';
-                inputHtml += `<option value="${opt}" ${selected}>${opt}</option>`;
-            });
-            inputHtml += `</select>`;
-        }
-    }
-
-    // Create input if not dropdown
-    if (!inputHtml) {
-        inputHtml = `<input type="${inputType}" class="form-control form-control-sm" value="${currentValue}" style="min-width:100px;">`;
-    }
-
-    $cell.html(inputHtml);
-    const $input = $cell.find('input, select');
-    $input.focus().select();
-
-    // Handle save on blur or enter key
-    const saveValue = function() {
-        const newValue = $input.val();
-        $cell.removeClass('editing').text(newValue);
-
-        // Update the data model
-        if (editedData[rowIndex]) {
-            const oldValue = editedData[rowIndex][field];
-            editedData[rowIndex][field] = newValue;
-
-            // If category changed, clear sub_category (cascading effect)
-            if (field === 'category' && newValue !== oldValue) {
-                const oldSubCategory = editedData[rowIndex]['sub_category'];
-                if (oldSubCategory) {
-                    editedData[rowIndex]['sub_category'] = '';
-                    // Find and update the sub_category cell in the row
-                    const $row = $cell.closest('tr');
-                    $row.find('td[data-field="sub_category"]').text('').addClass('row-changed');
-                }
-            }
-
-            // If location changed, clear sub_location (cascading effect)
-            if (field === 'location' && newValue !== oldValue) {
-                const oldSubLocation = editedData[rowIndex]['sub_location'];
-                if (oldSubLocation) {
-                    editedData[rowIndex]['sub_location'] = '';
-                    // Find and update the sub_location cell in the row
-                    const $row = $cell.closest('tr');
-                    $row.find('td[data-field="sub_location"]').text('').addClass('row-changed');
-                }
-            }
-
-            // Mark as changed if value changed
-            if (newValue !== oldValue) {
-                hasUnsavedChanges = true;
-                $('#unsavedBadge').show();
-                $('#btnSaveBulkUpdate').prop('disabled', false);
-                $cell.closest('tr').addClass('row-changed');
-            }
-        }
-    };
-
-    $input.on('blur', saveValue);
-    $input.on('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            saveValue();
-        } else if (e.key === 'Escape') {
-            e.preventDefault();
-            $cell.removeClass('editing').text(currentValue);
-        }
-    });
-});
-
-// Field selection popup
-$('#btnSelectFields').on('click', function() {
-    let fields = [
-        { key: 'asset_name', label: 'Asset Name (Required)', required: true },
-        { key: 'category', label: 'Category' },
-        { key: 'location', label: 'Location' },
-        { key: 'status', label: 'Status' },
-        { key: 'condition', label: 'Condition' },
-        { key: 'brand', label: 'Brand' },
-        { key: 'vendor_name', label: 'Vendor' },
-        { key: 'purchase_price', label: 'Purchase Price' },
-        { key: 'department', label: 'Department' }
-    ];
-
-    let html = `
-        <div id="fieldSelectionPopup" class="dropdown-popup-overlay" style="z-index:10000;">
-            <div class="dropdown-popup" style="width:350px;">
-                <div class="dropdown-popup-header">
-                    <h6>Select Fields to Display</h6>
-                    <button type="button" class="btn-close" onclick="$('#fieldSelectionPopup').remove();"></button>
-                </div>
-                <div class="dropdown-popup-body">
-                    ${fields.map(f => `
-                        <div class="form-check">
-                            <input class="form-check-input field-checkbox" type="checkbox" value="${f.key}" id="field_${f.key}" ${f.required ? 'checked' : ''}>
-                            <label class="form-check-label" for="field_${f.key}">${f.label}</label>
-                        </div>
-                    `).join('')}
-                </div>
-                <div class="dropdown-popup-footer">
-                    <div class="btn-group me-auto">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$('.field-checkbox').prop('checked', true);">Select All</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="$('.field-checkbox').prop('checked', false); $('.field-checkbox').first().prop('checked', true);">Clear All</button>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-secondary" onclick="$('#fieldSelectionPopup').remove();">Cancel</button>
-                    <button type="button" class="btn btn-sm btn-primary" onclick="applyFieldSelection()">Apply</button>
-                </div>
-            </div>
-        </div>
-    `;
-    $('body').append(html);
-    $('#fieldSelectionPopup').fadeIn(150);
-});
-
-// Download Excel functionality
-$('#btnDownloadExcel').on('click', function() {
-    console.log('Download clicked - editedData length:', editedData.length);
-    console.log('Download clicked - editedData:', editedData);
-
-    if (editedData.length === 0) {
-        showToast('No data to download - Please load assets first', 'warning');
-        return;
-    }
-
-    // Create CSV content
-    let csvContent = '';
-
-    // Headers - Include ALL available fields
-    const headers = [
-        'Asset Code', 'Asset Name', 'Category', 'Sub Category', 'Location', 'Sub Location', 'Status', 'CWIP Invoice Id',
-        'Condition', 'Brand', 'Model', 'Description', 'Serial No',
-        'Vendor Name', 'PO Number', 'Invoice Date', 'Invoice No', 'Purchase Date', 'Purchase Price',
-        'Capitalization Price', 'End Of Life', 'Capitalization Date', 'Depreciation %', 'Accumulated Depreciation', 'Scrap Value',
-        'Department', 'Transferred To', 'Allotted Upto', 'Remarks',
-        'AMC Vendor', 'Warranty Vendor', 'Insurance Start Date', 'Insurance End Date', 'AMC Start Date', 'AMC End Date', 'Warranty Start Date', 'Warranty End Date'
-    ];
-    csvContent += headers.join(',') + '\n';
-
-    // Data rows - Include ALL available data
-    editedData.forEach((asset, index) => {
-        console.log(`Processing asset ${index}:`, asset);
-        const row = [
-            asset.asset_code || '',
-            asset.asset_name || '',
-            asset.category || '',
-            asset.sub_category || '',
-            asset.location || '',
-            asset.sub_location || '',
-            asset.status || '',
-            asset.cwip_invoice_id || '',
-            asset.condition || '',
-            asset.brand || '',
-            asset.model || '',
-            asset.description || '',
-            asset.serial_no || '',
-            asset.vendor_name || '',
-            asset.asset_po_number || '',
-            asset.invoice_date || '',
-            asset.invoice_no || '',
-            asset.purchase_date || '',
-            asset.purchase_price || '',
-            asset.capitalization_price || '',
-            asset.end_of_life || '',
-            asset.capitalization_date || '',
-            asset.depreciation_percent || '',
-            asset.accumulated_depreciation || '',
-            asset.scrap_value || '',
-            asset.department || '',
-            asset.transferred_to || '',
-            asset.allotted_upto || '',
-            asset.remarks || '',
-            asset.amc_vendor || '',
-            asset.warranty_vendor || '',
-            asset.insurance_start_date || '',
-            asset.insurance_end_date || '',
-            asset.amc_start_date || '',
-            asset.amc_end_date || '',
-            asset.warranty_start_date || '',
-            asset.warranty_end_date || ''
-        ];
-        console.log(`Row ${index}:`, row);
-        const csvRow = row.map(field => `"${field}"`).join(',') + '\n';
-        console.log(`CSV Row ${index}:`, csvRow);
-        csvContent += csvRow;
-    });
-    console.log('Final CSV Content:', csvContent);
-
-    // Create download link using Blob
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    const url = URL.createObjectURL(blob);
-    link.setAttribute('href', url);
-    link.setAttribute('download', `bulk_update_assets_${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    showToast('Excel file downloaded successfully', 'success');
-});
-
-// Upload Excel functionality
-$('#excelUploadInput').on('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (!file.name.match(/\.(xlsx|xls|csv)$/)) {
-        showToast('Please select a valid Excel file (.xlsx, .xls, .csv)', 'error');
-        $(this).val('');
-        return;
-    }
-
-    showToast('Processing uploaded file...', 'info');
-
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-        try {
-            const content = e.target.result;
-            let parsedData = [];
-
-            if (file.name.endsWith('.csv')) {
-                parsedData = parseCSV(content);
-            } else {
-                // For Excel files, we'll use a basic approach
-                parsedData = parseExcelContent(content);
-            }
-
-            if (parsedData.length > 0) {
-                updateBulkUpdateGridWithUploadedData(parsedData);
-                showToast(`Successfully loaded ${parsedData.length} records from Excel file`, 'success');
-            } else {
-                showToast('No valid data found in the uploaded file', 'error');
-            }
-        } catch (error) {
-            showToast('Error parsing file: ' + error.message, 'error');
-        }
-
-        $(this).val('');
-    };
-
-    reader.onerror = function() {
-        showToast('Error reading file', 'error');
-        $(this).val('');
-    };
-
-    if (file.name.endsWith('.csv')) {
-        reader.readAsText(file);
-    } else {
-        reader.readAsArrayBuffer(file);
-    }
-});
-
-// Parse CSV content
-function parseCSV(content) {
-    const lines = content.split('\n').filter(line => line.trim());
-    if (lines.length < 2) return [];
-
-    // Detect delimiter (comma, tab, or multiple spaces)
-    const firstLine = lines[0];
-    let delimiter = ',';
-
-    if (firstLine.includes('\t')) {
-        delimiter = '\t';
-    } else if (firstLine.match(/\s{2,}/)) {
-        delimiter = /\s{2,}/; // Multiple spaces
-    } else if (!firstLine.includes(',') && firstLine.includes(' ')) {
-        delimiter = ' '; // Single space
-    }
-
-    const headers = firstLine.split(delimiter).map(h => h.trim().replace(/"/g, ''));
-    const data = [];
-
-    for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(delimiter).map(v => v.trim().replace(/"/g, ''));
-        if (values.length >= headers.length) {
-            const record = {};
-            headers.forEach((header, index) => {
-                const fieldName = header.toLowerCase().replace(/\s+/g, '_');
-                record[fieldName] = values[index] || '';
-            });
-            data.push(record);
-        }
-    }
-
-    return data;
-}
-
-// Parse Excel content using SheetJS library
-function parseExcelContent(content) {
-    try {
-        // Convert ArrayBuffer to Uint8Array for SheetJS
-        const data = new Uint8Array(content);
-
-        // Parse the workbook
-        const workbook = XLSX.read(data, { type: 'array' });
-
-        // Get the first worksheet
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-
-        // Convert worksheet to JSON with headers
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-        if (jsonData.length < 2) {
-            showToast('Excel file appears to be empty or has no data rows', 'warning');
-            return [];
-        }
-
-        // Extract headers (first row)
-        const headers = jsonData[0].map(h => String(h || '').trim());
-
-        // Convert remaining rows to objects
-        const result = [];
-        for (let i = 1; i < jsonData.length; i++) {
-            const row = jsonData[i];
-            if (row.length === 0 || row.every(cell => !cell)) continue; // Skip empty rows
-
-            const record = {};
-            headers.forEach((header, index) => {
-                // Convert header to snake_case for consistency
-                const fieldName = header.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '_');
-                record[fieldName] = row[index] !== undefined ? String(row[index]).trim() : '';
-                // Also store with original header name for matching
-                record[header] = row[index] !== undefined ? String(row[index]).trim() : '';
-            });
-            result.push(record);
-        }
-
-        return result;
-    } catch (error) {
-        console.error('Excel parsing error:', error);
-        showToast('Error parsing Excel file: ' + error.message, 'error');
-        return [];
-    }
-}
-
-// Update bulk update grid with uploaded data
-function updateBulkUpdateGridWithUploadedData(uploadData) {
-    if (!editedData || editedData.length === 0) {
-        showToast('Please load assets first before uploading Excel data', 'error');
-        return;
-    }
-
-    // Map uploaded data to existing assets
-    uploadData.forEach(uploadRecord => {
-        const assetCode = uploadRecord.asset_code || uploadRecord['asset_code'] || uploadRecord['Asset Cod'] || '';
-        const assetName = uploadRecord.asset_name || uploadRecord['asset_name'] || uploadRecord['Asset Nan'] || '';
-
-        // Find matching asset by code or name
-        const existingAssetIndex = editedData.findIndex(asset =>
-            asset.asset_code === assetCode || asset.asset_name === assetName
-        );
-
-        if (existingAssetIndex >= 0) {
-            // Update existing asset with uploaded data
-            const asset = editedData[existingAssetIndex];
-
-            // Update fields that exist in the uploaded data (using actual field names)
-            if (uploadRecord.category || uploadRecord['category'] || uploadRecord['Category']) asset.category = uploadRecord.category || uploadRecord['category'] || uploadRecord['Category'];
-            if (uploadRecord.sub_category || uploadRecord['sub_category'] || uploadRecord['Sub Category']) asset.sub_category = uploadRecord.sub_category || uploadRecord['sub_category'] || uploadRecord['Sub Category'];
-            if (uploadRecord.location || uploadRecord['location'] || uploadRecord['Location']) asset.location = uploadRecord.location || uploadRecord['location'] || uploadRecord['Location'];
-            if (uploadRecord.sub_location || uploadRecord['sub_location'] || uploadRecord['Sub Location']) asset.sub_location = uploadRecord.sub_location || uploadRecord['sub_location'] || uploadRecord['Sub Location'];
-            if (uploadRecord.status || uploadRecord['status'] || uploadRecord['Status']) asset.status = uploadRecord.status || uploadRecord['status'] || uploadRecord['Status'];
-            if (uploadRecord.cwip_invoice_id || uploadRecord['cwip_invoice_id'] || uploadRecord['CWIP Invoice Id']) asset.cwip_invoice_id = uploadRecord.cwip_invoice_id || uploadRecord['cwip_invoice_id'] || uploadRecord['CWIP Invoice Id'];
-            if (uploadRecord.condition || uploadRecord['condition'] || uploadRecord['Condition']) asset.condition = uploadRecord.condition || uploadRecord['condition'] || uploadRecord['Condition'];
-            if (uploadRecord.brand || uploadRecord['brand'] || uploadRecord['Brand']) asset.brand = uploadRecord.brand || uploadRecord['brand'] || uploadRecord['Brand'];
-            if (uploadRecord.model || uploadRecord['model'] || uploadRecord['Model']) asset.model = uploadRecord.model || uploadRecord['model'] || uploadRecord['Model'];
-            if (uploadRecord.description || uploadRecord['description'] || uploadRecord['Description']) asset.description = uploadRecord.description || uploadRecord['description'] || uploadRecord['Description'];
-            if (uploadRecord.serial_no || uploadRecord['serial_no'] || uploadRecord['Serial No']) asset.serial_no = uploadRecord.serial_no || uploadRecord['serial_no'] || uploadRecord['Serial No'];
-            if (uploadRecord.vendor_name || uploadRecord['vendor_name'] || uploadRecord['Vendor Name']) asset.vendor_name = uploadRecord.vendor_name || uploadRecord['vendor_name'] || uploadRecord['Vendor Name'];
-            if (uploadRecord.asset_po_number || uploadRecord['po_number'] || uploadRecord['PO Number']) asset.asset_po_number = uploadRecord.asset_po_number || uploadRecord['po_number'] || uploadRecord['PO Number'];
-            if (uploadRecord.invoice_date || uploadRecord['invoice_date'] || uploadRecord['Invoice Date']) asset.invoice_date = uploadRecord.invoice_date || uploadRecord['invoice_date'] || uploadRecord['Invoice Date'];
-            if (uploadRecord.invoice_no || uploadRecord['invoice_no'] || uploadRecord['Invoice No']) asset.invoice_no = uploadRecord.invoice_no || uploadRecord['invoice_no'] || uploadRecord['Invoice No'];
-            if (uploadRecord.purchase_date || uploadRecord['purchase_date'] || uploadRecord['Purchase Date']) asset.purchase_date = uploadRecord.purchase_date || uploadRecord['purchase_date'] || uploadRecord['Purchase Date'];
-            if (uploadRecord.purchase_price || uploadRecord['purchase_price'] || uploadRecord['Purchase Price']) asset.purchase_price = uploadRecord.purchase_price || uploadRecord['purchase_price'] || uploadRecord['Purchase Price'];
-            if (uploadRecord.capitalization_price || uploadRecord['capitalization_price'] || uploadRecord['Capitalization Price']) asset.capitalization_price = uploadRecord.capitalization_price || uploadRecord['capitalization_price'] || uploadRecord['Capitalization Price'];
-            if (uploadRecord.end_of_life || uploadRecord['end_of_life'] || uploadRecord['End Of Life']) asset.end_of_life = uploadRecord.end_of_life || uploadRecord['end_of_life'] || uploadRecord['End Of Life'];
-            if (uploadRecord.capitalization_date || uploadRecord['capitalization_date'] || uploadRecord['Capitalization Date']) asset.capitalization_date = uploadRecord.capitalization_date || uploadRecord['capitalization_date'] || uploadRecord['Capitalization Date'];
-            if (uploadRecord.depreciation_percent || uploadRecord['depreciation_percent'] || uploadRecord['Depreciation %']) asset.depreciation_percent = uploadRecord.depreciation_percent || uploadRecord['depreciation_percent'] || uploadRecord['Depreciation %'];
-            if (uploadRecord.accumulated_depreciation || uploadRecord['accumulated_depreciation'] || uploadRecord['Accumulated Depreciation']) asset.accumulated_depreciation = uploadRecord.accumulated_depreciation || uploadRecord['accumulated_depreciation'] || uploadRecord['Accumulated Depreciation'];
-            if (uploadRecord.scrap_value || uploadRecord['scrap_value'] || uploadRecord['Scrap Value']) asset.scrap_value = uploadRecord.scrap_value || uploadRecord['scrap_value'] || uploadRecord['Scrap Value'];
-            if (uploadRecord.department || uploadRecord['department'] || uploadRecord['Department']) asset.department = uploadRecord.department || uploadRecord['department'] || uploadRecord['Department'];
-            if (uploadRecord.transferred_to || uploadRecord['transferred_to'] || uploadRecord['Transferred To']) asset.transferred_to = uploadRecord.transferred_to || uploadRecord['transferred_to'] || uploadRecord['Transferred To'];
-            if (uploadRecord.allotted_upto || uploadRecord['allotted_upto'] || uploadRecord['Allotted Upto']) asset.allotted_upto = uploadRecord.allotted_upto || uploadRecord['allotted_upto'] || uploadRecord['Allotted Upto'];
-            if (uploadRecord.remarks || uploadRecord['remarks'] || uploadRecord['Remarks']) asset.remarks = uploadRecord.remarks || uploadRecord['remarks'] || uploadRecord['Remarks'];
-            if (uploadRecord.amc_vendor || uploadRecord['amc_vendor'] || uploadRecord['AMC Vendor']) asset.amc_vendor = uploadRecord.amc_vendor || uploadRecord['amc_vendor'] || uploadRecord['AMC Vendor'];
-            if (uploadRecord.warranty_vendor || uploadRecord['warranty_vendor'] || uploadRecord['Warranty Vendor']) asset.warranty_vendor = uploadRecord.warranty_vendor || uploadRecord['warranty_vendor'] || uploadRecord['Warranty Vendor'];
-            if (uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'] || uploadRecord['Insurance Start Date']) asset.insurance_start_date = uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'] || uploadRecord['Insurance Start Date'];
-            if (uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'] || uploadRecord['Insurance End Date']) asset.insurance_end_date = uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'] || uploadRecord['Insurance End Date'];
-            if (uploadRecord.amc_start_date || uploadRecord['amc_start_date'] || uploadRecord['AMC Start Date']) asset.amc_start_date = uploadRecord.amc_start_date || uploadRecord['amc_start_date'] || uploadRecord['AMC Start Date'];
-            if (uploadRecord.amc_end_date || uploadRecord['amc_end_date'] || uploadRecord['AMC End Date']) asset.amc_end_date = uploadRecord.amc_end_date || uploadRecord['amc_end_date'] || uploadRecord['AMC End Date'];
-            if (uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'] || uploadRecord['Warranty Start Date']) asset.warranty_start_date = uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'] || uploadRecord['Warranty Start Date'];
-            if (uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'] || uploadRecord['Warranty End Date']) asset.warranty_end_date = uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'] || uploadRecord['Warranty End Date'];
-            if (uploadRecord.allotted_upto || uploadRecord['allotted_upto']) asset.allotted_upto = uploadRecord.allotted_upto || uploadRecord['allotted_upto'];
-            if (uploadRecord.remarks || uploadRecord['remarks']) asset.remarks = uploadRecord.remarks || uploadRecord['remarks'];
-            if (uploadRecord.insurance_start_date || uploadRecord['insurance_start_date']) asset.insurance_start_date = uploadRecord.insurance_start_date || uploadRecord['insurance_start_date'];
-            if (uploadRecord.insurance_end_date || uploadRecord['insurance_end_date']) asset.insurance_end_date = uploadRecord.insurance_end_date || uploadRecord['insurance_end_date'];
-            if (uploadRecord.warranty_start_date || uploadRecord['warranty_start_date']) asset.warranty_start_date = uploadRecord.warranty_start_date || uploadRecord['warranty_start_date'];
-            if (uploadRecord.warranty_end_date || uploadRecord['warranty_end_date']) asset.warranty_end_date = uploadRecord.warranty_end_date || uploadRecord['warranty_end_date'];
-
-            // Mark as changed
-            hasUnsavedChanges = true;
-            $('#unsavedBadge').show();
-            $('#btnSaveBulkUpdate').prop('disabled', false);
-        }
-    });
-
-    // Re-render the grid with updated data
-    renderBulkUpdateGrid();
-
-    // Show summary of changes
-    const updatedCount = uploadData.filter(record => {
-        const assetCode = record.asset_code || record['asset_code'] || record['Asset Cod'] || '';
-        const assetName = record.asset_name || record['asset_name'] || record['Asset Nan'] || '';
-        return editedData.some(asset =>
-            asset.asset_code === assetCode || asset.asset_name === assetName
-        );
-    }).length;
-
-    showToast(`Updated ${updatedCount} assets with uploaded data`, 'success');
-}
-
-window.applyFieldSelection = function() {
-    visibleFields = $('.field-checkbox:checked').map(function() { return $(this).val(); }).get();
-    $('#fieldSelectionPopup').remove();
-    showToast(`Showing ${visibleFields.length} columns. Refreshing grid...`, 'success');
-    renderBulkUpdateGrid();
-};
-
-// Save button
-$('#btnSaveBulkUpdate').on('click', function() {
-    $(this).blur();
-
-    // First, commit any active cell edit by triggering blur on any focused input
-    const $activeInput = $('.editable-cell.editing input, .editable-cell.editing select');
-    if ($activeInput.length > 0) {
-        $activeInput.trigger('blur');
-    }
-
-    // Small delay to ensure the blur handler completes before comparing
-    setTimeout(() => {
-        let changes = [];
-        editedData.forEach((asset, index) => {
-            let assetChanges = {};
-            Object.keys(asset).forEach(field => {
-                let oldVal = originalData[index] ? originalData[index][field] : undefined;
-                let newVal = asset[field];
-                // Handle null/undefined comparison
-                oldVal = oldVal === null || oldVal === undefined ? '' : String(oldVal);
-                newVal = newVal === null || newVal === undefined ? '' : String(newVal);
-                if (newVal !== oldVal) {
-                    assetChanges[field] = { old: originalData[index][field], new: asset[field] };
-                }
-            });
-            if (Object.keys(assetChanges).length > 0) {
-                changes.push({ asset_id: asset.id || asset.asset_code, changes: assetChanges });
-            }
-        });
-
-        console.log('Changes to save:', changes);
-        console.log('editedData:', editedData);
-        console.log('originalData:', originalData);
-
-        if (changes.length === 0) {
-            showToast('No changes to save', 'info');
-            return;
-        }
-
-        isSavingBulkUpdate = true;
-        $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', true);
-        $('#btnSaveBulkUpdate').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
-
-        $.ajax({
-            url: "{{ route('assets.bulkUpdate') }}",
-            type: "POST",
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'),
-                changes: changes
-            },
-            success: function(response) {
-                if (response.status) {
-                    showToast(response.message, 'success');
-                    hasUnsavedChanges = false;
-                    $('#unsavedBadge').hide();
-                    $('#btnSaveBulkUpdate').prop('disabled', true).html('Save Changes');
-                    $('.row-changed').removeClass('row-changed');
-                    originalData = JSON.parse(JSON.stringify(editedData));
-
-                    setTimeout(function() {
-                        let modalEl = document.getElementById('exLargeModalMultiUpdateAsset');
-                        let modal = bootstrap.Modal.getInstance(modalEl);
-                        if (modal) modal.hide();
-                        setTimeout(function() {
-                            $('.modal-backdrop').remove();
-                            $('body').removeClass('modal-open');
-                        }, 350);
-                    }, 1500);
-
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
-                } else {
-                    showToast(response.message || 'Failed to save', 'error');
-                    $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
-                    isSavingBulkUpdate = false;
-                    $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
-                }
-            },
-            error: function(xhr) {
-                showToast('Save failed: ' + (xhr.responseJSON?.message || xhr.statusText), 'error');
-                $('#btnSaveBulkUpdate').prop('disabled', false).html('Save Changes');
-                isSavingBulkUpdate = false;
-                $('[data-bs-target="#exLargeModalMultiUpdateAsset"]').prop('disabled', false);
-            }
-        });
-    }, 100); // Small delay to ensure blur completes
-});
 
     });
 </script>

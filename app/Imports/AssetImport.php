@@ -7,6 +7,10 @@ use App\Models\Category;
 use App\Models\Location;
 use App\Models\Status;
 use App\Models\AssetAdditionalInfos;
+use App\Models\AssetPurchaseInfos;
+use App\Models\AssetFinacialInfos;
+use App\Models\AssetAllotedInfos;
+use App\Models\AssetWarrantyInfos;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -58,6 +62,9 @@ class AssetImport implements
 
             'status' => $status->id ?? null,
 
+            // 'mac_address' => $row['mac_address'] ?? null,
+
+
         ]);
 
         // Insert Additional Info
@@ -75,7 +82,81 @@ class AssetImport implements
 
             'serial_no' => $row['serial_no'] ?? null,
 
-            // 'po_number' => $row['po_number'] ?? null,
+        ]);
+
+        AssetPurchaseInfos::create([
+
+            'asset_id' => $asset->id,
+
+            'vendor_name' => $row['vendor_name'] ?? null,
+
+            'invoice_date' => $row['invoice_date'] ?? null,
+
+            'invoice_no' => $row['invoice_no'] ?? null,
+
+            'purchase_date' => $row['purchase_price'] ?? null,
+
+            // 'is_self_owned' => $row['is_self_owned'] ?? null,
+
+            // 'end_of_life' => $row['end_of_life'] ?? null,
+
+            'asset_po_number' => $row['asset_po_number'] ?? null,
+
+        ]);
+
+        AssetFinacialInfos::create([
+
+            'asset_id' => $asset->id,
+
+            'capitalization_price' => $row['capitalization_price'] ?? null,
+
+            'capitalization_date' => $row['capitalization_date'] ?? null,
+
+            'depreciation_percent' => $row['depreciation_percent'] ?? null,
+
+            'accumulated_depreciation' => $row['accumulated_depreciation'] ?? null,
+
+            'scrap_value' => $row['scrap_value'] ?? null,
+
+            'income_tax_depreciation_percent' => $row['income_tax_depreciation_percent'] ?? null,
+            
+            // 'end_of_life' => $row['end_of_life'] ?? null,
+
+        ]);
+
+        AssetAllotedInfos::create([
+
+            'asset_id' => $asset->id,
+
+            'department' => $row['vendor_name'] ?? null,
+
+            'transferred_to' => $row['invoice_date'] ?? null,
+
+            'allotted_upto' => $row['invoice_no'] ?? null,
+
+            'remarks' => $row['purchase_price'] ?? null,
+
+        ]);
+
+        AssetWarrantyInfos::create([
+
+            'asset_id' => $asset->id,
+
+            'amc_vendor' => $row['amc_vendor'] ?? null,
+
+            'warranty_vendor' => $row['warranty_vendor'] ?? null,
+
+            'insurance_start_date' => $row['insurance_start_date'] ?? null,
+
+            'insurance_end_date' => $row['insurance_end_date'] ?? null,
+
+            'amc_start_date' => $row['amc_start_date'] ?? null,
+
+            'amc_end_date' => $row['amc_end_date'] ?? null,
+            
+            'warranty_start_date' => $row['warranty_start_date'] ?? null,
+
+            'warranty_end_date' => $row['warranty_end_date'] ?? null,
 
         ]);
 
@@ -98,6 +179,9 @@ class AssetImport implements
 
             'serial_no' => trim($data['serial_no'] ?? ''),
 
+            // 'mac_address' => trim($data['mac_address'] ?? ''),
+
+
         ];
     }
 
@@ -118,7 +202,9 @@ class AssetImport implements
 
             '*.status' => 'required|exists:statuses,status_name',
             
-            '*.serial_no' => 'required|exists:asset_additional_infos,serial_no',
+            '*.serial_no' => 'required|unique:asset_additional_infos,serial_no',
+
+            // '*.mac_address' => 'required|unique:assets,mac_address'
 
         ];
     }
@@ -149,6 +235,10 @@ class AssetImport implements
             '*.status.exists' => 'Status name not found',
 
             '*.serial_no.unique' => 'Serial Number already exists',
+
+            // '*.mac_address.required' => 'MAC Address is required',
+
+            // '*.mac_address.unique' => 'MAC Address already exists',
 
         ];
     }

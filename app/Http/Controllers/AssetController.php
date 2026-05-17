@@ -531,7 +531,7 @@ class AssetController extends Controller
             }
             return response()->json([
                 'status' => true,
-                'message' => count($transferredAssets) . ' asset(s) transferred successfully!',
+                'message' => ' assets transferred successfully!',
                 'assets' => $transferredAssets
             ]);
         } catch (\Exception $e) {
@@ -632,10 +632,12 @@ class AssetController extends Controller
                 'assetallotedInfos',
                 'assetwarrantyInfos'
             ])
-            ->whereIn('asset_code', $assetIds)
-            ->orWhereIn('id', $assetIds)
-            ->orderBy('id', 'asc')
+            ->whereIn('id', $assetIds)
             ->get();
+            
+            $categories = Category::select('id','name')->get();
+            $locations = Location::select('id','name')->get();
+            $statuses = Status::select('id','status_name')->get();
 
             if ($assets->isEmpty()) {
                 return response()->json([
@@ -644,70 +646,12 @@ class AssetController extends Controller
                 ], 404);
             }
 
-            // Format data for bulk update grid
-            $formattedAssets = $assets->map(function($asset) {
-                return [
-                    'id' => $asset->id,
-                    'asset_name' => $asset->asset_name ?? '',
-                    'asset_code' => $asset->asset_code ?? '',
-                    'asset_image' => $asset->asset_image ?? '',
-                    'category_id' => $asset->category_id ?? '',
-                    'category' => $asset->category->name ?? '',
-                    'sub_category' => $asset->subCategory->name ?? '',
-                    'location_id' => $asset->location_id ?? '',
-                    'location' => $asset->location->name ?? '',
-                    'sub_location' => $asset->additionalInfo->sub_location ?? $asset->subLocation->name ?? '',
-                    'status_id' => $asset->status_id ?? '',
-                    'status' => $asset->status->status_name ?? '',
-                    'cwip_invoice_id' => $asset->cwip_invoice_id ?? '',
-
-                    // Additional Info
-                    'condition' => $asset->additionalInfo->condition ?? '',
-                    'brand' => $asset->additionalInfo->brand ?? '',
-                    'model' => $asset->additionalInfo->model ?? '',
-                    'description' => $asset->additionalInfo->description ?? '',
-                    'serial_no' => $asset->additionalInfo->serial_no ?? '',
-
-                    // Purchase Info
-                    'vendor_name' => $asset->purchaseInfo->vendor_name ?? '',
-                    'asset_po_number' => $asset->purchaseInfo->asset_po_number ?? '',
-                    'invoice_date' => $asset->purchaseInfo->invoice_date ?? '',
-                    'invoice_no' => $asset->purchaseInfo->invoice_no ?? '',
-                    'purchase_date' => $asset->purchaseInfo->purchase_date ?? '',
-                    'purchase_price' => $asset->purchaseInfo->purchase_price ?? '',
-                    'is_self_owned' => $asset->purchaseInfo->is_self_owned ?? 0,
-
-                    // Financial Info
-                    'capitalization_price' => $asset->finacialInfos->capitalization_price ?? '',
-                    'end_of_life' => $asset->finacialInfos->end_of_life ?? '',
-                    'capitalization_date' => $asset->finacialInfos->capitalization_date ?? '',
-                    'depreciation_percent' => $asset->finacialInfos->depreciation_percent ?? '',
-                    'accumulated_depreciation' => $asset->finacialInfos->accumulated_depreciation ?? '',
-                    'scrap_value' => $asset->finacialInfos->scrap_value ?? '',
-                    'income_tax_depreciation_percent' => $asset->finacialInfos->income_tax_depreciation_percent ?? '',
-
-                    // Allotted Info
-                    'department' => $asset->assetallotedInfos->department ?? '',
-                    'transferred_to' => $asset->assetallotedInfos->transferred_to ?? '',
-                    'allotted_upto' => $asset->assetallotedInfos->allotted_upto ?? '',
-                    'remarks' => $asset->assetallotedInfos->remarks ?? '',
-
-                    // Warranty Info
-                    'amc_vendor' => $asset->assetwarrantyInfos->amc_vendor ?? '',
-                    'warranty_vendor' => $asset->assetwarrantyInfos->warranty_vendor ?? '',
-                    'insurance_start_date' => $asset->assetwarrantyInfos->insurance_start_date ?? '',
-                    'insurance_end_date' => $asset->assetwarrantyInfos->insurance_end_date ?? '',
-                    'amc_start_date' => $asset->assetwarrantyInfos->amc_start_date ?? '',
-                    'amc_end_date' => $asset->assetwarrantyInfos->amc_end_date ?? '',
-                    'warranty_start_date' => $asset->assetwarrantyInfos->warranty_start_date ?? '',
-                    'warranty_end_date' => $asset->assetwarrantyInfos->warranty_end_date ?? '',
-                ];
-            });
-
             return response()->json([
                 'status' => true,
-                'assets' => $formattedAssets,
-                'count' => $formattedAssets->count()
+                'assets' => $assets,
+                'categories' => $categories,
+                'locations' => $locations,
+                'statuses' => $statuses
             ]);
 
         } catch (\Exception $e) {
@@ -718,194 +662,114 @@ class AssetController extends Controller
         }
     }
 
-    /**
-     * Bulk Update API - Update multiple assets
-     */
     public function bulkUpdate(Request $request)
     {
+        $request->validate([
+            'asset_ids' => 'required|array',
+            'asset_ids.*' => 'exists:assets,id',
+        ]);
+
         try {
-            $changes = $request->input('changes', []);
 
-            if (empty($changes)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'No changes provided'
-                ], 400);
+            foreach ($request->asset_ids as $id) {
+
+                $asset = Asset::findOrFail($id);
+
+                $asset->update([
+                    'asset_name' => $request->asset_name[$id] ?? null,
+                    'category_id' => $request->category_id[$id] ?? null,
+                    'location_id' => $request->location_id[$id] ?? null,
+                    'status_id' => $request->status_id[$id] ?? null,
+                    'cwip_invoice_id' => $request->cwip_invoice_id[$id] ?? null,
+
+                ]);
+
+                AssetAdditionalInfos::updateOrCreate(
+
+                    ['asset_id' => $id],
+
+                    [
+                        'cwip_invoice_id' => $request->cwip_invoice_id[$id] ?? null,
+                        'condition' => $request->condition[$id] ?? null,
+                        'brand' => $request->brand[$id] ?? null,
+                        'model' => $request->model[$id] ?? null,
+                        'serial_no' => $request->serial_no[$id] ?? null,
+                        'mac_address' => $request->mac_address[$id] ?? null,
+                        'description' => $request->description[$id] ?? null,
+                    ]
+                );
+
+                AssetPurchaseInfos::updateOrCreate(
+
+                    ['asset_id' => $id],
+
+                    [
+                        'asset_po_number' => $request->po_number[$id] ?? null,
+                        'invoice_date' => $request->invoice_date[$id] ?? null,
+                        'invoice_no' => $request->invoice_no[$id] ?? null,
+                        'purchase_date' => $request->purchase_date[$id] ?? null,
+                        'purchase_price' => $request->purchase_price[$id] ?? null,
+                    ]
+                );
+
+                AssetFinacialInfos::updateOrCreate(
+
+                    ['asset_id' => $id],
+
+                    [
+                        'ownership_type' => $request->ownership_type[$id] ?? null,
+                        'partner' => $request->partner[$id] ?? null,
+                        'end_of_life' => $request->end_of_life[$id] ?? null,
+                        'capitalization_date' => $request->capitalization_date[$id] ?? null,
+                        'depreciation_percent' => $request->depreciation_percent[$id] ?? null,
+                        'accumulated_depreciation' => $request->accumulated_depreciation[$id] ?? null,
+                        'scrap_value' => $request->scrap_value[$id] ?? null,
+                        'income_tax_dep' => $request->income_tax_dep[$id] ?? null,
+                    ]
+                );
+
+                AssetAllotedInfos::updateOrCreate(
+
+                    ['asset_id' => $id],
+
+                    [
+                        'department' => $request->department[$id] ?? null,
+                        'transferred_to' => $request->transferred_to[$id] ?? null,
+                        'allotted_upto' => $request->allotted_upto[$id] ?? null,
+                        'remarks' => $request->remarks[$id] ?? null,
+                    ]
+                );
+
+                AssetWarrantyInfos::updateOrCreate(
+
+                    ['asset_id' => $id],
+
+                    [
+                        'amc_vendor' => $request->amc_vendor[$id] ?? null,
+                        'warranty_vendor' => $request->warranty_vendor[$id] ?? null,
+                        'insurance_start_date' => $request->insurance_start_date[$id] ?? null,
+                        'insurance_end_date' => $request->insurance_end_date[$id] ?? null,
+                        'amc_start_date' => $request->amc_start_date[$id] ?? null,
+                        'amc_end_date' => $request->amc_end_date[$id] ?? null,
+                        'warranty_start_date' => $request->warranty_start_date[$id] ?? null,
+                        'warranty_end_date' => $request->warranty_end_date[$id] ?? null,
+                    ]
+                );
             }
 
-            $updatedAssets = [];
-            $errors = [];
-
-            foreach ($changes as $change) {
-                $assetId = $change['asset_id'];
-                $fieldChanges = $change['changes'] ?? [];
-
-                if (empty($fieldChanges)) {
-                    continue;
-                }
-
-                $asset = Asset::find($assetId);
-                if (!$asset) {
-                    $errors[] = "Asset ID {$assetId} not found";
-                    continue;
-                }
-
-                $hasAnyChanges = false;
-
-                foreach ($fieldChanges as $field => $data) {
-                    $newValue = $data['new'] ?? null;
-
-                    if ($field === 'asset_name' && empty($newValue)) {
-                        $errors[] = "Asset name is required for asset ID {$assetId}";
-                        continue 2;
-                    }
-
-                    switch ($field) {
-                        case 'asset_name':
-                        case 'asset_image':
-                        case 'category_id':
-                        case 'sub_category_id':
-                        case 'location_id':
-                        case 'sub_location_id':
-                        case 'status_id':
-                        case 'cwip_invoice_id':
-                            $asset->{$field} = $newValue;
-                            $hasAnyChanges = true;
-                            break;
-
-                        case 'status':
-                            $status = Status::where('status_name', $newValue)->first();
-                            if ($status) {
-                                $asset->status_id = $status->id;
-                                $hasAnyChanges = true;
-                            }
-                            break;
-
-                        case 'category':
-                            $category = Category::where('name', $newValue)->first();
-                            if ($category) {
-                                $asset->category_id = $category->id;
-                                $hasAnyChanges = true;
-                            }
-                            break;
-
-                        case 'sub_category':
-                            $subCategory = SubCategory::where('name', $newValue)->first();
-                            if ($subCategory) {
-                                $asset->sub_category_id = $subCategory->id;
-                                $hasAnyChanges = true;
-                            }
-                            break;
-
-                        case 'location':
-                            $location = Location::where('name', $newValue)->first();
-                            if ($location) {
-                                $asset->location_id = $location->id;
-                                $hasAnyChanges = true;
-                            }
-                            break;
-
-                        case 'condition':
-                        case 'brand':
-                        case 'model':
-                        case 'description':
-                        case 'serial_no':
-                            $additionalInfo = $asset->additionalInfo ?? $asset->additionalInfo()->firstOrNew([]);
-                            $additionalInfo->{$field} = $newValue;
-                            $additionalInfo->save();
-                            $hasAnyChanges = true;
-                            break;
-
-                        case 'sub_location':
-                            $subLocation = SubLocation::where('name', $newValue)->first();
-                            if ($subLocation) {
-                                $asset->sub_location_id = $subLocation->id;
-                                $hasAnyChanges = true;
-                            }
-                            break;
-
-                        case 'vendor_name':
-                        case 'asset_po_number':
-                        case 'invoice_date':
-                        case 'invoice_no':
-                        case 'purchase_date':
-                        case 'purchase_price':
-                        case 'is_self_owned':
-                            $purchaseInfo = $asset->purchaseInfo ?? $asset->purchaseInfo()->firstOrNew([]);
-                            $purchaseInfo->{$field} = $newValue;
-                            $purchaseInfo->save();
-                            $hasAnyChanges = true;
-                            break;
-
-                        case 'capitalization_price':
-                        case 'end_of_life':
-                        case 'capitalization_date':
-                        case 'depreciation_percent':
-                        case 'accumulated_depreciation':
-                        case 'scrap_value':
-                        case 'income_tax_depreciation_percent':
-                            $financialInfo = $asset->finacialInfos ?? $asset->finacialInfos()->firstOrNew([]);
-                            $financialInfo->{$field} = $newValue;
-                            $financialInfo->save();
-                            $hasAnyChanges = true;
-                            break;
-
-                        case 'department':
-                        case 'transferred_to':
-                        case 'allotted_upto':
-                        case 'remarks':
-                            $allottedInfo = $asset->assetallotedInfos ?? $asset->assetallotedInfos()->firstOrNew([]);
-                            $allottedInfo->{$field} = $newValue;
-                            $allottedInfo->save();
-                            $hasAnyChanges = true;
-                            break;
-
-                        case 'amc_vendor':
-                        case 'warranty_vendor':
-                        case 'insurance_start_date':
-                        case 'insurance_end_date':
-                        case 'amc_start_date':
-                        case 'amc_end_date':
-                        case 'warranty_start_date':
-                        case 'warranty_end_date':
-                            $warrantyInfo = $asset->assetwarrantyInfos ?? $asset->assetwarrantyInfos()->firstOrNew([]);
-                            $warrantyInfo->{$field} = $newValue;
-                            $warrantyInfo->save();
-                            $hasAnyChanges = true;
-                            break;
-                    }
-                }
-
-                if ($asset->getDirty()) {
-                    $asset->save();
-                }
-
-                if ($hasAnyChanges) {
-                    $updatedAssets[] = $assetId;
-                }
-            }
-
-            if (!empty($errors)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validation errors occurred',
-                    'errors' => $errors
-                ], 422);
-            }
 
             return response()->json([
                 'status' => true,
-                'message' => 'Successfully updated ' . count($updatedAssets) . ' assets',
-                'updated_count' => count($updatedAssets)
+                'message' => 'Assets updated successfully'
             ]);
 
         } catch (\Exception $e) {
+
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to update assets: ' . $e->getMessage()
+                'message' => $e->getMessage()
             ], 500);
         }
     }
-
 
 }

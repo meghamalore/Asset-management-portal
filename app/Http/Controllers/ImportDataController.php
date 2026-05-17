@@ -276,4 +276,80 @@ class ImportDataController extends Controller
         return response()->download($latestFile);
     }
 
+    public function showPreview()
+    {
+        $path = public_path('uploads/imports/asset');
+
+        // Get all files
+        $files = glob($path . '/*');
+
+        if (empty($files))
+        {
+            return response()->json([
+
+                'status' => false,
+
+                'message' => 'No files found'
+
+            ]);
+        }
+
+        // Get latest uploaded file
+        $latestFile = collect($files)->sortByDesc(function ($file) {
+
+            return filemtime($file);
+
+        })->first();
+
+        if (!file_exists($latestFile))
+        {
+            return response()->json([
+
+                'status' => false,
+
+                'message' => 'Excel file not found'
+
+            ]);
+        }
+
+        // Read latest excel file
+        $rows = Excel::toArray([], $latestFile);
+
+        $excelRows = $rows[0] ?? [];
+
+        // Remove heading row
+        unset($excelRows[0]);
+
+        $formattedData = [];
+
+        foreach ($excelRows as $row)
+        {
+            $formattedData[] = [
+
+                'asset_name'  => $row[0] ?? '',
+
+                'asset_code'  => $row[1] ?? '',
+
+                'category'    => $row[2] ?? '',
+
+                'location'    => $row[3] ?? '',
+
+                'status'      => $row[4] ?? '',
+
+                'mac_address' => $row[5] ?? '',
+
+                'serial_no'   => $row[6] ?? '',
+
+            ];
+        }
+
+        return response()->json([
+
+            'status' => true,
+
+            'data' => $formattedData
+
+        ]);
+    }
+
 }
